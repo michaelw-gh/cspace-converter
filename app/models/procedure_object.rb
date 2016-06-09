@@ -19,7 +19,7 @@ class ProcedureObject
   private
 
   def check_valid_procedure!(procedure)
-    CollectionSpace::Converter::Default.validate_procedures!(procedure)
+    CollectionSpace::Converter::Default.validate_procedure!(procedure)
   end
 
 end
