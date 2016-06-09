@@ -30,7 +30,8 @@ module CspaceConverter
     # config.i18n.default_locale = :de
 
     # Set the converter strategy (c.f. initializers/cspace.rb, TODO collectionspace-client)
-    config.converter_class = ENV.fetch('CSPACE_CONVERTER_CLASS', 'CollectionSpace::Converter::PastPerfect')
     config.converter_type  = ENV.fetch('CSPACE_CONVERTER_TYPE' , 'PastPerfect')
+    config.converter_class = ENV.fetch('CSPACE_CONVERTER_CLASS',
+        "CollectionSpace::Converter::#{config.converter_type}")
   end
 end
