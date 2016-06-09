@@ -1,0 +1,4 @@
+<h1>Procedure records</h1>
+<% @objects.entries.each do |object| %>
+  <p><%= link_to object["identifier"], procedure_path(object) %></p>
+<% end %>
