@@ -1,0 +1,4 @@
+<h1>Data</h1>
+<% @objects.entries.each do |object| %>
+  <p><%= link_to object["id"], object_path(object) %></p>
+<% end %>

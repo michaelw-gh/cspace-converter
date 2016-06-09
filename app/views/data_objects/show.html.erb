@@ -1,0 +1,7 @@
+<h1><%= @object["id"] %></h1>
+
+<% @object.procedure_objects.each do |procedure| %>
+  <p><%= procedure.type %> <%= link_to procedure.identifier, procedure_path(procedure) %></p>
+<% end %>
+
+<p>Return to <%= link_to 'Objects', objects_path %></p>
