@@ -27,8 +27,8 @@ module CollectionSpace
               if common
                 xml.send(
                   "ns2:#{service}_common",
-                  'xmlns:ns2' => 'http://collectionspace.org/services/{procedure}',
-                  'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance'
+                  "xmlns:ns2" => "http://collectionspace.org/services/#{procedure}",
+                  "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
                 ) do
                   # applying namespace breaks import
                   xml.parent.namespace = nil
