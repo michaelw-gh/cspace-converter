@@ -6,8 +6,8 @@ module CollectionSpace
       class PastPerfectCollectionObject < CollectionObject
 
         def convert
-          run do |common|
-            CollectionSpace::XML.add common, 'objectNumber', attributes["objectid"]
+          run do |xml|
+            CollectionSpace::XML.add xml, 'objectNumber', attributes["objectid"]
           end
         end
 

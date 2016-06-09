@@ -21,26 +21,34 @@ module CollectionSpace
         def convert
         end
 
+        def run(service, procedure, common)
+          builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
+            xml.document(name: service) {
+              if common
+                xml.send(
+                  "ns2:#{service}_common",
+                  'xmlns:ns2' => 'http://collectionspace.org/services/{procedure}',
+                  'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance'
+                ) do
+                  # applying namespace breaks import
+                  xml.parent.namespace = nil
+                  yield xml
+                end
+              else
+                yield xml # entire document (for extensions)
+              end
+            }
+          end
+          builder.to_xml
+        end
+
       end
 
       class CollectionObject < Record
 
-        def run
-          builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
-            xml.document(name: 'collectionobjects') {
-              xml.send(
-                'ns2:collectionobjects_common',
-                'xmlns:ns2' => 'http://collectionspace.org/services/collectionobject',
-                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance'
-              ) do
-                # applying namespace breaks import
-                xml.parent.namespace = nil
-                yield xml # common
-              end
-            }
-            # yield xml # document (for extensions)
-          end
-          builder.to_xml
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'collectionobjects', 'collectionobject', common
         end
 
       end
