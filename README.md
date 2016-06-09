@@ -30,7 +30,7 @@ docker run --net=host --name mongo -d mongo:3.2
 rails c
 Rails.application.config.converter_class = "CollectionSpace::Converter::PBM"
 Rails.application.config.converter_type  = "PBM"
-p = ProcedureObject.first
+p = DataObject.first
 puts p.to_cspace_xml("CollectionObject")
 ```
 

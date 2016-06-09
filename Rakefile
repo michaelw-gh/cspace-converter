@@ -9,10 +9,11 @@ require 'csv'
 
 namespace :db do
   namespace :import do
-    # rake db:import:procedures[db/data/ppsobjectsdata.csv]
-    task :procedures, [:filename] => :environment do |t, args|
-      ProcedureObject.destroy_all
-      filename = args[:filename]
+    # rake db:import:data[db/data/ppsobjectsdata.csv]
+    task :data, [:filename, :procedures] => :environment do |t, args|
+      DataObject.destroy_all
+      filename   = args[:filename]
+      procedures = args[:procedures]
 
       csv_row_counter = 0
       data_counter    = 0
@@ -23,9 +24,13 @@ namespace :db do
         }) do |row|
           data = row.to_hash
           begin
-            object = ProcedureObject.new.from_json JSON.generate(data)
+            object = DataObject.new.from_json JSON.generate(data)
             object.save!
             data_counter += 1
+
+            if procedures
+              # attempt to generate related procedure objects
+            end
           rescue Exception => ex
             errors << "#{ex.message} for #{data}"
           end

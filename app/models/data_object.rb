@@ -1,4 +1,4 @@
-class ProcedureObject
+class DataObject
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
