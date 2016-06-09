@@ -7,6 +7,15 @@ Rails.application.load_tasks
 
 require 'csv'
 
+namespace :data do
+  namespace :procedure do
+
+    # generate
+    # relationships
+
+  end
+end
+
 namespace :db do
   namespace :import do
     # rake db:import:data[db/data/ppsobjectsdata.csv]
@@ -42,5 +51,3 @@ namespace :db do
     end
   end
 end
-
-# TODO: output relationships csv task
