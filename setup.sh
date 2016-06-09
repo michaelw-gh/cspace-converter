@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export CSPACE_CONVERTER_TYPE=${1:-PastPerfect}
-export CSPACE_CONVERTER_PROFILE=${2:-ppsobjectsdata}
+export CSPACE_CONVERTER_TYPE=${CSPACE_CONVERTER_TYPE:-PastPerfect}
+export CSPACE_CONVERTER_PROFILE=${CSPACE_CONVERTER_PROFILE:-ppsobjectsdata}
 
 echo "Setting up project for ${CSPACE_CONVERTER_TYPE} with profile ${CSPACE_CONVERTER_PROFILE}"
 

@@ -17,12 +17,41 @@ Setup
 
 Create the data directory and add the data files.
 
+```
+db/data/
+├── cataloging.csv # custom CSV data file
+└── ppsobjectsdata.csv # Past Perfect objects data file
+```
+
 **Run MongoDB**
 
 ```
 # for local development / conversions
 docker run --net=host --name mongo -d mongo:3.2
 ```
+
+You should be able to access MongDB on `http://localhost:27017`.
+
+**Initial data import**
+
+The general command is:
+
+```
+. ./set_env.sh [CSPACE_CONVERTER_TYPE] [CSPACE_CONVERTER_PROFILE]
+./setup.sh
+```
+
+Where `converter_type` refers to an available converter module and profile. Concrete examples:
+
+```
+. ./set_env.sh PBM cataloging
+./setup.sh
+
+. ./set_env.sh PastPerfect ppsobjectsdata
+./setup.sh
+```
+
+For these commands to actually work you will need the data files in `db/data`.
 
 **Using the console**
 
