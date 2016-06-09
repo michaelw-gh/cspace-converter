@@ -10,7 +10,30 @@ require 'csv'
 namespace :data do
   namespace :procedure do
 
-    # generate
+    # rake data:procedure:generate[ppsobjectsdata]
+    task :generate, [:profile] => :environment do |t, args|
+      p = args[:profile]
+
+      profiles = Rails.application.config.converter_class.constantize.registered_profiles
+      profile  = profiles[p]
+      raise "Invalid profile #{p} for #{profiles}" unless profile
+
+      DataObject.all.entries.each do |object|
+        profile.each do |procedure, attributes|
+          data = {}
+          # check for existence or update
+          data[:type]       = procedure
+          data[:identifier] = object.read_attribute( attributes["identifier"] )
+          data[:title]      = object.read_attribute( attributes["title"] )
+          data[:content]    = object.to_cspace_xml(procedure).to_s
+          object.procedure_objects.build data
+          object.save!
+        end
+      end
+
+      puts "Procedure generation complete!"
+    end
+
     # relationships
 
   end
@@ -36,10 +59,6 @@ namespace :db do
             object = DataObject.new.from_json JSON.generate(data)
             object.save!
             data_counter += 1
-
-            if procedures
-              # attempt to generate related procedure objects
-            end
           rescue Exception => ex
             errors << "#{ex.message} for #{data}"
           end

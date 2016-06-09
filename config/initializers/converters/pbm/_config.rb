@@ -8,6 +8,17 @@ module CollectionSpace
         ]
       end
 
+      def self.registered_profiles
+        {
+          "cataloging" => {
+            "CollectionObject" => {
+              "identifier" => "objectNumber",
+              "title" => "title",
+            }
+          }
+        }
+      end
+
     end
   end
 end

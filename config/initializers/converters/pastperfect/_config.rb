@@ -9,6 +9,17 @@ module CollectionSpace
         ]
       end
 
+      def self.registered_profiles
+        {
+          "ppsobjectsdata" => {
+            "CollectionObject" => {
+              "identifier" => "objectid",
+              "title" => "title",
+            }
+          }
+        }
+      end
+
     end
   end
 end

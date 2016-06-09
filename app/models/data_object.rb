@@ -2,6 +2,8 @@ class DataObject
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
+  has_many :procedure_objects, autosave: true, dependent: :destroy
+
   def to_cspace_xml(procedure)
     check_valid_procedure!(procedure)
     converter_class = Rails.application.config.converter_class.constantize
