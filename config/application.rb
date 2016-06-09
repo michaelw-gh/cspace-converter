@@ -33,5 +33,7 @@ module CspaceConverter
     config.converter_type  = ENV.fetch('CSPACE_CONVERTER_TYPE' , 'Default')
     config.converter_class = ENV.fetch('CSPACE_CONVERTER_CLASS',
         "CollectionSpace::Converter::#{config.converter_type}")
+
+    config.domain = ENV.fetch('CSPACE_CONVERTER_DOMAIN', 'core.collectionspace.org')
   end
 end

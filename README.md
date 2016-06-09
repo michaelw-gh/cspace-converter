@@ -37,17 +37,17 @@ You should be able to access MongDB on `http://localhost:27017`.
 The general command is:
 
 ```
-. ./set_env.sh [CSPACE_CONVERTER_TYPE] [CSPACE_CONVERTER_PROFILE]
+. ./set_env.sh [CSPACE_CONVERTER_TYPE] [CSPACE_CONVERTER_PROFILE] [CSPACE_CONVERTER_DOMAIN]
 ./setup.sh
 ```
 
 Where `converter_type` refers to an available converter module and profile. Concrete examples:
 
 ```
-. ./set_env.sh PBM cataloging
+. ./set_env.sh PBM cataloging pdm.collectionspace.org
 ./setup.sh
 
-. ./set_env.sh PastPerfect ppsobjectsdata
+. ./set_env.sh PastPerfect ppsobjectsdata pp.collectionspace.org
 ./setup.sh
 ```
 

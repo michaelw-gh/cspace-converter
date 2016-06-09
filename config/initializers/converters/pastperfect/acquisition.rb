@@ -3,7 +3,7 @@ module CollectionSpace
     module PastPerfect
       include Default
 
-      class Acquisition < Record
+      class PastPerfectAcquisition < Acquisition
 
         def convert
           #

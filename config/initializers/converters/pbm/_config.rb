@@ -4,12 +4,19 @@ module CollectionSpace
 
       def self.registered_procedures
         [
+          "Acquisition",
           "CollectionObject",
         ]
       end
 
       def self.registered_profiles
         {
+          "acquisition" => {
+            "Acquisition" => {
+              "identifier" => "acquisitionReferenceNumber",
+              "title" => "acquisitionReferenceNumber",
+            }
+          },
           "cataloging" => {
             "CollectionObject" => {
               "identifier" => "objectNumber",

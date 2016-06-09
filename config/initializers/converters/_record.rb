@@ -44,6 +44,15 @@ module CollectionSpace
 
       end
 
+      class Acquisition < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'acquisitions', 'acquisition', common
+        end
+
+      end
+
       class CollectionObject < Record
 
         def run(wrapper: "common")
