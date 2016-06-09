@@ -4,7 +4,7 @@ module CollectionSpace
 
       # set which procedures can be created from model
       def self.validate_procedure!(procedure)
-        valid_procedures = Rails.application.config.registered_procedures
+        valid_procedures = Rails.application.config.converter_class.constantize.registered_procedures
         unless valid_procedures.include?("all") or valid_procedures.include?(procedure)
           raise "Invalid procedure #{procedure}, not permitted by configuration."
         end

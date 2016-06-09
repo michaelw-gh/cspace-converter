@@ -4,11 +4,11 @@ class ProcedureObject
 
   def to_cspace_xml(procedure)
     check_valid_procedure!(procedure)
-    config_converter_type = Rails.application.config.converter_type
+    converter_class = Rails.application.config.converter_class.constantize
+    converter_type  = Rails.application.config.converter_type
 
-    converter_type = "CollectionSpace::Converter::#{config_converter_type}".constantize
-    procedure_type = "#{converter_type}::#{config_converter_type}#{procedure}".constantize
-    converter      = procedure_type.new(self.to_hash)
+    procedure_class = "#{converter_class}::#{converter_type}#{procedure}".constantize
+    converter       = procedure_class.new(self.to_hash)
     converter.convert
   end
 
