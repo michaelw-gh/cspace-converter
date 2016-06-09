@@ -35,9 +35,10 @@ module CollectionSpace
               ) do
                 # applying namespace breaks import
                 xml.parent.namespace = nil
-                yield xml
+                yield xml # common
               end
             }
+            # yield xml # document (for extensions)
           end
           builder.to_xml
         end

@@ -1,7 +1,7 @@
 cspace-converter
 ===
 
-Migrate data to CollectionSpace.
+Migrate denormalized or semi-structured data to CollectionSpace from CSV.
 
 Getting Started
 ---
@@ -15,7 +15,7 @@ bundle install
 Setup
 ---
 
-Create the data directory and add the data files (typically saved as CSV).
+Create the data directory and add the data files.
 
 **Run MongoDB**
 
@@ -28,6 +28,7 @@ docker run --net=host --name mongo -d mongo:3.2
 
 ```
 rails c
+# Rails.application.config.converter_type = "PBM"
 p = ProcedureObject.first
 puts p.to_cspace_xml("CollectionObject")
 ```

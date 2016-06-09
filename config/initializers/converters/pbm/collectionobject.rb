@@ -1,13 +1,13 @@
 module CollectionSpace
   module Converter
-    module PastPerfect
+    module PBM
       include Default
 
-      class PastPerfectCollectionObject < CollectionObject
+      class PBMCollectionObject < CollectionObject
 
         def convert
           run do |common|
-            CollectionSpace::XML.add common, 'objectNumber', attributes["objectid"]
+            CollectionSpace::XML.add common, 'objectNumber', attributes["objectNumber"]
           end
         end
 
