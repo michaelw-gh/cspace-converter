@@ -45,6 +45,8 @@ Where `converter_type` refers to an available converter module. Concrete example
 ```
 ./setup.sh acq1 PBM acquisition
 ./setup.sh cat1 PBM cataloging
+
+./setup.sh ppsaccession1 PastPerfect ppsaccessiondata
 ./setup.sh ppsobjects1 PastPerfect ppsobjectsdata
 ```
 

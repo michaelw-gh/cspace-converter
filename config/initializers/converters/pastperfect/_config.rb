@@ -11,6 +11,12 @@ module CollectionSpace
 
       def self.registered_profiles
         {
+          "ppsaccessiondata" => {
+            "Acquisition" => {
+              "identifier" => "accessno",
+              "title" => "accessno",
+            }
+          },
           "ppsobjectsdata" => {
             "CollectionObject" => {
               "identifier" => "objectid",
