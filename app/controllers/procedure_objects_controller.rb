@@ -1,7 +1,7 @@
 class ProcedureObjectsController < ApplicationController
 
   def index
-    @objects = ProcedureObject.all
+    @objects = ProcedureObject.all.page params[:page]
   end
 
   def show

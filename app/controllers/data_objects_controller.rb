@@ -1,7 +1,7 @@
 class DataObjectsController < ApplicationController
 
   def index
-    @objects = DataObject.all
+    @objects = DataObject.all.page params[:page]
   end
 
   def show
