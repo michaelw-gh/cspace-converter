@@ -1,28 +1,32 @@
 <%= render partial: 'layouts/header', :locals => { :title => 'Objects' } %>
 
-<table class="table">
-  <thead class="thead-inverse">
-    <tr>
-      <th>#</th>
-      <th>Batch</th>
-      <th>Converter</th>
-      <th>Profile</th>
-      <th>ID</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @objects.entries.each.with_index do |object, i| %>
-      <tr>
-        <td scope="row"><%= i + 1 %></td>
-        <td><%= object.batch %></td>
-        <td><%= object.converter %></td>
-        <td><%= object.profile %></td>
-        <td><%= object.id %></td>
-        <td><%= link_to "View", object_path(object) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>#</th>
+          <th>Batch</th>
+          <th>Converter</th>
+          <th>Profile</th>
+          <th>ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @objects.entries.each.with_index do |object, i| %>
+          <tr>
+            <td scope="row"><%= i + 1 %></td>
+            <td><%= object.batch %></td>
+            <td><%= object.converter %></td>
+            <td><%= object.profile %></td>
+            <td><%= object.id %></td>
+            <td><%= link_to "View", object_path(object) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<%= paginate @objects %>
+<%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>

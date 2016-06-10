@@ -1,32 +1,38 @@
 <%= render partial: 'layouts/header', :locals => { :title => 'Procedures' } %>
 
-<table class="table">
-  <thead class="thead-inverse">
-    <tr>
-      <th>#</th>
-      <th>Type</th>
-      <th>Identifier</th>
-      <th>Title</th>
-      <th>CSID</th>
-      <th>URI</th>
-      <th>Batch</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @objects.entries.each.with_index do |object, i| %>
-      <tr>
-        <td scope="row"><%= i + 1 %></td>
-        <td><%= object.type %></td>
-        <td><%= object.identifier %></td>
-        <td><%= object.title %></td>
-        <td><%= object.csid || "n/a" %></td>
-        <td><%= object.uri || "n/a" %></td>
-        <td><%= object.data_object.batch %></td>
-        <td><%= link_to "View", procedure_path(object) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row"></div>
 
-<%= paginate @objects %>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Identifier</th>
+          <th>Title</th>
+          <th>CSID</th>
+          <th>URI</th>
+          <th>Batch</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @objects.entries.each.with_index do |object, i| %>
+          <tr>
+            <td scope="row"><%= i + 1 %></td>
+            <td><%= object.type %></td>
+            <td><%= object.identifier %></td>
+            <td><%= object.title %></td>
+            <td><%= object.csid || "n/a" %></td>
+            <td><%= object.uri || "n/a" %></td>
+            <td><%= object.data_object.batch %></td>
+            <td><%= link_to "View", procedure_path(object) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>

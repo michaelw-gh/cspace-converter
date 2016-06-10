@@ -1,7 +1,19 @@
 <%= render partial: 'layouts/header', :locals => { :title => @object.identifier } %>
 
-<p>Parent: <%= object_label(@object.data_object) %> <%= link_to "View", object_path(@object.data_object) %></p>
+<div class="row">
+  <div class="col-md-12">
+    <p>Parent: <%= object_label(@object.data_object) %> <%= link_to "View", object_path(@object.data_object) %></p>
+  </div>
+</div>
 
-<pre class="xml"><%= @object.content %></pre>
+<div class="row">
+  <div class="col-md-12">
+    <pre class="xml"><%= @object.content %></pre>
+  </div>
+</div>
 
-<p>Return to <%= link_to 'Procedures', procedures_path %></p>
+<div class="row">
+  <div class="col-md-12">
+    <p>Return to <%= link_to 'Procedures', procedures_path %></p>
+  </div>
+</div>
