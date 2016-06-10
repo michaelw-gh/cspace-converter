@@ -1,4 +1,6 @@
-<h1><%= @object["id"] %></h1>
+<%= render partial: 'layouts/header', :locals => { :title => 'Object' } %>
+
+<h2><%= object_label(@object) %></h2>
 
 <% @object.procedure_objects.each do |procedure| %>
   <p><%= procedure.type %> <%= link_to procedure.identifier, procedure_path(procedure) %></p>

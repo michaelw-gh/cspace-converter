@@ -1,5 +1,5 @@
-<h1><%= @object["type"] %> <%= @object["identifier"] %></h1>
+<%= render partial: 'layouts/header', :locals => { :title => @object.identifier } %>
 
-<p>Parent: <%= link_to @object.data_object.id, object_path(@object.data_object) %></p>
+<p>Parent: <%= object_label(@object.data_object) %> <%= link_to "View", object_path(@object.data_object) %></p>
 
 <p>Return to <%= link_to 'Procedures', procedures_path %></p>

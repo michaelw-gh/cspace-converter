@@ -28,12 +28,6 @@ module CspaceConverter
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # Set the converter strategy (c.f. initializers/cspace.rb, TODO collectionspace-client)
-    config.converter_type  = ENV.fetch('CSPACE_CONVERTER_TYPE' , 'Default')
-    config.converter_class = ENV.fetch('CSPACE_CONVERTER_CLASS',
-        "CollectionSpace::Converter::#{config.converter_type}")
-
     config.domain = ENV.fetch('CSPACE_CONVERTER_DOMAIN', 'core.collectionspace.org')
   end
 end

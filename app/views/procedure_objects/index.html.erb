@@ -1,4 +1,28 @@
-<h1>Procedure records</h1>
-<% @objects.entries.each do |object| %>
-  <p><%= link_to object["identifier"], procedure_path(object) %></p>
-<% end %>
+<%= render partial: 'layouts/header', :locals => { :title => 'Procedures' } %>
+
+<table class="table">
+  <thead class="thead-inverse">
+    <tr>
+      <th>#</th>
+      <th>Type</th>
+      <th>Identifier</th>
+      <th>Title</th>
+      <th>CSID</th>
+      <th>URI</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @objects.entries.each.with_index do |object, i| %>
+      <tr>
+        <td scope="row"><%= i + 1 %></td>
+        <td><%= object.type %></td>
+        <td><%= object.identifier %></td>
+        <td><%= object.title %></td>
+        <td><%= object.csid || "n/a" %></td>
+        <td><%= object.uri || "n/a" %></td>
+        <td><%= link_to "View", procedure_path(object) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

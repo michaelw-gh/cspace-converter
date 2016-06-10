@@ -1,10 +1,11 @@
 #!/bin/bash
 
-export CSPACE_CONVERTER_TYPE=${CSPACE_CONVERTER_TYPE:-PastPerfect}
-export CSPACE_CONVERTER_PROFILE=${CSPACE_CONVERTER_PROFILE:-ppsobjectsdata}
-export CSPACE_CONVERTER_DOMAIN=${CSPACE_CONVERTER_DOMAIN:-core.collectionspace.org}
+export CS_CONV_BATCH=${1:-ppsobjects1}
+export CS_CONV_TYPE=${2:-PastPerfect}
+export CS_CONV_PROFILE=${3:-ppsobjectsdata}
+export CS_CONV_DOMAIN=${4:-core.collectionspace.org}
 
-echo "Project ${CSPACE_CONVERTER_TYPE}; Profile ${CSPACE_CONVERTER_PROFILE}; Domain ${CSPACE_CONVERTER_DOMAIN}"
+echo "Project ${CS_CONV_TYPE}; Batch ${CS_CONV_BATCH}; Profile ${CS_CONV_PROFILE}; Domain ${CS_CONV_DOMAIN}"
 
-bundle exec rake db:import:data[db/data/${CSPACE_CONVERTER_PROFILE}.csv]
-bundle exec rake data:procedure:generate[${CSPACE_CONVERTER_PROFILE}]
+bundle exec rake db:import:data[$CS_CONV_BATCH,$CS_CONV_TYPE,$CS_CONV_PROFILE,db/data/${CS_CONV_PROFILE}.csv]
+bundle exec rake data:procedure:generate[$CS_CONV_BATCH]

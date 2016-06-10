@@ -10,15 +10,18 @@ require 'csv'
 namespace :data do
   namespace :procedure do
 
-    # rake data:procedure:generate[ppsobjectsdata]
-    task :generate, [:profile] => :environment do |t, args|
-      p = args[:profile]
+    # rake data:procedure:generate[ppsobjects1]
+    task :generate, [:batch] => :environment do |t, args|
+      batch = args[:batch]
 
-      profiles = Rails.application.config.converter_class.constantize.registered_profiles
-      profile  = profiles[p]
-      raise "Invalid profile #{p} for #{profiles}" unless profile
+      DataObject.where(batch: batch).entries.each do |object|
+        converter_type  = object.read_attribute(:converter)
+        profile_name    = object.read_attribute(:profile)
+        converter_class = "CollectionSpace::Converter::#{converter_type}".constantize
+        profiles        = converter_class.registered_profiles
+        profile         = profiles[profile_name]
+        raise "Invalid profile #{profile_name} for #{profiles}" unless profile
 
-      DataObject.all.entries.each do |object|
         profile.each do |procedure, attributes|
           data = {}
           # check for existence or update
@@ -41,11 +44,12 @@ end
 
 namespace :db do
   namespace :import do
-    # rake db:import:data[db/data/ppsobjectsdata.csv]
-    task :data, [:filename, :procedures] => :environment do |t, args|
-      DataObject.destroy_all
-      filename   = args[:filename]
-      procedures = args[:procedures]
+    # rake db:import:data[ppsobjectsdata1,PastPerfect,ppsobjectsdata,db/data/ppsobjectsdata.csv]
+    task :data, [:batch, :converter, :profile, :filename] => :environment do |t, args|
+      batch     = args[:batch]
+      converter = args[:converter]
+      profile   = args[:profile]
+      filename  = args[:filename]
 
       csv_row_counter = 0
       data_counter    = 0
@@ -57,6 +61,9 @@ namespace :db do
           data = row.to_hash
           begin
             object = DataObject.new.from_json JSON.generate(data)
+            object.write_attribute(:batch, batch)
+            object.write_attribute(:converter, converter)
+            object.write_attribute(:profile, profile)
             object.save!
             data_counter += 1
           rescue Exception => ex
@@ -68,5 +75,9 @@ namespace :db do
       puts "CSV ROWS READ:\t#{csv_row_counter}"
       puts "OBJECTS CREATED:\t#{data_counter}"
     end
+  end
+
+  task :nuke => :environment do |t|
+    DataObject.destroy_all
   end
 end
