@@ -4,19 +4,49 @@
 
   <div class="col-md-10">
 
-    <%= render partial: 'shared/title', :locals => { :title => 'Object' } %>
+    <%= render partial: 'shared/title', :locals => { :title => @object.id } %>
 
     <div class="row">
       <div class="col-md-12">
-        <h2><%= object_label(@object) %></h2>
+        <dl class="dl-horizontal metadata">
+          <dt class="col-sm-3">Batch</dt>
+          <dd class="col-sm-9"><%= @object.batch %></dd>
+
+          <dt class="col-sm-3">Converter</dt>
+          <dd class="col-sm-9"><%= @object.converter %></dd>
+
+          <dt class="col-sm-3">Profile</dt>
+          <dd class="col-sm-9"><%= @object.profile %></dd>
+        </dl>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-        <% @object.procedure_objects.each do |procedure| %>
-          <p><%= procedure.type %> <%= link_to procedure.identifier, procedure_path(procedure) %></p>
-        <% end %>
+        <p class="text-muted">Procedures</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Identifier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @object.procedure_objects.each do |procedure| %>
+              <tr>
+                <td><%= procedure.type %></td>
+                <td><%= link_to procedure.identifier, procedure_path(procedure) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <p class="text-muted">Document</p>
+        <pre class="json"><%= JSON.pretty_generate(JSON.parse(@object.to_json)) %></pre>
       </div>
     </div>
 

@@ -7,13 +7,33 @@
     <%= render partial: 'shared/title', :locals => { :title => @object.identifier } %>
 
     <div class="row">
-      <div class="col-md-12">
-        <p>Parent: <%= object_label(@object.data_object) %> <%= link_to "View", object_path(@object.data_object) %></p>
+      <div class="col-md-8">
+        <dl class="dl-horizontal metadata">
+          <dt class="col-sm-3">Title</dt>
+          <dd class="col-sm-9"><%= @object.title %></dd>
+
+          <dt class="col-sm-3">CSID</dt>
+          <dd class="col-sm-9"><%= @object.csid || "n/a" %></dd>
+
+          <dt class="col-sm-3">URI</dt>
+          <dd class="col-sm-9"><%= @object.uri || "n/a" %></dd>
+
+          <dt class="col-sm-3">Parent</dt>
+          <dd class="col-sm-9"><%= object_label(@object.data_object) %> <%= link_to "View", object_path(@object.data_object) %></dd>
+        </dl>
+      </div>
+
+      <div class="col-md-4">
+        <p class="text-muted">External actions</p>
+        <button type="button" class="btn btn-info">Ping</button>
+        <button type="button" class="btn btn-warning">Transfer</button>
+        <button type="button" class="btn btn-danger">Delete</button>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
+        <p class="text-muted">Document</p>
         <pre class="xml"><%= @object.content %></pre>
       </div>
     </div>
