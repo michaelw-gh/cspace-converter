@@ -1,15 +1,18 @@
 <%= render partial: 'layouts/header', :locals => { :title => 'Procedures' } %>
 
-<div class="row"></div>
+<div class="row">
+  <div class="col-md-12">
+    <%= page_entries_info @objects, entry_name: 'procedure' %>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-12">
     <table class="table">
       <thead class="thead-inverse">
         <tr>
-          <th>#</th>
-          <th>Type</th>
           <th>Identifier</th>
+          <th>Type</th>
           <th>Title</th>
           <th>CSID</th>
           <th>Batch</th>
@@ -19,9 +22,8 @@
       <tbody>
         <% @objects.entries.each.with_index do |object, i| %>
           <tr>
-            <td scope="row"><%= i + 1 %></td>
-            <td><%= object.type %></td>
             <td><%= object.identifier %></td>
+            <td><%= object.type %></td>
             <td><%= object.title %></td>
             <td><%= object.csid %></td>
             <td><%= object.data_object.batch %></td>
