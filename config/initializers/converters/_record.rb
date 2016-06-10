@@ -62,6 +62,15 @@ module CollectionSpace
 
       end
 
+      class ValuationControl < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'valuationcontrols', 'valuationcontrol', common
+        end
+
+      end
+
     end
   end
 end

@@ -9,6 +9,7 @@
       <th>Title</th>
       <th>CSID</th>
       <th>URI</th>
+      <th>Batch</th>
       <th></th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <td><%= object.title %></td>
         <td><%= object.csid || "n/a" %></td>
         <td><%= object.uri || "n/a" %></td>
+        <td><%= object.data_object.batch %></td>
         <td><%= link_to "View", procedure_path(object) %></td>
       </tr>
     <% end %>
