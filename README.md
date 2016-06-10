@@ -45,6 +45,7 @@ Where `converter_type` refers to an available converter module. Concrete example
 ```
 ./import.sh acq1 PBM acquisition
 ./import.sh cat1 PBM cataloging
+./import.sh con1 PBM conservation
 ./import.sh val1 PBM valuationcontrol
 
 ./import.sh ppsaccession1 PastPerfect ppsaccessiondata

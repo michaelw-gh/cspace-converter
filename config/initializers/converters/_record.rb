@@ -62,6 +62,15 @@ module CollectionSpace
 
       end
 
+      class Conservation < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'conservations', 'conservation', common
+        end
+
+      end
+
       class ValuationControl < Record
 
         def run(wrapper: "common")
