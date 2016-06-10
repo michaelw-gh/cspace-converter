@@ -1,36 +1,45 @@
-<%= render partial: 'layouts/header', :locals => { :title => 'Objects' } %>
-
 <div class="row">
-  <div class="col-md-12">
-    <%= page_entries_info @objects, entry_name: 'object' %>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-md-12">
-    <table class="table">
-      <thead class="thead-inverse">
-        <tr>
-          <th>Identifier</th>
-          <th>Batch</th>
-          <th>Converter</th>
-          <th>Profile</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @objects.entries.each.with_index do |object, i| %>
-          <tr>
-            <td><%= object.id %></td>
-            <td><%= object.batch %></td>
-            <td><%= object.converter %></td>
-            <td><%= object.profile %></td>
-            <td><%= link_to "View", object_path(object) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
+  <%= render partial: 'shared/sidebar' %>
 
-<%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>
+  <div class="col-md-10">
+    <%= render partial: 'shared/title', :locals => { :title => 'Objects' } %>
+
+    <div class="row">
+      <div class="col-md-12">
+        <%= page_entries_info @objects, entry_name: 'object' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table">
+          <thead class="">
+            <tr>
+              <th>Identifier</th>
+              <th>Batch</th>
+              <th>Converter</th>
+              <th>Profile</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @objects.entries.each.with_index do |object, i| %>
+              <tr>
+                <td><%= object.id %></td>
+                <td><%= object.batch %></td>
+                <td><%= object.converter %></td>
+                <td><%= object.profile %></td>
+                <td><%= link_to "View", object_path(object) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>
+
+  </div>
+
+</div>
