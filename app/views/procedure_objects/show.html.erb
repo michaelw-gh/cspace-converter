@@ -10,7 +10,7 @@
       <div class="col-md-8">
         <dl class="dl-horizontal metadata">
           <dt class="col-sm-3">Title</dt>
-          <dd class="col-sm-9"><%= @object.title %></dd>
+          <dd class="col-sm-9"><%= @object.title || "untitled" %></dd>
 
           <dt class="col-sm-3">CSID</dt>
           <dd class="col-sm-9"><%= @object.csid || "n/a" %></dd>
