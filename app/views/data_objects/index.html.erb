@@ -20,6 +20,8 @@
               <th>Batch</th>
               <th>Converter</th>
               <th>Profile</th>
+              <th>Created</th>
+              <th>Updated</th>
               <th></th>
             </tr>
           </thead>
@@ -30,6 +32,8 @@
                 <td><%= object.batch %></td>
                 <td><%= object.converter %></td>
                 <td><%= object.profile %></td>
+                <td><%= short_date object.created_at %></td>
+                <td><%= short_date object.updated_at %></td>
                 <td><%= link_to "View", object_path(object) %></td>
               </tr>
             <% end %>

@@ -1,5 +1,6 @@
 class DataObject
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
   has_many :procedure_objects, autosave: true, dependent: :destroy

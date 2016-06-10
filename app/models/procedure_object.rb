@@ -1,5 +1,6 @@
 class ProcedureObject
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   belongs_to :data_object, counter_cache: true
 
