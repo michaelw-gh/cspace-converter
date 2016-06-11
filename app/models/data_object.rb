@@ -9,7 +9,7 @@ class DataObject
   field :converter, type: String
 
   def to_cspace_xml(procedure)
-    converter_type  = self.read_attribute(:converter)
+    converter_type  = self.read_attribute(:import_converter)
     converter_class = "CollectionSpace::Converter::#{converter_type}".constantize
     check_valid_procedure!(procedure, converter_class)
 

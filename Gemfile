@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 gem 'mongoid', '~> 5.1.0'
+gem 'delayed_job_mongoid'
 gem 'smarter_csv'
 # Use SCSS for stylesheets
 gem 'bootstrap', '~> 4.0.0.alpha3'

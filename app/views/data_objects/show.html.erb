@@ -9,14 +9,17 @@
     <div class="row">
       <div class="col-md-12">
         <dl class="dl-horizontal metadata">
+          <dt class="col-sm-3">File</dt>
+          <dd class="col-sm-9"><%= @object.import_file %></dd>
+
           <dt class="col-sm-3">Batch</dt>
-          <dd class="col-sm-9"><%= @object.batch %></dd>
+          <dd class="col-sm-9"><%= @object.import_batch %></dd>
 
           <dt class="col-sm-3">Converter</dt>
-          <dd class="col-sm-9"><%= @object.converter %></dd>
+          <dd class="col-sm-9"><%= @object.import_converter %></dd>
 
           <dt class="col-sm-3">Profile</dt>
-          <dd class="col-sm-9"><%= @object.profile %></dd>
+          <dd class="col-sm-9"><%= @object.import_profile %></dd>
         </dl>
       </div>
     </div>

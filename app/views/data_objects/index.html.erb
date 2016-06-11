@@ -30,9 +30,9 @@
               <% @objects.entries.each.with_index do |object, i| %>
                 <tr>
                   <td><%= object.id %></td>
-                  <td><%= object.batch %></td>
-                  <td><%= object.converter %></td>
-                  <td><%= object.profile %></td>
+                  <td><%= object.import_batch %></td>
+                  <td><%= object.import_converter %></td>
+                  <td><%= object.import_profile %></td>
                   <td><%= short_date object.created_at %></td>
                   <td><%= short_date object.updated_at %></td>
                   <td><%= link_to "View", object_path(object) %></td>

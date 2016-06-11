@@ -5,45 +5,6 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-require 'csv'
-
-namespace :data do
-  namespace :procedure do
-
-    # rake data:authorities:generate[ppsobjects1]
-
-    # rake data:procedure:generate[ppsobjects1]
-    task :generate, [:batch] => :environment do |t, args|
-      batch = args[:batch]
-
-      DataObject.where(batch: batch).entries.each do |object|
-        converter_type  = object.read_attribute(:converter)
-        profile_name    = object.read_attribute(:profile)
-        converter_class = "CollectionSpace::Converter::#{converter_type}".constantize
-        profiles        = converter_class.registered_profiles
-        profile         = profiles[profile_name]
-        raise "Invalid profile #{profile_name} for #{profiles}" unless profile
-
-        profile.each do |procedure, attributes|
-          data = {}
-          # check for existence or update
-          data[:type]       = procedure
-          data[:identifier] = object.read_attribute( attributes["identifier"] )
-          data[:title]      = object.read_attribute( attributes["title"] )
-          data[:content]    = object.to_cspace_xml(procedure).to_s
-          object.procedure_objects.build data
-          object.save!
-        end
-      end
-
-      puts "Procedure generation complete!"
-    end
-
-    # relationships
-
-  end
-end
-
 namespace :db do
   namespace :import do
     # rake db:import:data[ppsobjectsdata1,PastPerfect,ppsobjectsdata,db/data/ppsobjectsdata.csv]
@@ -52,34 +13,22 @@ namespace :db do
       converter = args[:converter]
       profile   = args[:profile]
       filename  = args[:filename]
+      counter   = 1
 
-      csv_row_counter = 0
-      data_counter    = 0
-
-      CSV.foreach(File.join(Rails.root, filename), {
-          headers: true,
-          header_converters: ->(header) { header.to_sym },
-        }) do |row|
-          data = row.to_hash
-          begin
-            object = DataObject.new.from_json JSON.generate(data)
-            object.write_attribute(:batch, batch)
-            object.write_attribute(:converter, converter)
-            object.write_attribute(:profile, profile)
-            object.save!
-            data_counter += 1
-          rescue Exception => ex
-            errors << "#{ex.message} for #{data}"
-          end
-          csv_row_counter += 1
+      # process in chunks of 100 rows
+      SmarterCSV.process(filename, { chunk_size: 100 }) do |chunk|
+        puts "Processing #{batch} #{counter}"
+        ImportJob.perform_later(filename, batch, converter, profile, chunk)
+        # # run the job immediately when using rake
+        Delayed::Worker.new.run(Delayed::Job.last)
+        counter += 1
       end
 
-      puts "CSV ROWS READ:\t#{csv_row_counter}"
-      puts "OBJECTS CREATED:\t#{data_counter}"
+      puts "Data import complete!"
     end
   end
 
   task :nuke => :environment do |t|
-    DataObject.destroy_all
+    [DataObject, Delayed::Job].each { |model| model.destroy_all }
   end
 end

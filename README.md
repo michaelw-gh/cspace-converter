@@ -40,7 +40,9 @@ The general command is:
 ./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE]
 ```
 
-Where `converter_type` refers to an available converter module. Concrete examples:
+- `CS_CONV_BATCH` batch name
+- `CS_CONV_TYPE` converter type (module)
+- `CS_CONV_PROFILE` profile from type
 
 ```
 ./import.sh acq1 PBM acquisition
@@ -60,6 +62,18 @@ For these commands to actually work you will need the data files in `db/data`.
 rails c
 p = DataObject.first
 puts p.to_cspace_xml("CollectionObject")
+```
+
+**Running the development server**
+
+```
+rails s
+```
+
+To fire jobs created using the ui:
+
+```
+rake jobs:work
 ```
 
 License
