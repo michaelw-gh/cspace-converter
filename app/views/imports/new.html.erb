@@ -1,0 +1,52 @@
+<div class="row">
+
+  <%= render partial: 'shared/sidebar' %>
+
+  <div class="col-md-10">
+    <%= render partial: 'shared/title', :locals => { :title => 'Import' } %>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- TODO: use form helper -->
+        <%= form_tag('imports', multipart: true, id: 'import') do %>
+          <div class="form-group row">
+            <label for="batch" class="col-md-2 form-control-label">Batch</label>
+            <div class="col-md-10">
+              <%= text_field_tag 'batch', nil, placeholder: 'Batch name', class: 'form-control' %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="converter" class="col-md-2 form-control-label">Converter</label>
+            <div class="col-md-10">
+              <%= select_tag "converter", options_for_select(converters), class: "c-select" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="profile" class="col-md-2 form-control-label">Profile</label>
+            <div class="col-md-10">
+              <%= select_tag "profile", options_for_select([["Default", "Default", class: "Default"]].concat(profiles)), class: "c-select" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="file" class="col-md-2 form-control-label">File</label>
+            <div class="col-md-10">
+              <label class="file">
+                <%= file_field_tag 'file' %>
+                <span class="file-custom"></span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-offset-2 col-md-10">
+              <%= submit_tag 'Upload', class: 'btn btn-secondary' %>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
