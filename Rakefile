@@ -10,6 +10,8 @@ require 'csv'
 namespace :data do
   namespace :procedure do
 
+    # rake data:authorities:generate[ppsobjects1]
+
     # rake data:procedure:generate[ppsobjects1]
     task :generate, [:batch] => :environment do |t, args|
       batch = args[:batch]
