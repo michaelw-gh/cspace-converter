@@ -5,10 +5,22 @@ class DataObject
 
   has_many :procedure_objects, autosave: true, dependent: :destroy
 
-  field :batch,     type: String
-  field :converter, type: String
+  field :import_file,      type: String
+  field :import_batch,     type: String
+  field :import_converter, type: String
+  field :import_profile,   type: String
 
-  def to_cspace_xml(procedure)
+  def to_auth_xml(authority, term_display_name)
+    CollectionSpace::Converter::Default.validate_authority!(authority)
+    authority_class = "CollectionSpace::Converter::Default::#{authority}".constantize
+    converter       = authority_class.new({
+      "shortIdentifier" => CollectionSpace::Identifiers.short_identifier(term_display_name),
+      "termDisplayName" => term_display_name
+    })
+    converter.convert
+  end
+
+  def to_procedure_xml(procedure)
     converter_type  = self.read_attribute(:import_converter)
     converter_class = "CollectionSpace::Converter::#{converter_type}".constantize
     check_valid_procedure!(procedure, converter_class)

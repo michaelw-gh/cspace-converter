@@ -4,6 +4,7 @@ class ProcedureObject
 
   belongs_to :data_object, counter_cache: true
 
+  field :category,    type: String # Authority, Procedure
   field :type,        type: String
   field :identifier,  type: String
   field :title,       type: String

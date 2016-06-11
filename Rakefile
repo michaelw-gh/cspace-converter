@@ -16,7 +16,7 @@ namespace :db do
       counter   = 1
 
       # process in chunks of 100 rows
-      SmarterCSV.process(filename, { chunk_size: 100 }) do |chunk|
+      SmarterCSV.process(filename, { chunk_size: 100, keep_original_headers: true }) do |chunk|
         puts "Processing #{batch} #{counter}"
         ImportJob.perform_later(filename, batch, converter, profile, chunk)
         # # run the job immediately when using rake

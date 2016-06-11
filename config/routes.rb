@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   root 'sites#index'
 
+  get 'authorities',     to: 'authority_objects#index'
+  get 'authorities/:id', to: 'authority_objects#show', as: 'authority'
+
   get  'import', to: 'imports#new'
   post 'import', to: 'imports#create'
 

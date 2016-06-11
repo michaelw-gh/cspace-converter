@@ -36,6 +36,12 @@ table {
   margin-top: 0.5rem;
 }
 
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 6rem;
+}
+
 .metadata {
   margin-left: -0.875rem;
 }

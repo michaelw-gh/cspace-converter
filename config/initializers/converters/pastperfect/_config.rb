@@ -9,30 +9,27 @@ module CollectionSpace
         ]
       end
 
-      # TODO!
-      # "ppsobjectsdata" => {
-      #   "Procedures" => {
-      #     "CollectionObject" => {
-      #       "identifier" => "objectid",
-      #       "title" => "title",
-      #     },
-      #   },
-      #   "Authorities" => { "Person" => ["recby", "recfrom"] },
-      # }
-
       def self.registered_profiles
         {
           "ppsaccessiondata" => {
-            "Acquisition" => {
-              "identifier" => "accessno",
-              "title" => "accessno",
-            }
+            "Procedures" => {
+              "Acquisition" => {
+                "identifier" => "accessno",
+                "title" => "accessno",
+              }
+            },
+            "Authorities" => {},
           },
           "ppsobjectsdata" => {
-            "CollectionObject" => {
-              "identifier" => "objectid",
-              "title" => "title",
-            }
+            "Procedures" => {
+              "CollectionObject" => {
+                "identifier" => "objectid",
+                "title" => "title",
+              },
+            },
+            "Authorities" => {
+              "Person" => ["artist"],
+            },
           }
         }
       end

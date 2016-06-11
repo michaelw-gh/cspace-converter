@@ -10,7 +10,7 @@ class ImportsController < ApplicationController
     converter = params[:converter]
     profile   = params[:profile]
 
-    ::SmarterCSV.process(file, { chunk_size: 100 }) do |chunk|
+    ::SmarterCSV.process(file, { chunk_size: 100, keep_original_headers: true }) do |chunk|
       ImportJob.perform_later(file, batch, converter, profile, chunk)
     end
     flash[:notice] = "Background import job running. Check back periodically for results."

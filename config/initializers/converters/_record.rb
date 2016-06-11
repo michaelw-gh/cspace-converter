@@ -2,6 +2,12 @@ module CollectionSpace
   module Converter
     module Default
 
+      def self.validate_authority!(authority)
+        unless [ "Concept", "Material", "Person", "Place", "Organization", "Work" ].include? authority
+          raise "Invalid authority #{authority}"
+        end
+      end
+
       # set which procedures can be created from model
       def self.validate_procedure!(procedure, converter)
         valid_procedures = converter.registered_procedures
@@ -17,17 +23,22 @@ module CollectionSpace
           @attributes = attributes
         end
 
-        # implemented by sub-classes, returns converted record
+        # default implementation used by authorities
+        # overriden by sub-classes for procedures, returns converted record
         def convert
+          run do |xml|
+            CollectionSpace::XML.add xml, 'shortIdentifier', attributes["shortIdentifier"]
+            CollectionSpace::XML.add xml, 'termDisplayName', attributes["termDisplayName"]
+          end
         end
 
-        def run(service, procedure, common)
+        def run(document, service, common)
           builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
-            xml.document(name: service) {
+            xml.document(name: document) {
               if common
                 xml.send(
-                  "ns2:#{service}_common",
-                  "xmlns:ns2" => "http://collectionspace.org/services/#{procedure}",
+                  "ns2:#{document}_common",
+                  "xmlns:ns2" => "http://collectionspace.org/services/#{service}",
                   "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
                 ) do
                   # applying namespace breaks import
@@ -67,6 +78,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'conservation', 'conservation', common
+        end
+
+      end
+
+      class Person < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'persons', 'person', common
         end
 
       end

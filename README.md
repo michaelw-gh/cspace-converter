@@ -61,7 +61,7 @@ For these commands to actually work you will need the data files in `db/data`.
 ```
 rails c
 p = DataObject.first
-puts p.to_cspace_xml("CollectionObject")
+puts p.to_procedure_xml("CollectionObject")
 ```
 
 **Running the development server**

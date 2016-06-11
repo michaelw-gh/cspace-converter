@@ -1,0 +1,2 @@
+module AuthorityObjectsHelper
+end

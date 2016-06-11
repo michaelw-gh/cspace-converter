@@ -14,15 +14,33 @@ class ImportJob < ActiveJob::Base
       object.write_attribute(:import_converter, import_converter)
       object.write_attribute(:import_profile, import_profile)
 
-      profile.each do |procedure, attributes|
-        data = {}
+      profile["Procedures"].each do |procedure, attributes|
+        procedure_data = {}
         # check for existence or update
-        data[:type]       = procedure
-        data[:identifier] = object.read_attribute( attributes["identifier"] )
-        data[:title]      = object.read_attribute( attributes["title"] )
-        data[:content]    = object.to_cspace_xml(procedure).to_s
-        object.procedure_objects.build data
+        procedure_data[:category]   = "Procedure"
+        procedure_data[:type]       = procedure
+        procedure_data[:identifier] = object.read_attribute( attributes["identifier"] )
+        procedure_data[:title]      = object.read_attribute( attributes["title"] )
+        procedure_data[:content]    = object.to_procedure_xml(procedure).to_s
+        object.procedure_objects.build procedure_data
       end
+
+      # "Authorities" => { "Person" => ["recby", "recfrom"] }
+      profile["Authorities"].each do |authority, fields|
+        fields.each do |field|
+          term_display_name = object.read_attribute(field)
+          next unless term_display_name
+          authority_data = {}
+          # check for existence or update
+          authority_data[:category]   = "Authority"
+          authority_data[:type]       = authority
+          authority_data[:identifier] = CollectionSpace::Identifiers.short_identifier(term_display_name)
+          authority_data[:title]      = term_display_name
+          authority_data[:content]    = object.to_auth_xml(authority, term_display_name).to_s
+          object.procedure_objects.build authority_data
+        end
+      end
+
       object.save!
     end
   end

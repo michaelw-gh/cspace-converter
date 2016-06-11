@@ -14,28 +14,44 @@ module CollectionSpace
       def self.registered_profiles
         {
           "acquisition" => {
-            "Acquisition" => {
-              "identifier" => "acquisitionReferenceNumber",
-              "title" => "acquisitionReferenceNumber",
-            }
+            "Procedures" => {
+              "Acquisition" => {
+                "identifier" => "acquisitionReferenceNumber",
+                "title" => "acquisitionReferenceNumber",
+              }
+            },
+            "Authorities" => {
+              "Person" => ["acquisitionSource1", "acquisitionSource2"],
+            },
           },
           "cataloging" => {
-            "CollectionObject" => {
-              "identifier" => "objectNumber",
-              "title" => "title",
-            }
+            "Procedures" => {
+              "CollectionObject" => {
+                "identifier" => "objectNumber",
+                "title" => "title",
+              }
+            },
+            "Authorities" => {
+              "Person" => ["objectProductionPerson1"],
+            },
           },
           "conservation" => {
-            "Conservation" => {
-              "identifier" => "conservationNumber",
-              "title" => "conservationNumber",
-            }
+            "Procedures" => {
+              "Conservation" => {
+                "identifier" => "conservationNumber",
+                "title" => "conservationNumber",
+              }
+            },
+            "Authorities" => {},
           },
           "valuationcontrol" => {
-            "ValuationControl" => {
-              "identifier" => "valuationcontrolRefNumber",
-              "title" => "valuationcontrolRefNumber",
-            }
+            "Procedures" => {
+              "ValuationControl" => {
+                "identifier" => "valuationcontrolRefNumber",
+                "title" => "valuationcontrolRefNumber",
+              }
+            },
+            "Authorities" => {},
           }
         }
       end
