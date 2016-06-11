@@ -11,38 +11,40 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table">
-          <thead class="">
-            <tr>
-              <th>Identifier</th>
-              <th>Batch</th>
-              <th>Converter</th>
-              <th>Profile</th>
-              <th>Created</th>
-              <th>Updated</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @objects.entries.each.with_index do |object, i| %>
+    <% if @objects.any? %>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead class="">
               <tr>
-                <td><%= object.id %></td>
-                <td><%= object.batch %></td>
-                <td><%= object.converter %></td>
-                <td><%= object.profile %></td>
-                <td><%= short_date object.created_at %></td>
-                <td><%= short_date object.updated_at %></td>
-                <td><%= link_to "View", object_path(object) %></td>
+                <th>Identifier</th>
+                <th>Batch</th>
+                <th>Converter</th>
+                <th>Profile</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th></th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <% @objects.entries.each.with_index do |object, i| %>
+                <tr>
+                  <td><%= object.id %></td>
+                  <td><%= object.batch %></td>
+                  <td><%= object.converter %></td>
+                  <td><%= object.profile %></td>
+                  <td><%= short_date object.created_at %></td>
+                  <td><%= short_date object.updated_at %></td>
+                  <td><%= link_to "View", object_path(object) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>
+      <%= render partial: 'shared/pagination', :locals => { :objects => @objects } %>
+    <% end %>
 
   </div>
 
