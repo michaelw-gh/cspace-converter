@@ -4,8 +4,8 @@ Rails.application.routes.draw do
 
   root 'sites#index'
 
-  get  'imports', to: 'imports#new'
-  post 'imports', to: 'imports#create'
+  get  'import', to: 'imports#new'
+  post 'import', to: 'imports#create'
 
   get 'objects',     to: 'data_objects#index'
   get 'objects/:id', to: 'data_objects#show', as: 'object'
