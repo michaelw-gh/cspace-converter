@@ -66,7 +66,7 @@ module CollectionSpace
 
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
-          super 'conservations', 'conservation', common
+          super 'conservation', 'conservation', common
         end
 
       end

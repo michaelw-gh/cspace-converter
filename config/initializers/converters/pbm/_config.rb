@@ -6,6 +6,7 @@ module CollectionSpace
         [
           "Acquisition",
           "CollectionObject",
+          "Conservation",
           "ValuationControl",
         ]
       end
@@ -22,6 +23,12 @@ module CollectionSpace
             "CollectionObject" => {
               "identifier" => "objectNumber",
               "title" => "title",
+            }
+          },
+          "conservation" => {
+            "Conservation" => {
+              "identifier" => "conservationNumber",
+              "title" => "conservationNumber",
             }
           },
           "valuationcontrol" => {
