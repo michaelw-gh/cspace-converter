@@ -16,8 +16,10 @@ module CollectionSpace
           "acquisition" => {
             "Procedures" => {
               "Acquisition" => {
+                "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "acquisitionReferenceNumber",
                 "title" => "acquisitionReferenceNumber",
+                "service" => "acquisitions",
               }
             },
             "Authorities" => {
@@ -27,8 +29,10 @@ module CollectionSpace
           "cataloging" => {
             "Procedures" => {
               "CollectionObject" => {
+                "identifier_field" => "objectNumber",
                 "identifier" => "objectNumber",
                 "title" => "title",
+                "service" => "collectionobjects",
               }
             },
             "Authorities" => {
@@ -39,8 +43,10 @@ module CollectionSpace
           "conservation" => {
             "Procedures" => {
               "Conservation" => {
+                "identifier_field" => "conservationNumber",
                 "identifier" => "conservationNumber",
                 "title" => "conservationNumber",
+                "service" => "conservation",
               }
             },
             "Authorities" => {},
@@ -48,8 +54,10 @@ module CollectionSpace
           "valuationcontrol" => {
             "Procedures" => {
               "ValuationControl" => {
+                "identifier_field" => "valuationcontrolRefNumber",
                 "identifier" => "valuationcontrolRefNumber",
                 "title" => "valuationcontrolRefNumber",
+                "service" => "valuationcontrols",
               }
             },
             "Authorities" => {},

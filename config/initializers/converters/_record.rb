@@ -2,6 +2,12 @@ module CollectionSpace
   module Converter
     module Default
 
+      def self.service(type)
+        {
+          "CollectionObject" => "collectionobjects",
+        }[type]
+      end
+
       def self.validate_authority!(authority)
         unless [ "Concept", "Material", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
           raise "Invalid authority #{authority}"

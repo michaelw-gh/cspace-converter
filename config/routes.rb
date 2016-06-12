@@ -4,8 +4,12 @@ Rails.application.routes.draw do
 
   root 'sites#index'
 
-  get 'authorities',     to: 'authority_objects#index'
-  get 'authorities/:id', to: 'authority_objects#show', as: 'authority'
+  get 'authorities',               to: 'authority_objects#index'
+  get 'authorities/:id',           to: 'authority_objects#show', as: 'authority'
+  post 'authorities/:id/ping',     to: 'authority_objects#ping'
+  post 'authorities/:id/delete',   to: 'authority_objects#delete'
+  post 'authorities/:id/ping',     to: 'authority_objects#ping'
+  post 'authorities/:id/transfer', to: 'authority_objects#transfer'
 
   get  'import', to: 'imports#new'
   post 'import', to: 'imports#create'
@@ -13,8 +17,11 @@ Rails.application.routes.draw do
   get 'objects',     to: 'data_objects#index'
   get 'objects/:id', to: 'data_objects#show', as: 'object'
 
-  get 'procedures',     to: 'procedure_objects#index'
-  get 'procedures/:id', to: 'procedure_objects#show', as: 'procedure'
+  get 'procedures',               to: 'procedure_objects#index'
+  get 'procedures/:id',           to: 'procedure_objects#show', as: 'procedure'
+  post 'procedures/:id/delete',   to: 'procedure_objects#delete'
+  post 'procedures/:id/ping',     to: 'procedure_objects#ping'
+  post 'procedures/:id/transfer', to: 'procedure_objects#transfer'
 
   post 'nuke', to: 'sites#nuke', as: 'nuke'
 

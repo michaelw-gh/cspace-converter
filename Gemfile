@@ -5,6 +5,7 @@ gem 'rails', '4.2.6'
 gem 'mongoid', '~> 5.1.0'
 gem 'delayed_job_mongoid'
 gem 'smarter_csv'
+gem "collectionspace-client"
 # Use SCSS for stylesheets
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'sass-rails', '~> 5.0'

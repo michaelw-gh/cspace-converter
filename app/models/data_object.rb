@@ -18,7 +18,7 @@ class DataObject
       "termDisplayName" => term_display_name,
       "termType"        => "#{authority.downcase}Term",
     })
-    converter.convert
+    hack_namespaces converter.convert
   end
 
   def to_procedure_xml(procedure)
@@ -28,7 +28,8 @@ class DataObject
 
     procedure_class = "#{converter_class}::#{converter_type}#{procedure}".constantize
     converter       = procedure_class.new(self.to_hash)
-    converter.convert
+    # scary hack for namespaces
+    hack_namespaces converter.convert
   end
 
   def to_hash
@@ -39,6 +40,10 @@ class DataObject
 
   def check_valid_procedure!(procedure, converter)
     CollectionSpace::Converter::Default.validate_procedure!(procedure, converter)
+  end
+
+  def hack_namespaces(xml)
+    xml.to_s.gsub(/(<\/?)(\w+_)/, '\1ns2:\2')
   end
 
 end

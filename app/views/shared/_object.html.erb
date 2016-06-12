@@ -3,7 +3,7 @@
   <%= render partial: 'shared/sidebar' %>
 
   <div class="col-md-10">
-
+    <%= render partial: 'shared/alerts' %>
     <%= render partial: 'shared/title', :locals => { :title => object.identifier } %>
 
     <div class="row">
@@ -25,9 +25,9 @@
 
       <div class="col-md-4">
         <p class="text-muted">External actions</p>
-        <button type="button" class="btn btn-info">Ping</button>
-        <button type="button" class="btn btn-warning">Transfer</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <%= button_to 'Ping', { action: 'ping' }, form_class: 'external', class: 'btn btn-info' %>
+        <%= button_to 'Transfer', { action: 'transfer' }, form_class: 'external', class: 'btn btn-warning' %>
+        <%= button_to 'Delete', { action: 'delete' }, form_class: 'external', class: 'btn btn-danger' %>
       </div>
     </div>
 

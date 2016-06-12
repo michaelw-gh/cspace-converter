@@ -10,4 +10,15 @@ class AuthorityObjectsController < ApplicationController
     @object = CollectionSpaceObject.where(category: "Authority").where(id: params[:id]).first
   end
 
+  # remote actions
+
+  def delete
+  end
+
+  def ping
+  end
+
+  def transfer
+  end
+
 end

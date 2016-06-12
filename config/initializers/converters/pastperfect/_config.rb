@@ -14,8 +14,10 @@ module CollectionSpace
           "ppsaccessiondata" => {
             "Procedures" => {
               "Acquisition" => {
+                "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "accessno",
                 "title" => "accessno",
+                "service" => "acquisitions",
               }
             },
             "Authorities" => {},
@@ -23,8 +25,10 @@ module CollectionSpace
           "ppsobjectsdata" => {
             "Procedures" => {
               "CollectionObject" => {
+                "identifier_field" => "objectNumber",
                 "identifier" => "objectid",
                 "title" => "title",
+                "service" => "collectionobjects",
               },
             },
             "Authorities" => {

@@ -55,6 +55,10 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    collectionspace-client (0.1.2)
+      httparty
+      json
+      nokogiri
     concurrent-ruby (1.0.2)
     debug_inspector (0.0.2)
     delayed_job (4.1.2)
@@ -67,6 +71,9 @@ GEM
     execjs (2.7.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -100,6 +107,7 @@ GEM
       activesupport
       mongoid (>= 2.0)
     multi_json (1.12.1)
+    multi_xml (0.5.5)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -183,6 +191,7 @@ DEPENDENCIES
   bootstrap (~> 4.0.0.alpha3)
   byebug
   coffee-rails (~> 4.1.0)
+  collectionspace-client
   delayed_job_mongoid
   jbuilder (~> 2.0)
   jquery-rails

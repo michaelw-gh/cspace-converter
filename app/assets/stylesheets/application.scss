@@ -39,7 +39,7 @@ table {
 td {
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 6rem;
+  max-width: 12rem;
 }
 
 .metadata {
@@ -53,6 +53,10 @@ td {
 
 .file-selected {
   margin-top: -1rem;
+}
+
+.external {
+  display: inline;
 }
 
 footer p {
