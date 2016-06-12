@@ -1,4 +1,5 @@
 class AuthorityObjectsController < ApplicationController
+  include RemoteActionable
 
   def index
     @objects = CollectionSpaceObject.where(category: "Authority")
@@ -10,15 +11,6 @@ class AuthorityObjectsController < ApplicationController
     @object = CollectionSpaceObject.where(category: "Authority").where(id: params[:id]).first
   end
 
-  # remote actions
-
-  def delete
-  end
-
-  def ping
-  end
-
-  def transfer
-  end
+  # remote actions (concerns/remote_actionable)
 
 end

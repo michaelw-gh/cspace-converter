@@ -7,10 +7,13 @@ module CollectionSpace
       def self.service(type)
         {
           "CollectionObject" => {
-            path: "collectionobjects", service: "collectionobjects"
+            path: "collectionobjects", schema: "collectionobjects"
           },
           "Person" => {
-            path: "personauthorities/urn:cspace:name(person)/items", service: "personauthorities"
+            path: "personauthorities/urn:cspace:name(person)/items", schema: "personauthorities"
+          },
+          "Taxon" => {
+            path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
           },
         }[type]
       end

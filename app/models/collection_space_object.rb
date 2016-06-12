@@ -10,12 +10,11 @@ class CollectionSpaceObject
   field :identifier,       type: String
   field :title,            type: String
   field :content,          type: String
-  field :transferred,      type: Boolean, default: false
   # fields from remote collectionspace
   field :csid,             type: String
   field :uri,              type: String
 
   attr_readonly :type
 
-  scope :transferred, ->{ where(transferred: true) }
+  scope :transferred, ->{ where(csid: true) } # TODO: check
 end
