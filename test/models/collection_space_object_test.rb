@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProcedureObjectsControllerTest < ActionController::TestCase
+class CollectionSpaceObjectTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

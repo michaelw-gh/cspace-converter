@@ -3,7 +3,7 @@ class DataObject
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-  has_many :procedure_objects, autosave: true, dependent: :destroy
+  has_many :collection_space_objects, autosave: true, dependent: :destroy
 
   field :import_file,      type: String
   field :import_batch,     type: String
@@ -15,7 +15,8 @@ class DataObject
     authority_class = "CollectionSpace::Converter::Default::#{authority}".constantize
     converter       = authority_class.new({
       "shortIdentifier" => CollectionSpace::Identifiers.short_identifier(term_display_name),
-      "termDisplayName" => term_display_name
+      "termDisplayName" => term_display_name,
+      "termType"        => "#{authority.downcase}Term",
     })
     converter.convert
   end

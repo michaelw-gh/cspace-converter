@@ -25,7 +25,7 @@ module CollectionSpace
 
             CollectionSpace::XML.add xml, 'acquisitionMethod', attributes["acquisitionMethod"]
 
-            CollectionSpace::XML.add_flat_group xml, 'accessionDate', {
+            CollectionSpace::XML.add_group xml, 'accessionDate', {
               "dateDisplayDate" => attributes["accessionDateDisplayDate"],
               "dateEarliestSingleMonth" => attributes["accessionDateEarliestSingleMonth"],
               "dateEarliestSingleDay" => attributes["accessionDateEarliestSingleDay"],

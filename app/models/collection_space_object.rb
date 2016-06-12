@@ -1,4 +1,4 @@
-class ProcedureObject
+class CollectionSpaceObject
   include Mongoid::Document
   include Mongoid::Timestamps
 

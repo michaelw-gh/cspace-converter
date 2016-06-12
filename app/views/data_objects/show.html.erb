@@ -35,10 +35,10 @@
             </tr>
           </thead>
           <tbody>
-            <% @object.procedure_objects.each do |procedure| %>
+            <% @object.collection_space_objects.each do |cspace_object| %>
               <tr>
-                <td><%= procedure.type %></td>
-                <td><%= link_to procedure.identifier, send("#{procedure.category.downcase}_path".to_sym, procedure) %></td>
+                <td><%= cspace_object.type %></td>
+                <td><%= link_to cspace_object.identifier, send("#{cspace_object.category.downcase}_path".to_sym, cspace_object) %></td>
               </tr>
             <% end %>
           </tbody>

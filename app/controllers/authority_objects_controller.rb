@@ -1,13 +1,13 @@
 class AuthorityObjectsController < ApplicationController
 
   def index
-    @objects = ProcedureObject.where(category: "Authority")
+    @objects = CollectionSpaceObject.where(category: "Authority")
       .order_by(:updated_at => 'desc')
       .page params[:page]
   end
 
   def show
-    @object = ProcedureObject.where(category: "Authority").where(id: params[:id]).first
+    @object = CollectionSpaceObject.where(category: "Authority").where(id: params[:id]).first
   end
 
 end

@@ -33,6 +33,7 @@ module CollectionSpace
             },
             "Authorities" => {
               "Person" => ["objectProductionPerson1"],
+              "Taxon"  => ["taxon"],
             },
           },
           "conservation" => {

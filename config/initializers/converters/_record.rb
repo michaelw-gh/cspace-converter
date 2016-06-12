@@ -3,7 +3,7 @@ module CollectionSpace
     module Default
 
       def self.validate_authority!(authority)
-        unless [ "Concept", "Material", "Person", "Place", "Organization", "Work" ].include? authority
+        unless [ "Concept", "Material", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
           raise "Invalid authority #{authority}"
         end
       end
@@ -28,7 +28,9 @@ module CollectionSpace
         def convert
           run do |xml|
             CollectionSpace::XML.add xml, 'shortIdentifier', attributes["shortIdentifier"]
-            CollectionSpace::XML.add xml, 'termDisplayName', attributes["termDisplayName"]
+            CollectionSpace::XML.add_group_list xml, attributes["termType"], [{
+              "termDisplayName" => attributes["termDisplayName"],
+            }]
           end
         end
 
@@ -87,6 +89,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'persons', 'person', common
+        end
+
+      end
+
+      class Taxon < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'taxon', 'taxonomy', common
         end
 
       end
