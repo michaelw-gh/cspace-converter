@@ -88,8 +88,8 @@ class ProcedureObjectsController < ApplicationController
   # TODO: will need to move this ...
   def already_exists?(service, object)
     search_args = {
-      path: service,
-      type: "#{service}_common",
+      path: service[:path],
+      type: "#{service[:service]}_common",
       field: object.identifier_field,
       expression: "= '#{object.identifier}'",
     }

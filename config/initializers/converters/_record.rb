@@ -2,9 +2,16 @@ module CollectionSpace
   module Converter
     module Default
 
+      # used for remote actions
+      # the authority is hard coded, so may want to make that configurable in future
       def self.service(type)
         {
-          "CollectionObject" => "collectionobjects",
+          "CollectionObject" => {
+            path: "collectionobjects", service: "collectionobjects"
+          },
+          "Person" => {
+            path: "personauthorities/urn:cspace:name(person)/items", service: "personauthorities"
+          },
         }[type]
       end
 
