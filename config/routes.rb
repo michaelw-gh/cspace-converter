@@ -25,6 +25,9 @@ Rails.application.routes.draw do
 
   post 'nuke', to: 'sites#nuke', as: 'nuke'
 
+  get  'transfer', to: 'transfers#new'
+  post 'transfer', to: 'transfers#create'
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

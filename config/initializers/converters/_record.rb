@@ -6,14 +6,23 @@ module CollectionSpace
       # the authority is hard coded, so may want to make that configurable in future
       def self.service(type)
         {
+          "Acquisition" => {
+            path: "acquisitions", schema: "acquisitions"
+          },
           "CollectionObject" => {
             path: "collectionobjects", schema: "collectionobjects"
+          },
+          "Conservation" => {
+            path: "conservation", schema: "conservation"
           },
           "Person" => {
             path: "personauthorities/urn:cspace:name(person)/items", schema: "personauthorities"
           },
           "Taxon" => {
             path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
+          },
+          "ValuationControl" => {
+            path: "valuationcontrols", schema: "valuationcontrols"
           },
         }[type]
       end

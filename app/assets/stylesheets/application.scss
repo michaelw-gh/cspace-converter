@@ -46,9 +46,13 @@ td {
   margin-left: -0.875rem;
 }
 
-#import {
+#import, #transfer {
   width: 50%;
   margin: 0 auto;
+}
+
+input[name=remote_action] {
+  margin-right: 0.5rem;
 }
 
 .file-selected {

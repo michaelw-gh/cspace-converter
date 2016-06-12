@@ -1,0 +1,53 @@
+<div class="row">
+
+  <%= render partial: 'shared/sidebar' %>
+
+  <div class="col-md-10">
+    <%= render partial: 'shared/title', :locals => { :title => 'Transfer' } %>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <%= form_tag('transfer', id: 'transfer') do %>
+          <div class="form-group row">
+            <label for="remote_action" class="col-md-2 form-control-label">Action</label>
+            <div class="radio">
+              <label class="col-md-4 form-control-label radio-inline">
+              <div class="col-md-8">
+                <%= radio_button_tag 'remote_action', 'remote_transfer', true %>Transfer
+              </div>
+              </label>
+            </div>
+            <div class="radio">
+              <label class="col-md-4 form-control-label radio-inline">
+              <div class="col-md-8">
+                <%= radio_button_tag 'remote_action', 'remote_delete', false %>Delete
+              </div>
+              </label>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="type" class="col-md-2 form-control-label">Type</label>
+            <div class="col-md-10">
+              <%= select_tag "type", options_for_select(types), class: "c-select" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="batch" class="col-md-2 form-control-label">Batch</label>
+            <div class="col-md-10">
+              <%= select_tag "batch", options_for_select(batches), class: "c-select" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-offset-2 col-md-10">
+              <%= submit_tag 'Process', class: 'btn btn-secondary' %>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

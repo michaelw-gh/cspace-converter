@@ -17,7 +17,7 @@ module CollectionSpace
                 "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "accessno",
                 "title" => "accessno",
-                "service" => "acquisitions",
+                # "service" => "acquisitions", DEPRECATED
               }
             },
             "Authorities" => {},
@@ -28,7 +28,7 @@ module CollectionSpace
                 "identifier_field" => "objectNumber",
                 "identifier" => "objectid",
                 "title" => "title",
-                "service" => "collectionobjects",
+                # "service" => "collectionobjects", DEPRECATED
               },
             },
             "Authorities" => {

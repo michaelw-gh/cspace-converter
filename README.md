@@ -45,10 +45,23 @@ The general command is:
 - `CS_CONV_PROFILE` profile from type
 
 ```
+# import to converter
 ./import.sh acq1 PBM acquisition
 ./import.sh cat1 PBM cataloging
 ./import.sh con1 PBM conservation
 ./import.sh val1 PBM valuationcontrol
+
+# transfer data (requires cspace)
+rake remote:action:transfer[Acquisition,acq1]
+rake remote:action:transfer[CollectionObject,cat1]
+rake remote:action:transfer[Conservation,con1]
+rake remote:action:transfer[ValuationControl,val1]
+
+# delete transfers (requires cspace)
+rake remote:action:delete[Acquisition,acq1]
+rake remote:action:delete[CollectionObject,cat1]
+rake remote:action:delete[Conservation,con1]
+rake remote:action:delete[ValuationControl,val1]
 
 ./import.sh ppsaccession1 PastPerfect ppsaccessiondata
 ./import.sh ppsobjects1 PastPerfect ppsobjectsdata

@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def batches
+    [ "all" ].concat( DataObject.pluck('import_batch').uniq )
+  end
+
   def converters
     CollectionSpace::Converter.constants
   end
@@ -13,6 +17,10 @@ module ApplicationHelper
       end
     end
     profiles
+  end
+
+  def types
+    CollectionSpaceObject.pluck('type').uniq
   end
 
   def short_date(date)

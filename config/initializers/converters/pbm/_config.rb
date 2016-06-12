@@ -19,7 +19,7 @@ module CollectionSpace
                 "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "acquisitionReferenceNumber",
                 "title" => "acquisitionReferenceNumber",
-                "service" => "acquisitions",
+                # "service" => "acquisitions", DEPRECATED
               }
             },
             "Authorities" => {
@@ -32,7 +32,7 @@ module CollectionSpace
                 "identifier_field" => "objectNumber",
                 "identifier" => "objectNumber",
                 "title" => "title",
-                "service" => "collectionobjects",
+                # "service" => "collectionobjects", DEPRECATED
               }
             },
             "Authorities" => {
@@ -46,7 +46,7 @@ module CollectionSpace
                 "identifier_field" => "conservationNumber",
                 "identifier" => "conservationNumber",
                 "title" => "conservationNumber",
-                "service" => "conservation",
+                # "service" => "conservation", DEPRECATED
               }
             },
             "Authorities" => {},
@@ -57,7 +57,7 @@ module CollectionSpace
                 "identifier_field" => "valuationcontrolRefNumber",
                 "identifier" => "valuationcontrolRefNumber",
                 "title" => "valuationcontrolRefNumber",
-                "service" => "valuationcontrols",
+                # "service" => "valuationcontrols", DEPRECATED
               }
             },
             "Authorities" => {},
