@@ -45,20 +45,22 @@ class RemoteActionService
     message_string = "#{@service[:path]} #{@service[:schema]} #{@object.identifier_field} #{@object.identifier}"
 
     query    = CollectionSpace::Search.new.from_hash search_args
-    response = $collectionspace_client.search(query).parsed
+    response = $collectionspace_client.search(query)
     unless response.status_code.to_s =~ /^2/
       raise "Error searching #{message_string}"
     end
+    parsed_response = response.parsed
 
-    result_count = response["abstract_common_list"]["totalItems"].to_i
+    result_count = parsed_response["abstract_common_list"]["totalItems"].to_i
     if result_count == 1
       exists       = true
       # set csid and uri in case they are lost (i.e. batch was deleted)
-      # @object.csid = response["abstract_common_list"]["list_item"]["csid"]
-      # @object.uri  = response["abstract_common_list"]["list_item"]["uri"].gsub(/^\//, '')
-      # @object.save!
+      @object.csid = parsed_response["abstract_common_list"]["list_item"]["csid"]
+      @object.uri  = parsed_response["abstract_common_list"]["list_item"]["uri"].gsub(/^\//, '')
+      @object.save!
     else
       raise "Ambiguous result count (#{result_count.to_s}) for #{message_string}" if result_count > 1
+      # TODO: set csid and uri to nil if 0?
     end
     exists
   end

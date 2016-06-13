@@ -3,7 +3,7 @@ module RemoteActionable
 
   def delete
     perform(params[:category]) do |service|
-      unless service.remote_already_exists?
+      if service.remote_already_exists?
         if service.remote_delete
           flash[:notice] = "Record deleted"
         else

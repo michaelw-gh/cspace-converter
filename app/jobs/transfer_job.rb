@@ -12,7 +12,11 @@ class TransferJob < ActiveJob::Base
     }
     objects.each do |object|
       service = RemoteActionService.new(object)
-      service.send action_method
+      if service.remote_already_exists?
+        service.send action_method if action_method == :remote_delete
+      else
+        service.send action_method if action_method == :remote_transfer
+      end
     end
   end
 
