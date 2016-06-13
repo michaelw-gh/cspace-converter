@@ -37,12 +37,14 @@ You should be able to access MongDB on `http://localhost:27017`.
 The general command is:
 
 ```
+. ./set_env.sh [CSPACE_CONVERTER_DOMAIN] # optional
 ./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE]
 ```
 
-- `CS_CONV_BATCH` batch name
-- `CS_CONV_TYPE` converter type (module)
-- `CS_CONV_PROFILE` profile from type
+- `CSPACE_CONVERTER_DOMAIN`: domain to use in tenant data
+- `CS_CONV_BATCH`: batch name
+- `CS_CONV_TYPE`: converter type (module)
+- `CS_CONV_PROFILE`: profile from type
 
 ```
 # import to converter
