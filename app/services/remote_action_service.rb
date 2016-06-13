@@ -35,17 +35,32 @@ class RemoteActionService
   end
 
   def remote_already_exists?
+    exists      = false
     search_args = {
       path: @service[:path],
       type: "#{@service[:schema]}_common",
       field: @object.identifier_field,
       expression: "= '#{@object.identifier}'",
     }
+    message_string = "#{@service[:path]} #{@service[:schema]} #{@object.identifier_field} #{@object.identifier}"
 
     query    = CollectionSpace::Search.new.from_hash search_args
     response = $collectionspace_client.search(query).parsed
-    # TODO: check status
-    return response["abstract_common_list"]["totalItems"].to_i > 0 ? true : false
+    unless response.status_code.to_s =~ /^2/
+      raise "Error searching #{message_string}"
+    end
+
+    result_count = response["abstract_common_list"]["totalItems"].to_i
+    if result_count == 1
+      exists       = true
+      # set csid and uri in case they are lost (i.e. batch was deleted)
+      # @object.csid = response["abstract_common_list"]["list_item"]["csid"]
+      # @object.uri  = response["abstract_common_list"]["list_item"]["uri"].gsub(/^\//, '')
+      # @object.save!
+    else
+      raise "Ambiguous result count (#{result_count.to_s}) for #{message_string}" if result_count > 1
+    end
+    exists
   end
 
 end
