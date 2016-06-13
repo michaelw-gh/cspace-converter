@@ -31,15 +31,19 @@ class ImportJob < ActiveJob::Base
         fields.each do |field|
           term_display_name = object.read_attribute(field)
           next unless term_display_name
-          authority_data = {}
-          # check for existence or update
-          authority_data[:category]         = "Authority"
-          authority_data[:type]             = authority
-          authority_data[:identifier_field] = 'shortIdentifier'
-          authority_data[:identifier]       = CollectionSpace::Identifiers.short_identifier(term_display_name)
-          authority_data[:title]            = term_display_name
-          authority_data[:content]          = object.to_auth_xml(authority, term_display_name)
-          object.collection_space_objects.build authority_data
+
+          # attempt to split field in case it is multi-valued
+          term_display_name.split(Rails.application.config.csv_mvf_delimiter).map(&:strip).each do |name|
+            authority_data = {}
+            # check for existence or update
+            authority_data[:category]         = "Authority"
+            authority_data[:type]             = authority
+            authority_data[:identifier_field] = 'shortIdentifier'
+            authority_data[:identifier]       = CollectionSpace::Identifiers.short_identifier(name)
+            authority_data[:title]            = name
+            authority_data[:content]          = object.to_auth_xml(authority, name)
+            object.collection_space_objects.build authority_data
+          end
         end
       end
 

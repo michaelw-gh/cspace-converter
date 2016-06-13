@@ -1,7 +1,7 @@
 cspace-converter
 ===
 
-Migrate denormalized or semi-structured data to CollectionSpace from CSV.
+Migrate data to CollectionSpace from CSV.
 
 Getting Started
 ---

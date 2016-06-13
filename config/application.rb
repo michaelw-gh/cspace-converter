@@ -30,6 +30,7 @@ module CspaceConverter
     # config.i18n.default_locale = :de
 
     config.active_job.queue_adapter = :delayed_job
+    config.csv_mvf_delimiter = ";" # used to split authority fields (procedures handled in module)
     config.domain = ENV.fetch('CSPACE_CONVERTER_DOMAIN', 'core.collectionspace.org')
   end
 end

@@ -16,7 +16,7 @@ module CollectionSpace
             path: "conservation", schema: "conservation"
           },
           "Person" => {
-            path: "personauthorities/urn:cspace:name(person)/items", schema: "personauthorities"
+            path: "personauthorities/urn:cspace:name(person)/items", schema: "persons"
           },
           "Taxon" => {
             path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
