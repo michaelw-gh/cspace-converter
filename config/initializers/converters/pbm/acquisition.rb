@@ -9,7 +9,7 @@ module CollectionSpace
           run do |xml|
             CollectionSpace::XML.add xml, 'acquisitionReferenceNumber', attributes["acquisitionReferenceNumber"]
 
-            acq_sources = [ attributes["acquisitionSource1"], attributes["acquisitionSource2"] ].compact
+            acq_sources = split_mvf attributes, 'acquisitionSource1', 'acquisitionSource2'
             acq_sources = acq_sources.map do |source|
               {
                 "acquisitionSource" => CollectionSpace::URN.generate(

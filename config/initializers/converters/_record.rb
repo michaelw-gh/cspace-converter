@@ -80,6 +80,19 @@ module CollectionSpace
           builder.to_xml
         end
 
+        # process multivalued fields by splitting them and returning a flat array of all elements
+        def split_mvf(attributes, *fields)
+          values = []
+          fields.each do |field|
+            # TODO: log a warning ? may be noisy ...
+            next unless attributes.has_key? field
+            values << attributes[field]
+              .split(Rails.application.config.csv_mvf_delimiter)
+              .map(&:strip)
+          end
+          values.flatten.compact
+        end
+
       end
 
       class Acquisition < Record

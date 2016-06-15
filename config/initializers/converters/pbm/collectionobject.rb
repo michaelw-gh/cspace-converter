@@ -20,15 +20,21 @@ module CollectionSpace
                 "title" => attributes["title"],
               }]
 
-              CollectionSpace::XML.add_group_list xml, 'objectProductionPerson', [{
-                "objectProductionPerson" => CollectionSpace::URN.generate(
-                  Rails.application.config.domain,
-                  "personauthorities",
-                  "person",
-                  CollectionSpace::Identifiers.short_identifier(attributes["objectProductionPerson1"]),
-                  attributes["objectProductionPerson1"]
-                ),
-              }] if attributes["objectProductionPerson1"]
+              if attributes["objectProductionPerson1"]
+                objectProductionPersons = split_mvf attributes, 'objectProductionPerson1'
+                objectProductionPersons = objectProductionPersons.map do |person|
+                  {
+                    "objectProductionPerson" => CollectionSpace::URN.generate(
+                      Rails.application.config.domain,
+                      "personauthorities",
+                      "person",
+                      CollectionSpace::Identifiers.short_identifier(person),
+                      person
+                    ),
+                  }
+                end
+                CollectionSpace::XML.add_group_list xml, 'objectProductionPerson', objectProductionPersons
+              end
 
               CollectionSpace::XML.add_group_list xml, 'objectProductionPlace', [{
                 "objectProductionPlace" => CollectionSpace::URN.generate(
