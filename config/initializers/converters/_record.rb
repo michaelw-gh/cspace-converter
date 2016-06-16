@@ -18,6 +18,9 @@ module CollectionSpace
           "Person" => {
             path: "personauthorities/urn:cspace:name(person)/items", schema: "persons"
           },
+          "Place" => {
+            path: "placeauthorities/urn:cspace:name(place)/items", schema: "places"
+          },
           "Taxon" => {
             path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
           },
@@ -87,6 +90,7 @@ module CollectionSpace
             # TODO: log a warning ? may be noisy ...
             next unless attributes.has_key? field
             values << attributes[field]
+              .to_s
               .split(Rails.application.config.csv_mvf_delimiter)
               .map(&:strip)
           end
@@ -127,6 +131,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'persons', 'person', common
+        end
+
+      end
+
+      class Place < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'places', 'place', common
         end
 
       end

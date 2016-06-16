@@ -37,6 +37,7 @@ module CollectionSpace
             },
             "Authorities" => {
               "Person" => ["objectProductionPerson1"],
+              "Place"  => ["objectProductionPlace1"],
               "Taxon"  => ["taxon"],
             },
           },

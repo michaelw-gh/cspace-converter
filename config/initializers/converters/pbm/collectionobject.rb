@@ -6,6 +6,7 @@ module CollectionSpace
       class PBMCollectionObject < CollectionObject
 
         def convert
+          # using bonsai extension therefore need to expose entire document
           run(wrapper: "document") do |xml|
             xml.send(
               "ns2:collectionobjects_common",
@@ -45,6 +46,52 @@ module CollectionSpace
                   attributes["objectProductionPlace1"]
                 ),
               }] if attributes["objectProductionPlace1"]
+
+              collection = attributes['collection']
+              CollectionSpace::XML.add xml, 'collection', collection.downcase if collection
+
+              CollectionSpace::XML.add xml, 'distinguishingFeatures', attributes['distinguishingFeatures']
+
+              comment = attributes['comment']
+              CollectionSpace::XML.add_repeat xml, 'comments', [
+                { "comment" => comment }
+              ] if comment
+
+              # production dates, origin is unusual because each field is mvf for a distinct date group
+              date_display_foliage, date_display_trunk   = split_mvf attributes, 'originObjectProductionDateDisplayDate'
+              date_assoc_foliage, date_assoc_trunk       = split_mvf attributes, 'originObjectProductionDateAssociation'
+              date_earliest_foliage, date_earliest_trunk = split_mvf attributes, 'originObjectProductionDateEarliestSingleYear'
+              date_latest_foliage, date_latest_trunk     = split_mvf attributes, 'originObjectProductionDateLatestYear'
+
+              date_display_training  = attributes['trainingObjectProductionDateDisplayDate']
+              date_assoc_training    = attributes['trainingObjectProductionDateAssociation']
+              date_earliest_training = attributes['trainingProductionDateEarliestSingleYear']
+              date_latest_training   = attributes['trainingObjectProductionDateLatestYear']
+
+              objectProductionDates = [
+                {
+                  "dateDisplayDate"        => date_display_foliage,
+                  "dateAssociation"        => date_assoc_foliage,
+                  "dateEarliestSingleYear" => date_earliest_foliage,
+                  "dateLatestYear"         => date_latest_foliage,
+                },
+              ]
+
+              objectProductionDates << {
+                "dateDisplayDate"        => date_display_trunk,
+                "dateAssociation"        => date_assoc_trunk,
+                "dateEarliestSingleYear" => date_earliest_trunk,
+                "dateLatestYear"         => date_latest_trunk,
+              } if date_display_trunk
+
+              objectProductionDates << {
+                "dateDisplayDate"        => date_display_training,
+                "dateAssociation"        => date_assoc_training,
+                "dateEarliestSingleYear" => date_earliest_training,
+                "dateLatestYear"         => date_latest_training,
+              } if date_display_training
+
+              CollectionSpace::XML.add_group_list xml, 'objectProductionDate', objectProductionDates
             end
 
             xml.send(
@@ -56,6 +103,10 @@ module CollectionSpace
               xml.parent.namespace = nil
 
               CollectionSpace::XML.add xml, 'commonName', attributes["commonName"]
+
+              native = attributes["nativeSpecies"].blank? ? 'false' : 'true'
+              CollectionSpace::XML.add xml, 'nativeSpecies', native
+
               CollectionSpace::XML.add xml, 'taxon', CollectionSpace::URN.generate(
                 Rails.application.config.domain,
                 "taxonomyauthority",
