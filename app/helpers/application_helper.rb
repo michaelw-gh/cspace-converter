@@ -8,6 +8,18 @@ module ApplicationHelper
     CollectionSpace::Converter.constants
   end
 
+  def collectionspace_base_uri
+    Rails.application.secrets[:collectionspace_base_uri]
+  end
+
+  def collectionspace_domain
+    Rails.application.config.domain
+  end
+
+  def collectionspace_username
+    Rails.application.secrets[:collectionspace_username]
+  end
+
   def profiles
     profiles = []
     CollectionSpace::Converter.constants.each do |c|

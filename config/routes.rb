@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   post 'authorities/:id/ping',     to: 'authority_objects#ping'
   post 'authorities/:id/transfer', to: 'authority_objects#transfer'
 
+  get 'connection', to: "sites#connection", as: 'connection'
+
   get  'import', to: 'imports#new'
   post 'import', to: 'imports#create'
 

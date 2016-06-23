@@ -1,0 +1,36 @@
+<div class="row backend">
+
+  <%= render partial: 'shared/sidebar' %>
+
+  <div class="col-md-10">
+    <%= render partial: 'shared/title', :locals => { :title => 'Connection' } %>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Remote</th>
+          <th>User</th>
+          <th>Domain</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= collectionspace_base_uri %></td>
+          <td><%= collectionspace_username %></td>
+          <td><%= collectionspace_domain %></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <dl>
+        <dt class="text-muted">Remote</dt>
+        <dd><small>The CollectionSpace services layer url.</small></dd>
+        <dt class="text-muted">User</dt>
+        <dd><small>The CollectionSpace user for authentication.</small></dd>
+        <dt class="text-muted">Domain</dt>
+        <dd><small>The domain used for URN strings in the generated XML.</small></dd>
+      </dl>
+    </div>
+  </div>
+</div>

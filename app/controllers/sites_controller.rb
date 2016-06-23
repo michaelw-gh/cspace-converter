@@ -3,6 +3,9 @@ class SitesController < ApplicationController
   def index
   end
 
+  def connection
+  end
+
   def nuke
     DataObject.destroy_all
     flash[:notice] = "Database nuked, all records deleted!"
