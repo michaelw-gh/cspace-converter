@@ -15,6 +15,8 @@ namespace :db do
       filename  = args[:filename]
       counter   = 1
 
+      raise "Invalid file #{filename}" unless File.file? filename
+
       puts "Project #{converter}; Batch #{batch}; Profile #{profile}"
 
       # process in chunks of 100 rows

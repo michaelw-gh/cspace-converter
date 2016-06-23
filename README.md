@@ -38,20 +38,21 @@ The general command is:
 
 ```
 . ./set_env.sh [CSPACE_CONVERTER_DOMAIN] # optional
-./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE]
+./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE] [CS_CONV_FILE]
 ```
 
 - `CSPACE_CONVERTER_DOMAIN`: domain to use in tenant data
 - `CS_CONV_BATCH`: batch name
 - `CS_CONV_TYPE`: converter type (module)
 - `CS_CONV_PROFILE`: profile from type
+- `CS_CONV_FILE`: filename (without extension)
 
 ```
 # import to converter
-./import.sh pbm_acq1 PBM pbm_acquisition
-./import.sh pbm_cat1 PBM pbm_cataloging
-./import.sh pbm_con1 PBM pbm_conservation
-./import.sh pbm_val1 PBM pbm_valuationcontrol
+./import.sh pbm_acq1 PBM acquisition pbm_acquisition
+./import.sh pbm_cat1 PBM cataloging pbm_cataloging
+./import.sh pbm_con1 PBM conservation pbm_conservation
+./import.sh pbm_val1 PBM valuationcontrol pbm_valuationcontrol
 
 # transfer data (requires cspace)
 rake remote:action:transfer[Acquisition,pbm_acq1]
@@ -65,8 +66,8 @@ rake remote:action:delete[CollectionObject,pbm_cat1]
 rake remote:action:delete[Conservation,pbm_con1]
 rake remote:action:delete[ValuationControl,pbm_val1]
 
-./import.sh ppsaccession1 PastPerfect ppsaccessiondata
-./import.sh ppsobjects1 PastPerfect ppsobjectsdata
+./import.sh ppsaccession1 PastPerfect ppsaccessiondata ppsaccessiondata
+./import.sh ppsobjects1 PastPerfect ppsobjectsdata ppsobjectsdata
 ```
 
 For these commands to actually work you will need the data files in `db/data`.
