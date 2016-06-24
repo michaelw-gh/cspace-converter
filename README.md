@@ -47,34 +47,9 @@ The general command is:
 - `CS_CONV_PROFILE`: profile from type
 - `CS_CONV_FILE`: filename (without extension)
 
+For example:
+
 ```
-# import to converter
-./import.sh pbm_acq1 PBM acquisition pbm_acquisition
-./import.sh pbm_cat1 PBM cataloging pbm_cataloging
-./import.sh pbm_con1 PBM conservation pbm_conservation
-./import.sh pbm_val1 PBM valuationcontrol pbm_valuationcontrol
-
-# transfer data
-rake remote:action:transfer[Acquisition,pbm_acq1]
-rake remote:action:transfer[CollectionObject,pbm_cat1]
-rake remote:action:transfer[Conservation,pbm_con1]
-rake remote:action:transfer[ValuationControl,pbm_val1]
-
-# generate relationships
-rake relationships:generate[PBM,acquisition,pbm_acq1]
-
-# transfer relationships
-rake remote:action:transfer[Relationship,pbm_acq1]
-
-# delete transfers
-rake remote:action:delete[Acquisition,pbm_acq1]
-rake remote:action:delete[CollectionObject,pbm_cat1]
-rake remote:action:delete[Conservation,pbm_con1]
-rake remote:action:delete[ValuationControl,pbm_val1]
-
-# delete transfer relationships
-rake remote:action:delete[Relationship,pbm_acq1]
-
 ./import.sh ppsaccession1 PastPerfect ppsaccessiondata ppsaccessiondata
 ./import.sh ppsobjects1 PastPerfect ppsobjectsdata ppsobjectsdata
 ```
