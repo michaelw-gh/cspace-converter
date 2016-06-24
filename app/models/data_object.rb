@@ -138,13 +138,16 @@ class DataObject
       "to_doc_type" => to_doc_type,
     }
 
+    from_prefix = from_doc_type[0..2]
+    to_prefix   = to_doc_type[0..2]
+
     data = {}
     data[:category]         = "Relationship"
     data[:type]             = "Relationship"
     # this will allow remote actions to happen (but not prevent duplicates?)
     data[:identifier_field] = 'csid'
     data[:identifier]       = "#{from_csid}_#{to_csid}"
-    data[:title]            = "#{from_value}_#{to_value}"
+    data[:title]            = "#{from_prefix}:#{from_value}_#{to_prefix}:#{to_value}"
     data[:content]          = self.to_relationship_xml(attributes)
     self.collection_space_objects.build data
   end
