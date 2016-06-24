@@ -25,12 +25,12 @@ rake remote:action:transfer[Person,all]
 rake remote:action:transfer[Place,all]
 rake remote:action:transfer[Taxon,all]
 
-#- AFTER procedures have been imported relationships can be created -#
+#- AFTER procedures have been transferred relationships can be created -#
 
-# generate relationships for PBM converter, PBM profile, PBM batch
-rake relationships:generate[PBM,acquisition,pbm_acq1]
-rake relationships:generate[PBM,conservation,pbm_con1]
-rake relationships:generate[PBM,valuationcontrol,pbm_val1]
+# generate relationships for PBM batch
+rake relationships:generate[pbm_acq1]
+rake relationships:generate[pbm_con1]
+rake relationships:generate[pbm_val1]
 
 # transfer PBM relationships to CollectionSpace
 rake remote:action:transfer[Relationship,all]

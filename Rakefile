@@ -39,13 +39,11 @@ namespace :db do
 end
 
 namespace :relationships do
-  # rake relationships:generate[PBM,acquisition,acq1]
-  task :generate, [:import_converter, :import_profile, :import_batch] => :environment do |t, args|
-    import_converter = args[:import_converter]
-    import_profile   = args[:import_profile]
+  # rake relationships:generate[acq1]
+  task :generate, [:import_batch] => :environment do |t, args|
     import_batch     = args[:import_batch]
 
-    RelationshipJob.perform_later import_batch, import_converter, import_profile
+    RelationshipJob.perform_later import_batch
     # run the job immediately when using rake
     Delayed::Worker.new.run(Delayed::Job.last)
 

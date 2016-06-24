@@ -6,7 +6,7 @@ class TransferJob < ActiveJob::Base
     raise "Invalid remote action #{action}!" unless action_method
 
     # cannot lookup relationships so force delete if there is a csid for the object
-    force_delete = import_type == "Relationship" and action_method == :remote_delete ? true : false
+    force_delete = (import_type == "Relationship" and action_method == :remote_delete) ? true : false
 
     objects = CollectionSpaceObject.includes(:data_object)
       .where(type: import_type)

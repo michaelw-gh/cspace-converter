@@ -1,13 +1,16 @@
 class RelationshipJob < ActiveJob::Base
   queue_as :default
 
-  def perform(import_batch, import_converter, import_profile)
-    converter_class  = "CollectionSpace::Converter::#{import_converter}".constantize
-    profiles         = converter_class.registered_profiles
-    profile          = profiles[import_profile]
-    raise "Invalid profile #{import_profile} for #{profiles}" unless profile
+  def perform(import_batch)
+    objects          = DataObject.where(import_batch: import_batch)
+    obj              = objects.first # get the converter and profile from the first match
+    import_converter = obj.read_attribute "import_converter"
+    import_profile   = obj.read_attribute "import_profile"
 
-    objects = DataObject.where(import_profile: import_profile, import_batch: import_batch)
+    converter_class = "CollectionSpace::Converter::#{import_converter}".constantize
+    profiles        = converter_class.registered_profiles
+    profile         = profiles[import_profile]
+    raise "Invalid profile #{import_profile} for #{profiles}" unless profile
 
     # "Relationships" => [ {...} ]
     relationships = profile["Relationships"]
