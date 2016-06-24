@@ -2,8 +2,9 @@ module RemoteActionable
   extend ActiveSupport::Concern
 
   def delete
+    force = params[:force] == "true" ? true : false
     perform(params[:category]) do |service|
-      if service.remote_already_exists?
+      if force or service.remote_already_exists?
         if service.remote_delete
           flash[:notice] = "Record deleted"
         else
@@ -21,7 +22,7 @@ module RemoteActionable
         flash[:notice] = "Record found"
       else
         flash[:warning] = "Record not found"
-      end      
+      end
     end
   end
 

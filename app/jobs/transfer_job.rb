@@ -10,6 +10,9 @@ class TransferJob < ActiveJob::Base
       .entries.select { |object|
       (import_batch.nil? or object.data_object.import_batch == import_batch) ? object : nil;
     }
+
+    # TODO: add logging
+
     objects.each do |object|
       service = RemoteActionService.new(object)
       if service.remote_already_exists?

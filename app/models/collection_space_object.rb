@@ -3,7 +3,7 @@ class CollectionSpaceObject
   include Mongoid::Timestamps
 
   belongs_to :data_object, counter_cache: true
-  validate :unique_identifier
+  validates  :identifier, uniqueness: true
 
   field :category,         type: String # Authority, Procedure
   field :type,             type: String
@@ -32,14 +32,5 @@ class CollectionSpaceObject
   def self.has_procedure?(identifier)
     identifier = self.where(category: 'Procedure', identifier: identifier).first
     identifier ? true : false
-  end
-
-  private
-
-  def unique_identifier
-    identifier = self.read_attribute("identifier")
-    if CollectionSpaceObject.has_identifier?(identifier)
-      errors.add(:non_unique_identifier, "Identifier already exists #{identifier}")
-    end
   end
 end

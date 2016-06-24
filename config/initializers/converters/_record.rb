@@ -21,6 +21,9 @@ module CollectionSpace
           "Place" => {
             path: "placeauthorities/urn:cspace:name(place)/items", schema: "places"
           },
+          "Relationship" => {
+            path: "relations", schema: "relations"
+          },
           "Taxon" => {
             path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
           },
@@ -140,6 +143,27 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'places', 'place', common
+        end
+
+      end
+
+      class Relationship < Record
+
+        # override the default authority convert method inline
+        def convert
+          run do |xml|
+            CollectionSpace::XML.add xml, 'subjectCsid', attributes["to_csid"]
+            CollectionSpace::XML.add xml, 'subjectDocumentType', attributes["to_doc_type"]
+            CollectionSpace::XML.add xml, 'relationshipType', "affects"
+            CollectionSpace::XML.add xml, 'predicate', "affects"
+            CollectionSpace::XML.add xml, 'objectCsid', attributes["from_csid"]
+            CollectionSpace::XML.add xml, 'objectDocumentType', attributes["from_doc_type"]
+          end
+        end
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'relations', 'relation', common
         end
 
       end

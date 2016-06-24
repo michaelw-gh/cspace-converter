@@ -25,6 +25,14 @@ module CollectionSpace
             "Authorities" => {
               "Person" => ["acquisitionSource1", "acquisitionSource2"],
             },
+            "Relationships" => [
+              {
+                "procedure1_type"  => "Acquisition",
+                "procedure1_field" => "acquisitionReferenceNumber",
+                "procedure2_type"  => "CollectionObject",
+                "procedure2_field" => "objectNumber",
+              },
+            ],
           },
           "cataloging" => {
             "Procedures" => {

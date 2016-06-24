@@ -54,17 +54,26 @@ The general command is:
 ./import.sh pbm_con1 PBM conservation pbm_conservation
 ./import.sh pbm_val1 PBM valuationcontrol pbm_valuationcontrol
 
-# transfer data (requires cspace)
+# transfer data
 rake remote:action:transfer[Acquisition,pbm_acq1]
 rake remote:action:transfer[CollectionObject,pbm_cat1]
 rake remote:action:transfer[Conservation,pbm_con1]
 rake remote:action:transfer[ValuationControl,pbm_val1]
 
-# delete transfers (requires cspace)
+# generate relationships
+rake relationships:generate[PBM,acquisition,pbm_acq1]
+
+# transfer relationships
+rake remote:action:transfer[Relationship,pbm_acq1]
+
+# delete transfers
 rake remote:action:delete[Acquisition,pbm_acq1]
 rake remote:action:delete[CollectionObject,pbm_cat1]
 rake remote:action:delete[Conservation,pbm_con1]
 rake remote:action:delete[ValuationControl,pbm_val1]
+
+# delete transfer relationships
+rake remote:action:delete[Relationship,pbm_acq1]
 
 ./import.sh ppsaccession1 PastPerfect ppsaccessiondata ppsaccessiondata
 ./import.sh ppsobjects1 PastPerfect ppsobjectsdata ppsobjectsdata

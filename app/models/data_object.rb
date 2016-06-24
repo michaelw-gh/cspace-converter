@@ -49,6 +49,28 @@ class DataObject
     self.collection_space_objects.build data
   end
 
+  # [ { "procedure1_type" => "Acquisition",
+  #   "procedure1_field" => "acquisitionReferenceNumber",
+  #   "procedure2_type" => "CollectionObject",
+  #   "procedure2_field" => "objectNumber" } ]
+  def add_relationships(relationships, reciprocal = true)
+    relationships.each do |relationship|
+      r  = relationship
+      begin
+        add_relationship r["procedure1_type"], r["procedure1_field"],
+          r["procedure2_type"], r["procedure2_field"]
+
+        add_relationship r["procedure2_type"], r["procedure2_field"],
+          r["procedure1_type"], r["procedure1_field"] if reciprocal
+
+        self.save!
+      rescue Exception => ex
+        # TODO: log.warn
+        # puts ex.message
+      end
+    end
+  end
+
   def set_attributes(attributes = {})
     attributes.each do |attribute, value|
       self.write_attribute attribute, value
@@ -78,11 +100,54 @@ class DataObject
     hack_namespaces converter.convert
   end
 
+  def to_relationship_xml(attributes)
+    relationship_class = "CollectionSpace::Converter::Default::Relationship".constantize
+    converter          = relationship_class.new(attributes)
+    # scary hack for namespaces
+    hack_namespaces converter.convert
+  end
+
   def to_hash
     Hash[self.attributes]
   end
 
   private
+
+  def add_relationship(from_procedure, from_field, to_procedure, to_field)
+    from_value = self.read_attribute( from_field )
+    to_value   = self.read_attribute( to_field )
+    raise "No data for field pair [#{from_field}:#{to_field}] for #{self.id}" unless from_value and to_value
+
+    # TODO: update this (lookup dock_type)!
+    from_doc_type = "#{from_procedure.downcase}s"
+    from          = CollectionSpaceObject.where(type: from_procedure, identifier: from_value).first
+    to_doc_type   = "#{to_procedure.downcase}s"
+    to            = CollectionSpaceObject.where(type: to_procedure, identifier: to_value).first
+    raise "Object pair not found [#{from_value}:#{to_value}] for #{self.id}" unless from and to
+
+    from_csid = from.read_attribute "csid"
+    to_csid   = to.read_attribute   "csid"
+    unless from_csid and to_csid
+      raise "CSID values not found for pair [#{from.identifier}:#{to.identifier}] for #{self.id}"
+    end
+
+    attributes = {
+      "from_csid" => from_csid,
+      "from_doc_type" => from_doc_type,
+      "to_csid" => to_csid,
+      "to_doc_type" => to_doc_type,
+    }
+
+    data = {}
+    data[:category]         = "Relationship"
+    data[:type]             = "Relationship"
+    # this will allow remote actions to happen (but not prevent duplicates?)
+    data[:identifier_field] = 'csid'
+    data[:identifier]       = "#{from_csid}_#{to_csid}"
+    data[:title]            = "#{from_value}_#{to_value}"
+    data[:content]          = self.to_relationship_xml(attributes)
+    self.collection_space_objects.build data
+  end
 
   def check_valid_procedure!(procedure, converter)
     CollectionSpace::Converter::Default.validate_procedure!(procedure, converter)

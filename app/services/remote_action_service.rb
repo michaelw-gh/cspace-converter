@@ -9,12 +9,12 @@ class RemoteActionService
 
   def remote_delete
     deleted = false
-    response = $collectionspace_client.delete(@object.uri)
-    if response.status_code.to_s =~ /^2/
-      @object.csid = nil
-      @object.uri  = nil
-      @object.save!
-      deleted = true
+    if @object.uri
+      response = $collectionspace_client.delete(@object.uri)
+      if response.status_code.to_s =~ /^2/
+        @object.update_attributes!( csid: nil, uri:  nil )
+        deleted = true
+      end
     end
     deleted
   end
@@ -26,9 +26,7 @@ class RemoteActionService
       # http://localhost:1980/cspace-services/collectionobjects/7e5abd18-5aec-4b7f-a10c
       csid = response.headers["Location"].split("/")[-1]
       uri  = "#{@service[:path]}/#{csid}"
-      @object.csid = csid
-      @object.uri  = uri
-      @object.save!
+      @object.update_attributes!( csid: csid, uri:  uri )
       transferred = true
     end
     transferred
@@ -51,16 +49,25 @@ class RemoteActionService
     end
     parsed_response = response.parsed
 
-    result_count = parsed_response["abstract_common_list"]["totalItems"].to_i
-    if result_count == 1
-      exists       = true
-      # set csid and uri in case they are lost (i.e. batch was deleted)
-      @object.csid = parsed_response["abstract_common_list"]["list_item"]["csid"]
-      @object.uri  = parsed_response["abstract_common_list"]["list_item"]["uri"].gsub(/^\//, '')
-      @object.save!
-    else
-      raise "Ambiguous result count (#{result_count.to_s}) for #{message_string}" if result_count > 1
-      # TODO: set csid and uri to nil if 0?
+    # relation list type
+    relation  = @service[:path] == "relations" ? true : false
+    list_type = @service[:path] == "relations" ? "relations_common_list" : "abstract_common_list"
+    list_item = @service[:path] == "relations" ? "relation_list_item" : "list_item"
+
+    # relation search not consistent, skip for now (this means duplication is possible)
+    unless relation
+      result_count = parsed_response[list_type]["totalItems"].to_i
+      if result_count == 1
+        exists = true
+        # set csid and uri in case they are lost (i.e. batch was deleted)
+        @object.update_attributes!(
+          csid: parsed_response[list_type][list_item]["csid"],
+          uri:  parsed_response[list_type][list_item]["uri"].gsub(/^\//, '')
+        )
+      else
+        raise "Ambiguous result count (#{result_count.to_s}) for #{message_string}" if result_count > 1
+        # TODO: set csid and uri to nil if 0?
+      end
     end
     exists
   end

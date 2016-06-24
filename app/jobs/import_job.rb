@@ -27,6 +27,8 @@ class ImportJob < ActiveJob::Base
         object.add_authorities authority, fields
       end
 
+      # TODO: add logging
+
       object.save!
     end
   end
