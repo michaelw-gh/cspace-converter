@@ -32,6 +32,7 @@
             <tr>
               <th>Type</th>
               <th>Identifier</th>
+              <th>CSID</th>
             </tr>
           </thead>
           <tbody>
@@ -39,6 +40,7 @@
               <tr>
                 <td><%= cspace_object.type %></td>
                 <td><%= link_to cspace_object.identifier, send("#{cspace_object.category.downcase}_path".to_sym, cspace_object) %></td>
+                <td><%= cspace_object.csid %></td>
               </tr>
             <% end %>
           </tbody>
