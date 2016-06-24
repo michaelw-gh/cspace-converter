@@ -45,12 +45,12 @@ rake remote:action:delete[CollectionObject,pbm_cat1]
 rake remote:action:delete[Conservation,pbm_con1]
 rake remote:action:delete[ValuationControl,pbm_val1]
 
-# TODO: auths ... (will want to allow "all" for batch)
+rake remote:action:delete[Person,all]
+rake remote:action:delete[Place,all]
+rake remote:action:delete[Taxon,all]
 
 # delete transfer relationships
-rake remote:action:delete[Relationship,pbm_acq1]
-rake remote:action:delete[Relationship,pbm_con1]
-rake remote:action:delete[Relationship,pbm_val1]
+rake remote:action:delete[Relationship,all]
 ```
 
 Post migration always ensure that record counts match expectations.
