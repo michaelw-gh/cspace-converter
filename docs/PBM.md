@@ -21,7 +21,9 @@ rake remote:action:transfer[CollectionObject,pbm_cat1]
 rake remote:action:transfer[Conservation,pbm_con1]
 rake remote:action:transfer[ValuationControl,pbm_val1]
 
-# TODO: auths ... (will want to allow "all" for batch)
+rake remote:action:transfer[Person,all]
+rake remote:action:transfer[Place,all]
+rake remote:action:transfer[Taxon,all]
 
 #- AFTER procedures have been imported relationships can be created -#
 
@@ -31,9 +33,7 @@ rake relationships:generate[PBM,conservation,pbm_con1]
 rake relationships:generate[PBM,valuationcontrol,pbm_val1]
 
 # transfer PBM relationships to CollectionSpace
-rake remote:action:transfer[Relationship,pbm_acq1]
-rake remote:action:transfer[Relationship,pbm_con1]
-rake remote:action:transfer[Relationship,pbm_val1]
+rake remote:action:transfer[Relationship,all]
 ```
 
 To "undo" the transfers use the delete task:

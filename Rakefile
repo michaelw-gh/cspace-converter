@@ -69,6 +69,8 @@ namespace :remote do
     end
 
     def remote_action_process(action, type, batch)
+      # don't scope to batch if "all" requested
+      batch = batch == "all" ? nil : batch
       start_time = Time.now
       puts "Starting remote #{action} job at #{start_time}."
       TransferJob.perform_later(action, type, batch)
