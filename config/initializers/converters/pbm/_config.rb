@@ -19,7 +19,6 @@ module CollectionSpace
                 "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "acquisitionReferenceNumber",
                 "title" => "acquisitionReferenceNumber",
-                # "service" => "acquisitions", DEPRECATED
               }
             },
             "Authorities" => {
@@ -40,7 +39,6 @@ module CollectionSpace
                 "identifier_field" => "objectNumber",
                 "identifier" => "objectNumber",
                 "title" => "title",
-                # "service" => "collectionobjects", DEPRECATED
               }
             },
             "Authorities" => {
@@ -48,6 +46,7 @@ module CollectionSpace
               "Place"  => ["objectProductionPlace1"],
               "Taxon"  => ["taxon"],
             },
+            "Relationships" => [],
           },
           "conservation" => {
             "Procedures" => {
@@ -55,10 +54,17 @@ module CollectionSpace
                 "identifier_field" => "conservationNumber",
                 "identifier" => "conservationNumber",
                 "title" => "conservationNumber",
-                # "service" => "conservation", DEPRECATED
               }
             },
             "Authorities" => {},
+            "Relationships" => [
+              {
+                "procedure1_type"  => "Conservation",
+                "procedure1_field" => "conservationNumber",
+                "procedure2_type"  => "CollectionObject",
+                "procedure2_field" => "objectNumber",
+              },
+            ],
           },
           "valuationcontrol" => {
             "Procedures" => {
@@ -66,10 +72,17 @@ module CollectionSpace
                 "identifier_field" => "valuationcontrolRefNumber",
                 "identifier" => "valuationcontrolRefNumber",
                 "title" => "valuationcontrolRefNumber",
-                # "service" => "valuationcontrols", DEPRECATED
               }
             },
             "Authorities" => {},
+            "Relationships" => [
+              {
+                "procedure1_type"  => "ValuationControl",
+                "procedure1_field" => "valuationcontrolRefNumber",
+                "procedure2_type"  => "CollectionObject",
+                "procedure2_field" => "objectNumber",
+              },
+            ],
           }
         }
       end
