@@ -5,6 +5,9 @@ class TransferJob < ActiveJob::Base
     action_method = TransferJob.actions action
     raise "Invalid remote action #{action}!" unless action_method
 
+    # cannot lookup relationships so force delete if there is a csid for the object
+    force_delete = import_type == "Relationship" and action_method == :remote_delete ? true : false
+
     objects = CollectionSpaceObject.includes(:data_object)
       .where(type: import_type)
       .entries.select { |object|
@@ -15,7 +18,7 @@ class TransferJob < ActiveJob::Base
 
     objects.each do |object|
       service = RemoteActionService.new(object)
-      if service.remote_already_exists?
+      if force_delete or service.remote_already_exists?
         service.send action_method if action_method == :remote_delete
       else
         service.send action_method if action_method == :remote_transfer
