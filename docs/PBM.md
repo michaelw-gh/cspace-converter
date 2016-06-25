@@ -13,7 +13,7 @@ The PBM converter has a one-to-one relationship between input csv file and proce
 ./import.sh pbm_acq1 PBM acquisition pbm_acquisition
 ./import.sh pbm_cat1 PBM cataloging pbm_cataloging
 ./import.sh pbm_con1 PBM conservation pbm_conservation
-./import.sh pbm_val1 PBM valuationcontrol pbm_valuationcontrol
+./import.sh pbm_val1 PBM valuationcontrol pbm_valuation
 
 # transfer PBM data to CollectionSpace
 rake remote:action:transfer[Acquisition,pbm_acq1]
