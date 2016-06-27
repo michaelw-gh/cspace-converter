@@ -4,20 +4,138 @@ class DataObject
   include Mongoid::Attributes::Dynamic
 
   has_many :collection_space_objects, autosave: true, dependent: :destroy
+  validates_presence_of :converter_type
+  validates_presence_of :converter_profile
 
-  field :import_file,      type: String
-  field :import_batch,     type: String
-  field :import_converter, type: String
-  field :import_profile,   type: String
+  field :import_file,       type: String
+  field :import_batch,      type: String
+  field :converter_type,    type: String
+  field :converter_profile, type: String
 
   # "Person" => ["recby", "recfrom"]
-  def add_authorities(authority, fields)
-    fields.each do |field|
-      term_display_name = self.read_attribute(field)
-      next unless term_display_name
+  def add_authorities
+    authorities = self.profile.fetch("Authorities", {})
+    authorities.each do |authority, fields|
+      fields.each do |field|
+        add_authority authority, field
+      end
+    end
+  end
 
+  # "Acquisition" => { "identifier_field" => "acqid", "identifier" => "acqid", "title" => "acqid" }
+  def add_procedures
+    procedures = self.profile.fetch("Procedures", {})
+    procedures.each do |procedure, attributes|
+      add_procedure procedure, attributes
+    end
+  end
+
+  # [ { "procedure1_type" => "Acquisition",
+  #   "procedure1_field" => "acquisitionReferenceNumber",
+  #   "procedure2_type" => "CollectionObject",
+  #   "procedure2_field" => "objectNumber" } ]
+  def add_relationships(reciprocal = true)
+    relationships = self.profile.fetch("Relationships", [])
+    relationships.each do |relationship|
+      r  = relationship
+      begin
+        add_relationship r["procedure1_type"], r["procedure1_field"],
+          r["procedure2_type"], r["procedure2_field"]
+
+        add_relationship r["procedure2_type"], r["procedure2_field"],
+          r["procedure1_type"], r["procedure1_field"] if reciprocal
+      rescue Exception => ex
+        # TODO: log.warn
+        # puts ex.message
+      end
+    end
+  end
+
+  def authority_class(authority)
+    "#{self.default_converter_class.to_s}::#{authority}".constantize
+  end
+
+  # i.e. CollectionSpace::Converter::PBM
+  def converter_class
+    "CollectionSpace::Converter::#{self.converter_type}".constantize
+  end
+
+  # i.e. PastPerfect, PBM etc.
+  def converter_type
+    self.read_attribute(:converter_type)
+  end
+
+  # i.e. acquisition
+  def converter_profile
+    self.read_attribute(:converter_profile)
+  end
+
+  def default_converter_class
+    "CollectionSpace::Converter::Default".constantize
+  end
+
+  def delimiter
+    Rails.application.config.csv_mvf_delimiter
+  end
+
+  # i.e. CollectionSpace::Converter::PBM::PBMCollectionObject
+  def procedure_class(procedure)
+    "#{self.converter_class.to_s}::#{self.converter_type}#{procedure}".constantize
+  end
+
+  def profile
+    profiles          = self.converter_class.registered_profiles
+    converter_profile = self.converter_profile
+    profile           = profiles[converter_profile]
+    raise "Invalid profile #{converter_profile} for #{profiles}" unless profile
+    profile
+  end
+
+  def relationship_class
+    "#{self.default_converter_class.to_s}::Relationship".constantize
+  end
+
+  def set_attributes(attributes = {})
+    attributes.each do |attribute, value|
+      self.write_attribute attribute, value
+    end
+  end
+
+  def to_auth_xml(authority, term_display_name)
+    self.default_converter_class.validate_authority!(authority)
+    converter = self.authority_class(authority).new({
+      "shortIdentifier" => CollectionSpace::Identifiers.short_identifier(term_display_name),
+      "termDisplayName" => term_display_name,
+      "termType"        => "#{authority.downcase}Term",
+    })
+    # scary hack for namespaces
+    hack_namespaces converter.convert
+  end
+
+  def to_procedure_xml(procedure)
+    check_valid_procedure!(procedure, self.converter_class)
+    converter = self.procedure_class(procedure).new(self.to_hash)
+    # scary hack for namespaces
+    hack_namespaces converter.convert
+  end
+
+  def to_relationship_xml(attributes)
+    converter = self.relationship_class.new(attributes)
+    # scary hack for namespaces
+    hack_namespaces converter.convert
+  end
+
+  def to_hash
+    Hash[self.attributes]
+  end
+
+  private
+
+  def add_authority(authority, field)
+    term_display_name = self.read_attribute(field)
+    if term_display_name
       # attempt to split field in case it is multi-valued
-      term_display_name.split(Rails.application.config.csv_mvf_delimiter).map(&:strip).each do |name|
+      term_display_name.split(self.delimiter).map(&:strip).each do |name|
         identifier = CollectionSpace::Identifiers.short_identifier(name)
         # pre-filter authorities as we only want to create the first occurrence
         # and not fail CollectionSpaceObject validation for unique_identifier
@@ -36,7 +154,6 @@ class DataObject
     end
   end
 
-  # "Acquisition" => { "identifier_field" => "acqid", "identifier" => "acqid", "title" => "acqid" }
   def add_procedure(procedure, attributes)
     data = {}
     # check for existence or update
@@ -49,76 +166,12 @@ class DataObject
     self.collection_space_objects.build data
   end
 
-  # [ { "procedure1_type" => "Acquisition",
-  #   "procedure1_field" => "acquisitionReferenceNumber",
-  #   "procedure2_type" => "CollectionObject",
-  #   "procedure2_field" => "objectNumber" } ]
-  def add_relationships(relationships, reciprocal = true)
-    relationships.each do |relationship|
-      r  = relationship
-      begin
-        add_relationship r["procedure1_type"], r["procedure1_field"],
-          r["procedure2_type"], r["procedure2_field"]
-
-        add_relationship r["procedure2_type"], r["procedure2_field"],
-          r["procedure1_type"], r["procedure1_field"] if reciprocal
-
-        self.save!
-      rescue Exception => ex
-        # TODO: log.warn
-        # puts ex.message
-      end
-    end
-  end
-
-  def set_attributes(attributes = {})
-    attributes.each do |attribute, value|
-      self.write_attribute attribute, value
-    end
-  end
-
-  def to_auth_xml(authority, term_display_name)
-    CollectionSpace::Converter::Default.validate_authority!(authority)
-    authority_class = "CollectionSpace::Converter::Default::#{authority}".constantize
-    converter       = authority_class.new({
-      "shortIdentifier" => CollectionSpace::Identifiers.short_identifier(term_display_name),
-      "termDisplayName" => term_display_name,
-      "termType"        => "#{authority.downcase}Term",
-    })
-    # scary hack for namespaces
-    hack_namespaces converter.convert
-  end
-
-  def to_procedure_xml(procedure)
-    converter_type  = self.read_attribute(:import_converter)
-    converter_class = "CollectionSpace::Converter::#{converter_type}".constantize
-    check_valid_procedure!(procedure, converter_class)
-
-    procedure_class = "#{converter_class}::#{converter_type}#{procedure}".constantize
-    converter       = procedure_class.new(self.to_hash)
-    # scary hack for namespaces
-    hack_namespaces converter.convert
-  end
-
-  def to_relationship_xml(attributes)
-    relationship_class = "CollectionSpace::Converter::Default::Relationship".constantize
-    converter          = relationship_class.new(attributes)
-    # scary hack for namespaces
-    hack_namespaces converter.convert
-  end
-
-  def to_hash
-    Hash[self.attributes]
-  end
-
-  private
-
   def add_relationship(from_procedure, from_field, to_procedure, to_field)
     from_value = self.read_attribute( from_field )
     to_value   = self.read_attribute( to_field )
     raise "No data for field pair [#{from_field}:#{to_field}] for #{self.id}" unless from_value and to_value
 
-    # TODO: update this (lookup dock_type)!
+    # TODO: update this (lookup doc_type)!
     from_doc_type = "#{from_procedure.downcase}s"
     from          = CollectionSpaceObject.where(type: from_procedure, identifier: from_value).first
     to_doc_type   = "#{to_procedure.downcase}s"
@@ -153,7 +206,7 @@ class DataObject
   end
 
   def check_valid_procedure!(procedure, converter)
-    CollectionSpace::Converter::Default.validate_procedure!(procedure, converter)
+    self.default_converter_class.validate_procedure!(procedure, converter)
   end
 
   def hack_namespaces(xml)

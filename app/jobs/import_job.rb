@@ -1,34 +1,22 @@
 class ImportJob < ActiveJob::Base
   queue_as :default
 
-  def perform(import_file, import_batch, import_converter, import_profile, rows = [])
-    converter_class = "CollectionSpace::Converter::#{import_converter}".constantize
-    profiles        = converter_class.registered_profiles
-    profile         = profiles[import_profile]
-    raise "Invalid profile #{import_profile} for #{profiles}" unless profile
-
+  def perform(import_file, import_batch, converter_type, converter_profile, rows = [])
     data_object_attributes = {
-      import_file: import_file,
-      import_batch: import_batch,
-      import_converter: import_converter,
-      import_profile: import_profile,
+      import_file:       import_file,
+      import_batch:      import_batch,
+      converter_type:    converter_type,
+      converter_profile: converter_profile,
     }
 
     rows.each do |data|
       object = DataObject.new.from_json JSON.generate(data)
       object.set_attributes data_object_attributes
+      # validate object immediately after initial attributes set
+      object.save!
 
-      profile["Procedures"].each do |procedure, attributes|
-        object.add_procedure procedure, attributes
-      end
-
-      # "Authorities" => { "Person" => ["recby", "recfrom"] }
-      profile["Authorities"].each do |authority, fields|
-        object.add_authorities authority, fields
-      end
-
-      # TODO: add logging
-
+      object.add_procedures
+      object.add_authorities
       object.save!
     end
   end

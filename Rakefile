@@ -40,10 +40,10 @@ end
 
 namespace :relationships do
   # rake relationships:generate[acq1]
-  task :generate, [:import_batch] => :environment do |t, args|
-    import_batch     = args[:import_batch]
+  task :generate, [:batch] => :environment do |t, args|
+    batch = args[:batch]
 
-    RelationshipJob.perform_later import_batch
+    RelationshipJob.perform_later batch
     # run the job immediately when using rake
     Delayed::Worker.new.run(Delayed::Job.last)
 
