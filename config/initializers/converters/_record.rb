@@ -15,6 +15,9 @@ module CollectionSpace
           "Conservation" => {
             path: "conservation", schema: "conservation"
           },
+          "Organization" => {
+            path: "orgauthorities/urn:cspace:name(organization)/items", schema: "organizations"
+          },
           "Person" => {
             path: "personauthorities/urn:cspace:name(person)/items", schema: "persons"
           },
@@ -125,6 +128,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'conservation', 'conservation', common
+        end
+
+      end
+
+      class Organization < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'organizations', 'organization', common
         end
 
       end
