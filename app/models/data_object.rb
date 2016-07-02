@@ -6,6 +6,7 @@ class DataObject
   has_many :collection_space_objects, autosave: true, dependent: :destroy
   validates_presence_of :converter_type
   validates_presence_of :converter_profile
+  validate :type_and_profile_exist
 
   field :import_file,       type: String
   field :import_batch,      type: String
@@ -84,11 +85,13 @@ class DataObject
   end
 
   def profile
-    profiles          = self.converter_class.registered_profiles
-    converter_profile = self.converter_profile
-    profile           = profiles[converter_profile]
-    raise "Invalid profile #{converter_profile} for #{profiles}" unless profile
-    profile
+    unless @profile
+      profiles          = self.converter_class.registered_profiles
+      converter_profile = self.converter_profile
+      @profile          = profiles[converter_profile]
+      raise "Invalid profile #{converter_profile} for #{profiles}" unless profile
+    end
+    @profile
   end
 
   def relationship_class
@@ -211,6 +214,14 @@ class DataObject
 
   def hack_namespaces(xml)
     xml.to_s.gsub(/(<\/?)(\w+_)/, '\1ns2:\2')
+  end
+
+  def type_and_profile_exist
+    begin
+      self.profile
+    rescue Exception => ex
+      errors.add(:invalid_type_or_profile, ex.message)
+    end
   end
 
 end
