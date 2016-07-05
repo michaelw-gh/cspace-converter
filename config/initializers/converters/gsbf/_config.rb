@@ -54,7 +54,6 @@ module CollectionSpace
               {
                 "procedure1_type"  => "CollectionObject",
                 "procedure1_field" => "relatedObjectNumber",
-                "procedure1_alias" => "objectNumber", # TODO: resolve alias
                 "procedure2_type"  => "CollectionObject",
                 "procedure2_field" => "objectNumber",
               },
