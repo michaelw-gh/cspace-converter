@@ -1,6 +1,13 @@
 module CollectionSpace
 
   module Identifiers
+
+    # given a vocab option value convert to id form, for example:
+    # "Growing on a rock Bonsai style (Seki-joju)" => "growing_on_a_rock_bonsai_style_seki_joju"
+    def self.for_option(option)
+      option.downcase.gsub(/[()]/, '').gsub('-', '_').gsub(' ', '_')
+    end
+
     def self.short_identifier(value)
       v_str = value.gsub(/\W/, ''); # remove non-words
       v_enc = Base64.strict_encode64(v_str); # encode it
