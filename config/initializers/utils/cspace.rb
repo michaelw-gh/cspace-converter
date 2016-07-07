@@ -62,6 +62,57 @@ module CollectionSpace
       }
     end
 
+  module Helpers
+
+    def add_authority(xml, field, authority_type, authority, value)
+      CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
+        Rails.application.config.domain,
+        authority_type,
+        authority,
+        CollectionSpace::Identifiers.short_identifier(value),
+        value
+      )
+    end
+
+    def add_authorities(xml, field, authority_type, authority, values = [])
+      values = values.map do |value|
+        {
+          field => CollectionSpace::URN.generate(
+            Rails.application.config.domain,
+            authority_type,
+            authority,
+            CollectionSpace::Identifiers.short_identifier(value),
+            value
+          )
+        }
+      end
+      CollectionSpace::XML.add_group_list xml, field, values
+    end
+
+    def add_persons(xml, field, values = [])
+      add_authorities xml, field, 'personauthorities', 'person', values
+    end
+
+    def add_places(xml, field, values = [])
+      add_authorities xml, field, 'placeauthorities', 'place', values
+    end
+
+    def add_taxon(xml, field, value)
+      add_authority xml, field, 'taxonomyauthority', 'taxon', value
+    end
+
+    def add_vocab(xml, field, value)
+      CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
+        Rails.application.config.domain,
+        "vocabularies",
+        field.downcase,
+        CollectionSpace::Identifiers.for_option(value),
+        value
+      )
+    end
+
+  end
+
   end
 
 end

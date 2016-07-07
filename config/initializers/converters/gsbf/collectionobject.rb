@@ -19,20 +19,9 @@ module CollectionSpace
               CollectionSpace::XML.add xml, 'objectNumber', attributes["objectNumber"]
               # numberValue
 
-              if attributes["objectProductionPerson1"]
-                objectProductionPersons = split_mvf attributes, 'objectProductionPerson1'
-                objectProductionPersons = objectProductionPersons.map do |person|
-                  {
-                    "objectProductionPerson" => CollectionSpace::URN.generate(
-                      Rails.application.config.domain,
-                      "personauthorities",
-                      "person",
-                      CollectionSpace::Identifiers.short_identifier(person),
-                      person
-                    ),
-                  }
-                end
-                CollectionSpace::XML.add_group_list xml, 'objectProductionPerson', objectProductionPersons
+              if attributes.fetch("objectProductionPerson1", nil)
+                object_production_persons = split_mvf attributes, 'objectProductionPerson1'
+                CollectionSpace::XML::Helpers.add_persons xml, 'objectProductionPerson', object_production_persons
               end
 
               # fieldCollectors
@@ -41,15 +30,10 @@ module CollectionSpace
               # fieldCollectionDateLatest
               # fieldCollectionPlace (check)
 
-              CollectionSpace::XML.add_group_list xml, 'fieldCollectionPlace', [{
-                "fieldCollectionPlace" => CollectionSpace::URN.generate(
-                  Rails.application.config.domain,
-                  "placeauthorities",
-                  "place",
-                  CollectionSpace::Identifiers.short_identifier(attributes["fieldCollectionPlace"]),
-                  attributes["fieldCollectionPlace"]
-                ),
-              }] if attributes["fieldCollectionPlace"]
+              if attributes.fetch("fieldCollectionPlace", nil)
+                field_collection_places = split_mvf attributes, "fieldCollectionPlace"
+                CollectionSpace::XML::Helpers.add_places xml, 'fieldCollectionPlace', field_collection_places
+              end
 
               # sponsor
               # referenceNote
@@ -57,19 +41,15 @@ module CollectionSpace
               CollectionSpace::XML.add xml, 'briefDescription', attributes['briefDescription']
               # expanded description?
 
-              date_display  = attributes['objectProductionDateDisplayDate']
-              date_assoc    = attributes['objectProductionDateAssociation']
-              date_earliest = attributes['objectProductionDateEarliest']
-              date_latest   = attributes['objectProductionDateLatestYear']
+              display_date = attributes.fetch("objectProductionDateDisplayDate", attributes["objectProductionDateEarliest"])
+              object_production_dates << {
+                "dateDisplayDate"        => attributes['objectProductionDateDisplayDate'],
+                "dateAssociation"        => attributes['objectProductionDateAssociation'],
+                "dateEarliestSingleYear" => attributes['objectProductionDateEarliest'],
+                "dateLatestYear"         => attributes['objectProductionDateLatestYear'],
+              }
 
-              objectProductionDates << {
-                "dateDisplayDate"        => date_display,
-                "dateAssociation"        => date_assoc,
-                "dateEarliestSingleYear" => date_earliest,
-                "dateLatestYear"         => date_latest,
-              } if date_display_training
-
-              CollectionSpace::XML.add_group_list xml, 'objectProductionDate', objectProductionDates
+              CollectionSpace::XML.add_group_list xml, 'objectProductionDate', object_production_dates if display_date
             end
 
             xml.send(
@@ -86,23 +66,12 @@ module CollectionSpace
               native = attributes["nativeSpecies"].blank? ? 'false' : 'true'
               CollectionSpace::XML.add xml, 'nativeSpecies', native
 
-              CollectionSpace::XML.add xml, 'taxon', CollectionSpace::URN.generate(
-                Rails.application.config.domain,
-                "taxonomyauthority",
-                "taxon",
-                CollectionSpace::Identifiers.short_identifier(attributes["taxon"]),
-                attributes["taxon"]
-              ) if attributes["taxon"]
+              CollectionSpace::XML::Helpers.add_taxon xml, 'taxon', attributes["taxon"] if attributes["taxon"]
 
-              # treeType & potStyle
               ["treeType", "potStyle"].each do |bonsai_vocab|
-                CollectionSpace::XML.add xml, bonsai_vocab, CollectionSpace::URN.generate(
-                  Rails.application.config.domain,
-                  "vocabularies",
-                  bonsai_vocab.downcase,
-                  CollectionSpace::Identifiers.for_option(attributes[bonsai_vocab]),
-                  attributes[bonsai_vocab]
-                ) if attributes[bonsai_vocab]
+                if attributes.fetch(bonsai_vocab, nil)
+                  CollectionSpace::XML::Helpers.add_vocab xml, bonsai_vocab, attributes[bonsai_vocab]
+                end
               end
             end
 
