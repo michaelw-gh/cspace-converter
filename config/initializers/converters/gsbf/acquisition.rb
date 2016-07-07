@@ -12,18 +12,7 @@ module CollectionSpace
             CollectionSpace::XML.add xml, 'creditLine', attributes["acquisitionCreditLine"]
 
             acq_sources = split_mvf attributes, 'acquisitionSource1', 'acquisitionSource2'
-            acq_sources = acq_sources.map do |source|
-              {
-                "acquisitionSource" => CollectionSpace::URN.generate(
-                  Rails.application.config.domain,
-                  "personauthorities",
-                  "person",
-                  CollectionSpace::Identifiers.short_identifier(source),
-                  source,
-                ),
-              }
-            end
-            CollectionSpace::XML.add_repeat xml, 'acquisitionSources', acq_sources
+            CollectionSpace::XML::Helpers.add_persons xml, 'acquisitionSources', acq_sources, :add_repeat
 
             date_periods = split_mvf attributes, 'acquisitionDateEarliest', 'acquisitionDateLatest'
             CollectionSpace::XML.add_group xml, 'acquisitionDate', {

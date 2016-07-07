@@ -74,7 +74,7 @@ module CollectionSpace
       )
     end
 
-    def add_authorities(xml, field, authority_type, authority, values = [])
+    def add_authorities(xml, field, authority_type, authority, values = [], method)
       values = values.map do |value|
         {
           field => CollectionSpace::URN.generate(
@@ -86,15 +86,15 @@ module CollectionSpace
           )
         }
       end
-      CollectionSpace::XML.add_group_list xml, field, values
+      CollectionSpace::XML.send(method, xml, field, values)
     end
 
-    def add_persons(xml, field, values = [])
-      add_authorities xml, field, 'personauthorities', 'person', values
+    def add_persons(xml, field, values = [], method = :add_group_list)
+      add_authorities xml, field, 'personauthorities', 'person', values, method
     end
 
-    def add_places(xml, field, values = [])
-      add_authorities xml, field, 'placeauthorities', 'place', values
+    def add_places(xml, field, values = [], method = :add_group_list)
+      add_authorities xml, field, 'placeauthorities', 'place', values, method
     end
 
     def add_taxon(xml, field, value)
