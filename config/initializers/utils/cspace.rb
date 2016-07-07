@@ -5,7 +5,11 @@ module CollectionSpace
     # given a vocab option value convert to id form, for example:
     # "Growing on a rock Bonsai style (Seki-joju)" => "growing_on_a_rock_bonsai_style_seki_joju"
     def self.for_option(option)
-      option.downcase.gsub(/[()]/, '').gsub('-', '_').gsub(' ', '_')
+      option.downcase.
+        gsub(/[()]/, '').
+        gsub(' - ', '_').
+        gsub('-', '_').
+        gsub(' ', '_')
     end
 
     def self.short_identifier(value)
@@ -64,7 +68,7 @@ module CollectionSpace
 
   module Helpers
 
-    def add_authority(xml, field, authority_type, authority, value)
+    def self.add_authority(xml, field, authority_type, authority, value)
       CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
         Rails.application.config.domain,
         authority_type,
@@ -74,7 +78,7 @@ module CollectionSpace
       )
     end
 
-    def add_authorities(xml, field, authority_type, authority, values = [], method)
+    def self.add_authorities(xml, field, authority_type, authority, values = [], method)
       values = values.map do |value|
         {
           field => CollectionSpace::URN.generate(
@@ -89,19 +93,19 @@ module CollectionSpace
       CollectionSpace::XML.send(method, xml, field, values)
     end
 
-    def add_persons(xml, field, values = [], method = :add_group_list)
+    def self.add_persons(xml, field, values = [], method = :add_group_list)
       add_authorities xml, field, 'personauthorities', 'person', values, method
     end
 
-    def add_places(xml, field, values = [], method = :add_group_list)
+    def self.add_places(xml, field, values = [], method = :add_group_list)
       add_authorities xml, field, 'placeauthorities', 'place', values, method
     end
 
-    def add_taxon(xml, field, value)
+    def self.add_taxon(xml, field, value)
       add_authority xml, field, 'taxonomyauthority', 'taxon', value
     end
 
-    def add_vocab(xml, field, value)
+    def self.add_vocab(xml, field, value)
       CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
         Rails.application.config.domain,
         "vocabularies",

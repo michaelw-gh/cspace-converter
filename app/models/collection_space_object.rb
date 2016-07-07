@@ -5,6 +5,8 @@ class CollectionSpaceObject
   belongs_to :data_object, counter_cache: true
   validates  :identifier, uniqueness: true
 
+  after_validation :log_errors, :if => Proc.new { |object| object.errors.any? }
+
   field :category,         type: String # Authority, Procedure
   field :type,             type: String
   field :identifier_field, type: String
@@ -32,5 +34,11 @@ class CollectionSpaceObject
   def self.has_procedure?(identifier)
     identifier = self.where(category: 'Procedure', identifier: identifier).first
     identifier ? true : false
+  end
+
+  private
+
+  def log_errors
+    logger.warn self.errors.full_messages.append([self.attributes.inspect]).join("\n")
   end
 end

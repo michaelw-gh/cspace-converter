@@ -15,10 +15,14 @@ Structurally this is very similar to the [PBM](#) example. Some differences:
 # import GSBF batch using GSBF converter, GSBF converter profile, GSBF csv file
 ./import.sh gsbf_tree_acq GSBF acquisition gsbf_acquisition
 ./import.sh gsbf_pot_acq GSBF acquisition gsbf_pot_acquisition
+./import.sh gsbf_tree_cat GSBF cataloging gsbf_cataloging
+./import.sh gsbf_pot_cat GSBF cataloging gsbf_pot_cataloging
 
 # transfer GSBF data to CollectionSpace
 rake remote:action:transfer[Acquisition,gsbf_tree_acq]
 rake remote:action:transfer[Acquisition,gsbf_pot_acq]
+rake remote:action:transfer[CollectionObject,gsbf_tree_cat]
+rake remote:action:transfer[CollectionObject,gsbf_pot_cat]
 
 rake remote:action:transfer[Organization,all]
 rake remote:action:transfer[Person,all]

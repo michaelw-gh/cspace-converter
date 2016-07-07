@@ -42,14 +42,14 @@ module CollectionSpace
               # expanded description?
 
               display_date = attributes.fetch("objectProductionDateDisplayDate", attributes["objectProductionDateEarliest"])
-              object_production_dates << {
-                "dateDisplayDate"        => attributes['objectProductionDateDisplayDate'],
+              object_production_date = {
+                "dateDisplayDate"        => display_date,
                 "dateAssociation"        => attributes['objectProductionDateAssociation'],
                 "dateEarliestSingleYear" => attributes['objectProductionDateEarliest'],
                 "dateLatestYear"         => attributes['objectProductionDateLatestYear'],
               }
 
-              CollectionSpace::XML.add_group_list xml, 'objectProductionDate', object_production_dates if display_date
+              CollectionSpace::XML.add_group_list xml, 'objectProductionDate', [object_production_date] if display_date
             end
 
             xml.send(
