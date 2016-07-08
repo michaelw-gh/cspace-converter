@@ -18,7 +18,11 @@ class DataObject
     authorities = self.profile.fetch("Authorities", {})
     authorities.each do |authority, fields|
       fields.each do |field|
-        add_authority authority, field
+        begin
+          add_authority authority, field
+        rescue Exception => ex
+          logger.error ex.message
+        end
       end
     end
   end
@@ -27,7 +31,11 @@ class DataObject
   def add_procedures
     procedures = self.profile.fetch("Procedures", {})
     procedures.each do |procedure, attributes|
-      add_procedure procedure, attributes
+      begin
+        add_procedure procedure, attributes
+      rescue Exception => ex
+        logger.error ex.message
+      end
     end
   end
 
@@ -40,14 +48,16 @@ class DataObject
     relationships.each do |relationship|
       r  = relationship
       begin
+        # no point continuing if the fields don't exist
+        next unless (self.read_attribute(r["procedure1_field"]) and self.read_attribute(r["procedure2_field"]))
+
         add_relationship r["procedure1_type"], r["procedure1_field"],
           r["procedure2_type"], r["procedure2_field"]
 
         add_relationship r["procedure2_type"], r["procedure2_field"],
           r["procedure1_type"], r["procedure1_field"] if reciprocal
       rescue Exception => ex
-        # TODO: log.warn
-        # puts ex.message
+        logger.warn ex.message
       end
     end
   end
@@ -172,18 +182,18 @@ class DataObject
   def add_relationship(from_procedure, from_field, to_procedure, to_field)
     from_value = self.read_attribute( from_field )
     to_value   = self.read_attribute( to_field )
-    raise "No data for field pair [#{from_field}:#{to_field}] for #{self.id}" unless from_value and to_value
+    raise "No data for field pair [#{from_field}:#{to_field}] for #{self.id}" unless (from_value and to_value)
 
     # TODO: update this (lookup doc_type)!
     from_doc_type = "#{from_procedure.downcase}s"
     from          = CollectionSpaceObject.where(type: from_procedure, identifier: from_value).first
     to_doc_type   = "#{to_procedure.downcase}s"
     to            = CollectionSpaceObject.where(type: to_procedure, identifier: to_value).first
-    raise "Object pair not found [#{from_value}:#{to_value}] for #{self.id}" unless from and to
+    raise "Object pair not found [#{from_value}:#{to_value}] for #{self.id}" unless (from and to)
 
     from_csid = from.read_attribute "csid"
     to_csid   = to.read_attribute   "csid"
-    unless from_csid and to_csid
+    unless (from_csid and to_csid)
       raise "CSID values not found for pair [#{from.identifier}:#{to.identifier}] for #{self.id}"
     end
 

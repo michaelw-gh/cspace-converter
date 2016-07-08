@@ -34,6 +34,7 @@ rake remote:action:transfer[Taxon,all]
 # generate relationships for GSBF batch
 rake relationships:generate[gsbf_tree_acq]
 rake relationships:generate[gsbf_pot_acq]
+rake relationships:generate[gsbf_pot_cat]
 
 # transfer GSBF relationships to CollectionSpace
 rake remote:action:transfer[Relationship,all]
@@ -45,6 +46,8 @@ To "undo" the transfers use the delete task:
 # delete transfers
 rake remote:action:delete[Acquisition,gsbf_tree_acq]
 rake remote:action:delete[Acquisition,gsbf_pot_acq]
+rake remote:action:delete[CollectionObject,gsbf_tree_cat]
+rake remote:action:delete[CollectionObject,gsbf_pot_cat]
 
 rake remote:action:delete[Organization,all]
 rake remote:action:delete[Person,all]

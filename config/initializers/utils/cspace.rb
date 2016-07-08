@@ -1,6 +1,7 @@
 module CollectionSpace
 
   module Identifiers
+    ::CSIDF = CollectionSpace::Identifiers
 
     # given a vocab option value convert to id form, for example:
     # "Growing on a rock Bonsai style (Seki-joju)" => "growing_on_a_rock_bonsai_style_seki_joju"
@@ -21,12 +22,15 @@ module CollectionSpace
   end
 
   module URN
+    ::CSURN = CollectionSpace::URN
+
     def self.generate(domain, type, sub, identifier, label)
       "urn:cspace:#{domain}:#{type}:name(#{sub}):item:name(#{identifier})'#{label}'"
     end
   end
 
   class XML
+    ::CSXML = CollectionSpace::XML
 
     def self.add(xml, key, value)
       xml.send(key.to_sym, value)
@@ -66,10 +70,14 @@ module CollectionSpace
       }
     end
 
+    def self.add_string(xml, string)
+      xml << string
+    end
+
   module Helpers
 
     def self.add_authority(xml, field, authority_type, authority, value)
-      CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
+      CSXML.add xml, field, CSURN.generate(
         Rails.application.config.domain,
         authority_type,
         authority,
@@ -81,7 +89,7 @@ module CollectionSpace
     def self.add_authorities(xml, field, authority_type, authority, values = [], method)
       values = values.map do |value|
         {
-          field => CollectionSpace::URN.generate(
+          field => CSURN.generate(
             Rails.application.config.domain,
             authority_type,
             authority,
@@ -90,11 +98,27 @@ module CollectionSpace
           )
         }
       end
-      CollectionSpace::XML.send(method, xml, field, values)
+      CSXML.send(method, xml, field, values)
+    end
+
+    def self.add_person(xml, field, value)
+      add_authority xml, field, 'personauthorities', 'person', value
     end
 
     def self.add_persons(xml, field, values = [], method = :add_group_list)
       add_authorities xml, field, 'personauthorities', 'person', values, method
+    end
+
+    def self.add_organization(xml, field, value)
+      add_authority xml, field, 'orgauthorities', 'organization', value
+    end
+
+    def self.add_organizations(xml, field, values = [], method = :add_group_list)
+      add_authorities xml, field, 'orgauthorities', 'organization', values, method
+    end
+
+    def self.add_place(xml, field, value)
+      add_authority xml, field, 'placeauthorities', 'place', value
     end
 
     def self.add_places(xml, field, values = [], method = :add_group_list)
@@ -106,7 +130,7 @@ module CollectionSpace
     end
 
     def self.add_vocab(xml, field, value)
-      CollectionSpace::XML.add xml, field, CollectionSpace::URN.generate(
+      CSXML.add xml, field, CSURN.generate(
         Rails.application.config.domain,
         "vocabularies",
         field.downcase,
