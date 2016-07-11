@@ -141,15 +141,15 @@ module CollectionSpace
             "Procedures" => {
               "ValuationControl" => {
                 "identifier_field" => "valuationcontrolRefNumber",
-                "identifier" => "valuationcontrolRefNumber",
-                "title" => "valuationcontrolRefNumber",
+                "identifier" => "valuationControlReferenceNumber",
+                "title" => "valuationControlReferenceNumber",
               }
             },
             "Authorities" => {},
             "Relationships" => [
               {
                 "procedure1_type"  => "ValuationControl",
-                "procedure1_field" => "valuationcontrolRefNumber",
+                "procedure1_field" => "valuationControlReferenceNumber",
                 "procedure2_type"  => "CollectionObject",
                 "procedure2_field" => "objectNumber",
               },
