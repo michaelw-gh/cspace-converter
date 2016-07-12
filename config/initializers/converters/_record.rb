@@ -12,8 +12,17 @@ module CollectionSpace
           "CollectionObject" => {
             path: "collectionobjects", schema: "collectionobjects"
           },
+          "ConditionCheck" => {
+            path: "conditionchecks", schema: "conditionchecks"
+          },
           "Conservation" => {
             path: "conservation", schema: "conservation"
+          },
+          "LoanOut" => {
+            path: "loansout", schema: "loansout"
+          },
+          "ObjectExit" => {
+            path: "objectexit", schema: "objectexit"
           },
           "Organization" => {
             path: "orgauthorities/urn:cspace:name(organization)/items", schema: "organizations"
@@ -123,11 +132,38 @@ module CollectionSpace
 
       end
 
+      class ConditionCheck < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'conditionchecks', 'conditioncheck', common
+        end
+
+      end
+
       class Conservation < Record
 
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'conservation', 'conservation', common
+        end
+
+      end
+
+      class LoanOut < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'loansout', 'loanout', common
+        end
+
+      end
+
+      class ObjectExit < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'objectexit', 'objectexit', common
         end
 
       end
