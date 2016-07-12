@@ -122,7 +122,7 @@ module CollectionSpace
           "objectexit" => {
             "Procedures" => {
               "ObjectExit" => {
-                "identifier_field" => "objectExitNumber",
+                "identifier_field" => "exitNumber",
                 "identifier" => "objectExitNumber",
                 "title" => "objectExitNumber",
               },

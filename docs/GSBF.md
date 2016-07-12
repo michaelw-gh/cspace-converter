@@ -17,6 +17,7 @@ Structurally this is very similar to the [PBM](#) example. Some differences:
 ./import.sh gsbf_pot_acq GSBF acquisition gsbf_pot_acquisition
 ./import.sh gsbf_tree_cat GSBF cataloging gsbf_cataloging
 ./import.sh gsbf_pot_cat GSBF cataloging gsbf_pot_cataloging
+./import.sh gsbf_tree_obj GSBF objectexit gsbf_objectexit
 ./import.sh gsbf_pot_val GSBF valuationcontrol gsbf_pot_valuation
 
 # transfer GSBF data to CollectionSpace
@@ -24,6 +25,7 @@ rake remote:action:transfer[Acquisition,gsbf_tree_acq]
 rake remote:action:transfer[Acquisition,gsbf_pot_acq]
 rake remote:action:transfer[CollectionObject,gsbf_tree_cat]
 rake remote:action:transfer[CollectionObject,gsbf_pot_cat]
+rake remote:action:transfer[ObjectExit,gsbf_tree_obj]
 rake remote:action:transfer[ValuationControl,gsbf_pot_val]
 
 rake remote:action:transfer[Organization,all]
@@ -37,6 +39,7 @@ rake remote:action:transfer[Taxon,all]
 rake relationships:generate[gsbf_tree_acq]
 rake relationships:generate[gsbf_pot_acq]
 rake relationships:generate[gsbf_pot_cat]
+rake relationships:generate[gsbf_tree_obj]
 rake relationships:generate[gsbf_pot_val]
 
 # transfer GSBF relationships to CollectionSpace
@@ -51,6 +54,7 @@ rake remote:action:delete[Acquisition,gsbf_tree_acq]
 rake remote:action:delete[Acquisition,gsbf_pot_acq]
 rake remote:action:delete[CollectionObject,gsbf_tree_cat]
 rake remote:action:delete[CollectionObject,gsbf_pot_cat]
+rake remote:action:delete[ObjectExit,gsbf_tree_obj]
 rake remote:action:delete[ValuationControl,gsbf_pot_val]
 
 rake remote:action:delete[Organization,all]
