@@ -16,12 +16,24 @@ class DataObject
   # "Person" => ["recby", "recfrom"]
   def add_authorities
     authorities = self.profile.fetch("Authorities", {})
+    authorities_added = Set.new
     authorities.each do |authority, fields|
       fields.each do |field|
-        begin
-          add_authority authority, field
-        rescue Exception => ex
-          logger.error ex.message
+        term_display_name = self.read_attribute(field)
+        next unless term_display_name
+        # attempt to split field in case it is multi-valued
+        term_display_name.split(self.delimiter).map(&:strip).each do |name|
+          begin
+            identifier = CollectionSpace::Identifiers.short_identifier(name)
+            # pre-filter authorities as we only want to create the first occurrence
+            # and not fail CollectionSpaceObject validation for unique_identifier
+            next if CollectionSpaceObject.has_authority?(identifier)
+            # prevent creation of duplicate authorities between fields in object data
+            add_authority authority, name unless authorities_added.include? name
+            authorities_added << name
+          rescue Exception => ex
+            logger.error "#{ex.message}\n#{ex.backtrace}"
+          end
         end
       end
     end
@@ -34,7 +46,7 @@ class DataObject
       begin
         add_procedure procedure, attributes
       rescue Exception => ex
-        logger.error ex.message
+        logger.error "#{ex.message}\n#{ex.backtrace}"
       end
     end
   end
@@ -144,27 +156,18 @@ class DataObject
 
   private
 
-  def add_authority(authority, field)
-    term_display_name = self.read_attribute(field)
-    if term_display_name
-      # attempt to split field in case it is multi-valued
-      term_display_name.split(self.delimiter).map(&:strip).each do |name|
-        identifier = CollectionSpace::Identifiers.short_identifier(name)
-        # pre-filter authorities as we only want to create the first occurrence
-        # and not fail CollectionSpaceObject validation for unique_identifier
-        next if CollectionSpaceObject.has_authority?(identifier)
+  def add_authority(authority, name)
+    identifier = CollectionSpace::Identifiers.short_identifier(name)
 
-        data = {}
-        # check for existence or update
-        data[:category]         = "Authority"
-        data[:type]             = authority
-        data[:identifier_field] = 'shortIdentifier'
-        data[:identifier]       = identifier
-        data[:title]            = name
-        data[:content]          = self.to_auth_xml(authority, name)
-        self.collection_space_objects.build data
-      end
-    end
+    data = {}
+    # check for existence or update
+    data[:category]         = "Authority"
+    data[:type]             = authority
+    data[:identifier_field] = 'shortIdentifier'
+    data[:identifier]       = identifier
+    data[:title]            = name
+    data[:content]          = self.to_auth_xml(authority, name)
+    self.collection_space_objects.build data
   end
 
   def add_procedure(procedure, attributes)

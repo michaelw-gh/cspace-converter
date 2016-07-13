@@ -16,6 +16,8 @@ class ImportJob < ActiveJob::Base
       object.save!
 
       object.add_procedures
+      object.save!
+
       object.add_authorities
       object.save!
     end
