@@ -77,25 +77,13 @@ module CollectionSpace
   module Helpers
 
     def self.add_authority(xml, field, authority_type, authority, value)
-      CSXML.add xml, field, CSURN.generate(
-        Rails.application.config.domain,
-        authority_type,
-        authority,
-        CollectionSpace::Identifiers.short_identifier(value),
-        value
-      )
+      CSXML.add xml, field, get_authority_urn(authority_type, authority, value)
     end
 
     def self.add_authorities(xml, field, authority_type, authority, values = [], method)
       values = values.map do |value|
         {
-          field => CSURN.generate(
-            Rails.application.config.domain,
-            authority_type,
-            authority,
-            CollectionSpace::Identifiers.short_identifier(value),
-            value
-          )
+          field => get_authority_urn(authority_type, authority, value),
         }
       end
       CSXML.send(method, xml, field, values)
@@ -129,11 +117,26 @@ module CollectionSpace
       add_authority xml, field, 'taxonomyauthority', 'taxon', value
     end
 
+    # NOTE: assumes field name matches vocab name (may need to update)
     def self.add_vocab(xml, field, value)
-      CSXML.add xml, field, CSURN.generate(
+      CSXML.add xml, field, get_vocab_urn(field, value)
+    end
+
+    def self.get_authority_urn(authority_type, authority, value)
+      CSURN.generate(
+        Rails.application.config.domain,
+        authority_type,
+        authority,
+        CollectionSpace::Identifiers.short_identifier(value),
+        value
+      )
+    end
+
+    def self.get_vocab_urn(vocabulary, value)
+      CSURN.generate(
         Rails.application.config.domain,
         "vocabularies",
-        field.downcase,
+        vocabulary.downcase,
         CollectionSpace::Identifiers.for_option(value),
         value
       )
