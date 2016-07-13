@@ -62,13 +62,13 @@ module CollectionSpace
           "conditioncheck" => {
             "Procedures" => {
               "ConditionCheck" => {
-                "identifier_field" => "objectNumber",
-                "identifier" => "objectNumber",
-                "title" => "objectNumber",
+                "identifier_field" => "conditionCheckRefNumber",
+                "identifier" => "conditionCheckRefNumber",
+                "title" => "conditionCheckRefNumber",
               },
             },
             "Authorities" => {
-              "Person" => ["assessor", "conditionChecker"],
+              "Person" => ["conditionChecker"],
             },
             "Relationships" => [
               {
