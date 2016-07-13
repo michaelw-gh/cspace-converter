@@ -88,7 +88,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
-              "Person" => ["appliedBy", "conservators", "identifiedBy", "treatedBy"],
+              "Person" => ["appliedBy", "conservators", "identifiedBy", "performedBy", "treatedBy"],
             },
             "Relationships" => [
               {
