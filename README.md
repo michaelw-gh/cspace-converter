@@ -32,12 +32,15 @@ docker run --net=host --name mongo -d mongo:3.2
 
 You should be able to access MongDB on `http://localhost:27017`.
 
+**Set the environment**
+
+There is a default `.env` file that provides example configuration. Override it by creating a `.env.local` file with custom settings.
+
 **Initial data import**
 
 The general command is:
 
 ```
-. ./set_env.sh [CSPACE_CONVERTER_DOMAIN] # optional
 ./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE] [CS_CONV_FILE]
 ```
 

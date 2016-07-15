@@ -4,14 +4,16 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore dotfiles
+# Ignore dotfiles (making an exception for the default .env configuration)
 /.*
+!/.env
 
 # Ignore bundler config.
 /.bundle
 
 # Ignore filetypes
 /*.csv
+/.env.*
 
 # Ignore data
 /db/data/
