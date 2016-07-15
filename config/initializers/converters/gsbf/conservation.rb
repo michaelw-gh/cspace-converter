@@ -83,7 +83,7 @@ module CollectionSpace
               application_date = DateTime.parse(attributes["applicationDate"]) rescue nil
 
               applied_by = attributes["appliedBy"].nil? ?
-                nil : CSXML::Helpers.get_authority_urn('personauthorities',  split_mvf(attributes, 'appliedBy')[0])
+                nil : CSXML::Helpers.get_authority_urn('personauthorities', 'person', split_mvf(attributes, 'appliedBy')[0])
 
               CSXML.add_group_list xml, 'fertilization', [{
                 "applicationDate"    => application_date,

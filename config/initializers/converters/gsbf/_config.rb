@@ -130,7 +130,7 @@ module CollectionSpace
             "Authorities" => {},
             "Relationships" => [
               {
-                "procedure1_type"  => "objectExit",
+                "procedure1_type"  => "ObjectExit",
                 "procedure1_field" => "objectExitNumber",
                 "procedure2_type"  => "CollectionObject",
                 "procedure2_field" => "objectNumber",
