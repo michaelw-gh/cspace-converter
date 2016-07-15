@@ -24,7 +24,7 @@ class DataObject
         # attempt to split field in case it is multi-valued
         term_display_name.split(self.delimiter).map(&:strip).each do |name|
           begin
-            identifier = CollectionSpace::Identifiers.short_identifier(name)
+            identifier = CSIDF.short_identifier(name)
             # pre-filter authorities as we only want to create the first occurrence
             # and not fail CollectionSpaceObject validation for unique_identifier
             next if CollectionSpaceObject.has_authority?(identifier)
@@ -129,9 +129,9 @@ class DataObject
   def to_auth_xml(authority, term_display_name)
     self.default_converter_class.validate_authority!(authority)
     converter = self.authority_class(authority).new({
-      "shortIdentifier" => CollectionSpace::Identifiers.short_identifier(term_display_name),
+      "shortIdentifier" => CSIDF.short_identifier(term_display_name),
       "termDisplayName" => term_display_name,
-      "termType"        => "#{authority.downcase}Term",
+      "termType"        => "#{CSIDF.authority_term_type(authority)}Term",
     })
     # scary hack for namespaces
     hack_namespaces converter.convert
@@ -157,7 +157,7 @@ class DataObject
   private
 
   def add_authority(authority, name)
-    identifier = CollectionSpace::Identifiers.short_identifier(name)
+    identifier = CSIDF.short_identifier(name)
 
     data = {}
     # check for existence or update

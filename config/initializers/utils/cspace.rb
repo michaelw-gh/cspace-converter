@@ -3,6 +3,15 @@ module CollectionSpace
   module Identifiers
     ::CSIDF = CollectionSpace::Identifiers
 
+    def self.authority_term_type(authority)
+      authority  = authority.downcase
+      # not all authorities use the full name in the term type i.e. orgTermGroupList
+      term_types = {
+        "organization" => "org"
+      }
+      term_types.fetch(authority, authority)
+    end
+
     # given a vocab option value convert to id form, for example:
     # "Growing on a rock Bonsai style (Seki-joju)" => "growing_on_a_rock_bonsai_style_seki_joju"
     def self.for_option(option)
