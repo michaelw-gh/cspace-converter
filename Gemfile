@@ -41,6 +41,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.4'
+  gem 'capybara', '~> 2.4.0'
 end
 
 group :development do
