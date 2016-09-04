@@ -3,6 +3,7 @@
   <%= render partial: 'shared/sidebar' %>
 
   <div class="col-md-10">
+    <%= render partial: 'shared/alerts' %>
     <%= render partial: 'shared/title', :locals => { :title => 'Import' } %>
 
     <div class="row">
@@ -12,7 +13,7 @@
           <div class="form-group row">
             <label for="batch" class="col-md-2 form-control-label">Batch</label>
             <div class="col-md-10">
-              <%= text_field_tag 'batch', nil, placeholder: 'Enter a batch name ...', class: 'form-control' %>
+              <%= text_field_tag 'batch', nil, placeholder: 'Enter a batch name ...', class: 'form-control', required: true %>
             </div>
           </div>
           <div class="form-group row">
@@ -31,7 +32,7 @@
             <label for="file" class="col-md-2 form-control-label">File</label>
             <div class="col-md-10">
               <label class="file">
-                <%= file_field_tag 'file' %>
+                <%= file_field_tag 'file', required: true %>
                 <span class="file-custom"></span>
               </label>
             </div>
