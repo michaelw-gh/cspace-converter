@@ -53,8 +53,8 @@ The general command is:
 For example:
 
 ```
-./import.sh ppsaccession1 PastPerfect ppsaccessiondata ppsaccessiondata
-./import.sh ppsobjects1 PastPerfect ppsobjectsdata ppsobjectsdata
+./import.sh pp_accession1 PastPerfect accessions PPSdata_accession
+./import.sh pp_objects1 PastPerfect objects PPSdata_objects
 ```
 
 For these commands to actually work you will need the data files in `db/data`.
