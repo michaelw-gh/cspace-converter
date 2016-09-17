@@ -3,7 +3,7 @@ class CollectionSpaceObject
   include Mongoid::Timestamps
 
   belongs_to :data_object, counter_cache: true
-  validates  :identifier, uniqueness: true
+  validate   :identifier_is_unique_per_type
 
   after_validation :log_errors, :if => Proc.new { |object| object.errors.any? }
 
@@ -22,21 +22,28 @@ class CollectionSpaceObject
   scope :transferred, ->{ where(csid: true) } # TODO: check
 
   def self.has_authority?(identifier)
-    identifier = self.where(category: 'Authority', identifier: identifier).first
+    identifier = CollectionSpaceObject.where(category: 'Authority', identifier: identifier).first
     identifier ? true : false
   end
 
   def self.has_identifier?(identifier)
-    identifier = self.where(identifier: identifier).first
+    identifier = CollectionSpaceObject.where(identifier: identifier).first
     identifier ? true : false
   end
 
   def self.has_procedure?(identifier)
-    identifier = self.where(category: 'Procedure', identifier: identifier).first
+    identifier = CollectionSpaceObject.where(category: 'Procedure', identifier: identifier).first
     identifier ? true : false
   end
 
   private
+
+  def identifier_is_unique_per_type
+    identifier = CollectionSpaceObject.where(type: self.type, identifier: self.identifier).count
+    if identifier > 1 # don't create another cspace object of same type with the same identifier
+      errors.add("Identifier must be unique per type: #{self.type} #{self.identifier}")
+    end
+  end
 
   def log_errors
     logger.warn self.errors.full_messages.append([self.attributes.inspect]).join("\n")
