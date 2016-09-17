@@ -11,29 +11,36 @@ module CollectionSpace
 
       def self.registered_profiles
         {
-          "ppsaccessiondata" => {
+          "accessions" => {
             "Procedures" => {
               "Acquisition" => {
                 "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "accessno",
                 "title" => "accessno",
-                # "service" => "acquisitions", DEPRECATED
               }
             },
             "Authorities" => {},
+            "Relationships" => [],
           },
-          "ppsobjectsdata" => {
+          "objects" => {
             "Procedures" => {
               "CollectionObject" => {
                 "identifier_field" => "objectNumber",
                 "identifier" => "objectid",
                 "title" => "title",
-                # "service" => "collectionobjects", DEPRECATED
               },
             },
             "Authorities" => {
               "Person" => ["artist"],
             },
+            "Relationships" => [
+              {
+                "procedure1_type"  => "Acquisition",
+                "procedure1_field" => "accessno",
+                "procedure2_type"  => "CollectionObject",
+                "procedure2_field" => "objectid",
+              },
+            ],
           }
         }
       end
