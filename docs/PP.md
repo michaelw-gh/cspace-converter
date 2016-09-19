@@ -1,28 +1,31 @@
 # PastPerfect
 
 ```
-rake db:nuke
+./bin/rake db:nuke
 
 ./import.sh pp_accession1 PastPerfect accessions PPSdata_accession
+./import.sh pp_archives1 PastPerfect archives PPSdata_archives
+./import.sh pp_library1 PastPerfect library PPSdata_library
 ./import.sh pp_objects1 PastPerfect objects PPSdata_objects
+./import.sh pp_photos1 PastPerfect photos PPSdata_photos
 
-rake remote:action:transfer[Acquisition,pp_accession1]
-rake remote:action:transfer[CollectionObject,pp_objects1]
+./bin/rake remote:action:transfer[Acquisition,pp_accession1]
+./bin/rake remote:action:transfer[CollectionObject,pp_objects1]
 
 # after other transfers
-rake relationships:generate[pp_accession1]
-rake relationships:generate[pp_objects1]
+./bin/rake relationships:generate[pp_accession1]
+./bin/rake relationships:generate[pp_objects1]
 
-rake remote:action:transfer[Relationship,all]
+./bin/rake remote:action:transfer[Relationship,all]
 ```
 
 To undo:
 
 ```
-rake remote:action:delete[Acquisition,pp_accession1]
-rake remote:action:delete[CollectionObject,pp_objects1]
+./bin/rake remote:action:delete[Acquisition,pp_accession1]
+./bin/rake remote:action:delete[CollectionObject,pp_objects1]
 
-rake remote:action:delete[Relationship,all]
+./bin/rake remote:action:delete[Relationship,all]
 ```
 
 ---

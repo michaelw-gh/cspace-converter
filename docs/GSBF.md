@@ -24,58 +24,58 @@ Structurally this is very similar to the [PBM](#) example. Some differences:
 ./import.sh gsbf_pot_val GSBF valuationcontrol gsbf_pot_valuation
 
 # transfer GSBF data to CollectionSpace
-rake remote:action:transfer[Acquisition,gsbf_tree_acq]
-rake remote:action:transfer[Acquisition,gsbf_pot_acq]
-rake remote:action:transfer[CollectionObject,gsbf_tree_cat]
-rake remote:action:transfer[CollectionObject,gsbf_pot_cat]
-rake remote:action:transfer[ConditionCheck,gsbf_tree_cc]
-rake remote:action:transfer[Conservation,gsbf_tree_con]
-rake remote:action:transfer[LoanOut,gsbf_tree_lno]
-rake remote:action:transfer[ObjectExit,gsbf_tree_obj]
-rake remote:action:transfer[ValuationControl,gsbf_pot_val]
+./bin/rake remote:action:transfer[Acquisition,gsbf_tree_acq]
+./bin/rake remote:action:transfer[Acquisition,gsbf_pot_acq]
+./bin/rake remote:action:transfer[CollectionObject,gsbf_tree_cat]
+./bin/rake remote:action:transfer[CollectionObject,gsbf_pot_cat]
+./bin/rake remote:action:transfer[ConditionCheck,gsbf_tree_cc]
+./bin/rake remote:action:transfer[Conservation,gsbf_tree_con]
+./bin/rake remote:action:transfer[LoanOut,gsbf_tree_lno]
+./bin/rake remote:action:transfer[ObjectExit,gsbf_tree_obj]
+./bin/rake remote:action:transfer[ValuationControl,gsbf_pot_val]
 
-rake remote:action:transfer[Organization,all]
-rake remote:action:transfer[Person,all]
-rake remote:action:transfer[Place,all]
-rake remote:action:transfer[Taxon,all]
+./bin/rake remote:action:transfer[Organization,all]
+./bin/rake remote:action:transfer[Person,all]
+./bin/rake remote:action:transfer[Place,all]
+./bin/rake remote:action:transfer[Taxon,all]
 
 #- AFTER procedures have been transferred relationships can be created -#
 
 # generate relationships for GSBF batch
-rake relationships:generate[gsbf_tree_acq]
-rake relationships:generate[gsbf_pot_acq]
-rake relationships:generate[gsbf_pot_cat]
-rake relationships:generate[gsbf_tree_cc]
-rake relationships:generate[gsbf_tree_con]
-rake relationships:generate[gsbf_tree_lno]
-rake relationships:generate[gsbf_tree_obj]
-rake relationships:generate[gsbf_pot_val]
+./bin/rake relationships:generate[gsbf_tree_acq]
+./bin/rake relationships:generate[gsbf_pot_acq]
+./bin/rake relationships:generate[gsbf_pot_cat]
+./bin/rake relationships:generate[gsbf_tree_cc]
+./bin/rake relationships:generate[gsbf_tree_con]
+./bin/rake relationships:generate[gsbf_tree_lno]
+./bin/rake relationships:generate[gsbf_tree_obj]
+./bin/rake relationships:generate[gsbf_pot_val]
 
 # transfer GSBF relationships to CollectionSpace
-rake remote:action:transfer[Relationship,all]
+./bin/rake remote:action:transfer[Relationship,all]
 ```
 
 To "undo" the transfers use the delete task:
 
 ```
 # delete transfers
-rake remote:action:delete[Acquisition,gsbf_tree_acq]
-rake remote:action:delete[Acquisition,gsbf_pot_acq]
-rake remote:action:delete[CollectionObject,gsbf_tree_cat]
-rake remote:action:delete[CollectionObject,gsbf_pot_cat]
-rake remote:action:delete[Conservation,gsbf_tree_con]
-rake remote:action:delete[ConditionCheck,gsbf_tree_cc]
-rake remote:action:delete[LoanOut,gsbf_tree_lno]
-rake remote:action:delete[ObjectExit,gsbf_tree_obj]
-rake remote:action:delete[ValuationControl,gsbf_pot_val]
+./bin/rake remote:action:delete[Acquisition,gsbf_tree_acq]
+./bin/rake remote:action:delete[Acquisition,gsbf_pot_acq]
+./bin/rake remote:action:delete[CollectionObject,gsbf_tree_cat]
+./bin/rake remote:action:delete[CollectionObject,gsbf_pot_cat]
+./bin/rake remote:action:delete[Conservation,gsbf_tree_con]
+./bin/rake remote:action:delete[ConditionCheck,gsbf_tree_cc]
+./bin/rake remote:action:delete[LoanOut,gsbf_tree_lno]
+./bin/rake remote:action:delete[ObjectExit,gsbf_tree_obj]
+./bin/rake remote:action:delete[ValuationControl,gsbf_pot_val]
 
-rake remote:action:delete[Organization,all]
-rake remote:action:delete[Person,all]
-rake remote:action:delete[Place,all]
-rake remote:action:delete[Taxon,all]
+./bin/rake remote:action:delete[Organization,all]
+./bin/rake remote:action:delete[Person,all]
+./bin/rake remote:action:delete[Place,all]
+./bin/rake remote:action:delete[Taxon,all]
 
 # delete transfer relationships
-rake remote:action:delete[Relationship,all]
+./bin/rake remote:action:delete[Relationship,all]
 ```
 
 Post migration always ensure that record counts match expectations.

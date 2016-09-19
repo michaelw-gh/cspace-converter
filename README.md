@@ -6,7 +6,7 @@ Migrate data to CollectionSpace from CSV.
 Getting Started
 ---
 
-Ruby (2.x) & Rails are required. The database backend is MongoDB (3.2) and by default should be running on `localhost:27017`.
+Ruby (2.1.x) & Rails are required. The database backend is MongoDB (3.2) and by default should be running on `localhost:27017`.
 
 ```
 bundle install
@@ -62,7 +62,7 @@ For these commands to actually work you will need the data files in `db/data`.
 **Using the console**
 
 ```
-rails c
+./bin/rails c
 p = DataObject.first
 puts p.to_procedure_xml("CollectionObject")
 ```
@@ -70,13 +70,13 @@ puts p.to_procedure_xml("CollectionObject")
 **Running the development server**
 
 ```
-rails s
+./bin/rails s
 ```
 
 To fire jobs created using the ui:
 
 ```
-rake jobs:work
+./bin/rake jobs:work
 ```
 
 License
