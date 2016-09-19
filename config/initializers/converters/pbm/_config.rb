@@ -27,9 +27,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",
-                "procedure1_field" => "acquisitionReferenceNumber",
+                "data1_field" => "acquisitionReferenceNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -60,9 +60,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "Conservation",
-                "procedure1_field" => "conservationNumber",
+                "data1_field" => "conservationNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -78,9 +78,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "ValuationControl",
-                "procedure1_field" => "valuationcontrolRefNumber",
+                "data1_field" => "valuationcontrolRefNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           }

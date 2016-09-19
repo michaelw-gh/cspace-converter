@@ -36,9 +36,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",
-                "procedure1_field" => "accessno",
+                "data1_field" => "accessno",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectid",
+                "data2_field" => "objectid",
               },
             ],
           }

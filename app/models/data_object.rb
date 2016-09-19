@@ -52,22 +52,22 @@ class DataObject
   end
 
   # [ { "procedure1_type" => "Acquisition",
-  #   "procedure1_field" => "acquisitionReferenceNumber",
+  #   "data1_field" => "acquisitionReferenceNumber",
   #   "procedure2_type" => "CollectionObject",
-  #   "procedure2_field" => "objectNumber" } ]
+  #   "data2_field" => "objectNumber" } ]
   def add_relationships(reciprocal = true)
     relationships = self.profile.fetch("Relationships", [])
     relationships.each do |relationship|
       r  = relationship
       begin
         # no point continuing if the fields don't exist
-        next unless (self.read_attribute(r["procedure1_field"]) and self.read_attribute(r["procedure2_field"]))
+        next unless (self.read_attribute(r["data1_field"]) and self.read_attribute(r["data2_field"]))
 
-        add_relationship r["procedure1_type"], r["procedure1_field"],
-          r["procedure2_type"], r["procedure2_field"]
+        add_relationship r["procedure1_type"], r["data1_field"],
+          r["procedure2_type"], r["data2_field"]
 
-        add_relationship r["procedure2_type"], r["procedure2_field"],
-          r["procedure1_type"], r["procedure1_field"] if reciprocal
+        add_relationship r["procedure2_type"], r["data2_field"],
+          r["procedure1_type"], r["data1_field"] if reciprocal
       rescue Exception => ex
         logger.warn ex.message
       end

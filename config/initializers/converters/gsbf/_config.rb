@@ -30,9 +30,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",
-                "procedure1_field" => "acquisitionReferenceNumber",
+                "data1_field" => "acquisitionReferenceNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -53,9 +53,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "CollectionObject",
-                "procedure1_field" => "relatedObjectNumber",
+                "data1_field" => "relatedObjectNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -73,9 +73,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "ConditionCheck",
-                "procedure1_field" => "conditionCheckRefNumber",
+                "data1_field" => "conditionCheckRefNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -93,9 +93,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "Conservation",
-                "procedure1_field" => "conservationNumber",
+                "data1_field" => "conservationNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -113,9 +113,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "LoanOut",
-                "procedure1_field" => "loanOutNumber",
+                "data1_field" => "loanOutNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -131,9 +131,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "ObjectExit",
-                "procedure1_field" => "objectExitNumber",
+                "data1_field" => "objectExitNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           },
@@ -149,9 +149,9 @@ module CollectionSpace
             "Relationships" => [
               {
                 "procedure1_type"  => "ValuationControl",
-                "procedure1_field" => "valuationControlReferenceNumber",
+                "data1_field" => "valuationControlReferenceNumber",
                 "procedure2_type"  => "CollectionObject",
-                "procedure2_field" => "objectNumber",
+                "data2_field" => "objectNumber",
               },
             ],
           }
