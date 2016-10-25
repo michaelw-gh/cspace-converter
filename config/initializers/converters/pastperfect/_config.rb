@@ -6,6 +6,7 @@ module CollectionSpace
         [
           "Acquisition",
           "CollectionObject",
+          "ValuationControl",
         ]
       end
 
@@ -17,10 +18,24 @@ module CollectionSpace
                 "identifier_field" => "acquisitionReferenceNumber",
                 "identifier" => "accessno",
                 "title" => "accessno",
-              }
+              },
+              "ValuationControl" => {
+                "identifier_field" => "valuationcontrolRefNumber",
+                "identifier" => "accessno",
+                "title" => "accessno",
+              },
             },
-            "Authorities" => {},
-            "Relationships" => [],
+            "Authorities" => {
+              "Person" => ["recby", "recfrom"],
+            },
+            "Relationships" => [
+              {
+                "procedure1_type"  => "Acquisition",
+                "data1_field" => "accessno",
+                "procedure2_type"  => "ValuationControl",
+                "data2_field" => "accessno",
+              },
+            ],
           },
           "archives" => {
             "Procedures" => {

@@ -95,7 +95,11 @@ module CollectionSpace
           field => get_authority_urn(authority_type, authority, value),
         }
       end
-      CSXML.send(method, xml, field, values)
+      # we are crudely forcing pluralization for repeats (this may need to be revisited)
+      # sometimes the parent and child elements are both pluralized so ensure there's only 1 i.e.
+      # conservators: [ "conservators" ... ] vs. acquisitionSources: [ "acquisitionSource" ... ]
+      field_wrapper = method == :add_repeat ? "#{field}s".gsub(/ss$/, "s") : field
+      CSXML.send(method, xml, field_wrapper, values)
     end
 
     def self.add_person(xml, field, value)

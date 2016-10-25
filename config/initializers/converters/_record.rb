@@ -98,6 +98,11 @@ module CollectionSpace
           builder.to_xml
         end
 
+        # return an array of fields as a string
+        def scrub_fields(fields = [])
+          fields.compact.join(". ").squeeze(".").gsub(/\n|\t/, "").strip
+        end
+
         # process multivalued fields by splitting them and returning a flat array of all elements
         def split_mvf(attributes, *fields)
           values = []
