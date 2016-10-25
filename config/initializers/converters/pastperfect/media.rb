@@ -3,11 +3,11 @@ module CollectionSpace
     module PastPerfect
       include Default
 
-      class PastPerfectCollectionObject < CollectionObject
+      class PastPerfectMedia < Media
 
         def convert
           run do |xml|
-            CSXML.add xml, 'objectNumber', attributes["objectid"]
+            CSXML.add xml, 'identificationNumber', attributes["objectid"]
           end
         end
 

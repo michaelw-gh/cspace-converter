@@ -6,6 +6,7 @@ module CollectionSpace
         [
           "Acquisition",
           "CollectionObject",
+          "Media",
           "ValuationControl",
         ]
       end
@@ -100,6 +101,11 @@ module CollectionSpace
                 "identifier" => "objectid",
                 "title" => "title",
               },
+              "Media" => {
+                "identifier_field" => "identificationNumber",
+                "identifier" => "objectid",
+                "title" => "objectid",
+              },
             },
             "Authorities" => {},
             "Relationships" => [
@@ -107,6 +113,12 @@ module CollectionSpace
                 "procedure1_type"  => "Acquisition",
                 "data1_field" => "accessno",
                 "procedure2_type"  => "CollectionObject",
+                "data2_field" => "objectid",
+              },
+              {
+                "procedure1_type"  => "CollectionObject",
+                "data1_field" => "objectid",
+                "procedure2_type"  => "Media",
                 "data2_field" => "objectid",
               },
             ],

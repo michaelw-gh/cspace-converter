@@ -21,6 +21,9 @@ module CollectionSpace
           "LoanOut" => {
             path: "loansout", schema: "loansout"
           },
+          "Media" => {
+            path: "media", schema: "media"
+          },
           "ObjectExit" => {
             path: "objectexit", schema: "objectexit"
           },
@@ -160,6 +163,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'loansout', 'loanout', common
+        end
+
+      end
+
+      class Media < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'media', 'media', common
         end
 
       end
