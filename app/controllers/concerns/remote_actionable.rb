@@ -49,7 +49,8 @@ module RemoteActionable
     begin
       yield service
     rescue Exception => ex
-      flash[:error] = "Connection error\n#{ex.message} #{service.inspect}"
+      logger.error("Connection error: #{ex.backtrace}")
+      flash[:error] = "Connection error: #{ex.message} #{service.inspect}"
     end
 
     redirect_to send("#{category.downcase}_path".to_sym, @object)
