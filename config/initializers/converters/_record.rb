@@ -24,6 +24,9 @@ module CollectionSpace
           "Media" => {
             path: "media", schema: "media"
           },
+          "Movement" => {
+            path: "movements", schema: "movements"
+          },
           "ObjectExit" => {
             path: "objectexit", schema: "objectexit"
           },
@@ -172,6 +175,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'media', 'media', common
+        end
+
+      end
+
+      class Movement < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'movements', 'movement', common
         end
 
       end

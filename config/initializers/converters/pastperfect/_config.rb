@@ -7,6 +7,7 @@ module CollectionSpace
           "Acquisition",
           "CollectionObject",
           "Media",
+          "Movement",
           "ValuationControl",
         ]
       end
@@ -45,6 +46,11 @@ module CollectionSpace
                 "identifier" => "objectid",
                 "title" => "title",
               },
+              "Movement" => {
+                "identifier_field" => "movementReferenceNumber",
+                "identifier" => "objectid",
+                "title" => "objectid",
+              },
             },
             "Authorities" => {},
             "Relationships" => [
@@ -52,6 +58,12 @@ module CollectionSpace
                 "procedure1_type"  => "Acquisition",
                 "data1_field" => "accessno",
                 "procedure2_type"  => "CollectionObject",
+                "data2_field" => "objectid",
+              },
+              {
+                "procedure1_type"  => "CollectionObject",
+                "data1_field" => "objectid",
+                "procedure2_type"  => "Movement",
                 "data2_field" => "objectid",
               },
             ],
@@ -63,6 +75,11 @@ module CollectionSpace
                 "identifier" => "objectid",
                 "title" => "title",
               },
+              "Movement" => {
+                "identifier_field" => "movementReferenceNumber",
+                "identifier" => "objectid",
+                "title" => "objectid",
+              },
             },
             "Authorities" => {},
             "Relationships" => [
@@ -70,6 +87,12 @@ module CollectionSpace
                 "procedure1_type"  => "Acquisition",
                 "data1_field" => "accessno",
                 "procedure2_type"  => "CollectionObject",
+                "data2_field" => "objectid",
+              },
+              {
+                "procedure1_type"  => "CollectionObject",
+                "data1_field" => "objectid",
+                "procedure2_type"  => "Movement",
                 "data2_field" => "objectid",
               },
             ],
@@ -81,6 +104,11 @@ module CollectionSpace
                 "identifier" => "objectid",
                 "title" => "title",
               },
+              "Movement" => {
+                "identifier_field" => "movementReferenceNumber",
+                "identifier" => "objectid",
+                "title" => "objectid",
+              },
             },
             "Authorities" => {
               "Person" => ["artist"],
@@ -90,6 +118,12 @@ module CollectionSpace
                 "procedure1_type"  => "Acquisition",
                 "data1_field" => "accessno",
                 "procedure2_type"  => "CollectionObject",
+                "data2_field" => "objectid",
+              },
+              {
+                "procedure1_type"  => "CollectionObject",
+                "data1_field" => "objectid",
+                "procedure2_type"  => "Movement",
                 "data2_field" => "objectid",
               },
             ],
@@ -106,6 +140,11 @@ module CollectionSpace
                 "identifier" => "objectid",
                 "title" => "objectid",
               },
+              "Movement" => {
+                "identifier_field" => "movementReferenceNumber",
+                "identifier" => "objectid",
+                "title" => "objectid",
+              },
             },
             "Authorities" => {},
             "Relationships" => [
@@ -119,6 +158,12 @@ module CollectionSpace
                 "procedure1_type"  => "CollectionObject",
                 "data1_field" => "objectid",
                 "procedure2_type"  => "Media",
+                "data2_field" => "objectid",
+              },
+              {
+                "procedure1_type"  => "CollectionObject",
+                "data1_field" => "objectid",
+                "procedure2_type"  => "Movement",
                 "data2_field" => "objectid",
               },
             ],

@@ -102,6 +102,14 @@ module CollectionSpace
       CSXML.send(method, xml, field_wrapper, values)
     end
 
+    def self.add_location(xml, field, value)
+      add_authority xml, field, 'locationauthorities', 'location', value
+    end
+
+    def self.add_locations(xml, field, values = [], method = :add_group_list)
+      add_authorities xml, field, 'locationauthorities', 'location', values, method
+    end
+
     def self.add_person(xml, field, value)
       add_authority xml, field, 'personauthorities', 'person', value
     end
