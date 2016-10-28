@@ -8,6 +8,7 @@ module CollectionSpace
         def convert
           run do |xml|
             CSXML.add xml, 'identificationNumber', attributes["objectid"]
+            CSXML.add xml, 'title', attributes["imagefile"]
           end
         end
 
