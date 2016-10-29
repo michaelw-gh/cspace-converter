@@ -10,10 +10,14 @@ class RemoteActionService
   def remote_delete
     deleted = false
     if @object.uri
-      response = $collectionspace_client.delete(@object.uri)
-      if response.status_code.to_s =~ /^2/
-        @object.update_attributes!( csid: nil, uri:  nil )
-        deleted = true
+      begin
+        response = $collectionspace_client.delete(@object.uri)
+        if response.status_code.to_s =~ /^2/
+          @object.update_attributes!( csid: nil, uri:  nil )
+          deleted = true
+        end
+      rescue Exception
+        # eat the failure to log it
       end
     end
     deleted
@@ -21,13 +25,17 @@ class RemoteActionService
 
   def remote_transfer
     transferred = false
-    response = $collectionspace_client.post(@service[:path], @object.content)
-    if response.status_code == 201
-      # http://localhost:1980/cspace-services/collectionobjects/7e5abd18-5aec-4b7f-a10c
-      csid = response.headers["Location"].split("/")[-1]
-      uri  = "#{@service[:path]}/#{csid}"
-      @object.update_attributes!( csid: csid, uri:  uri )
-      transferred = true
+    begin
+      response = $collectionspace_client.post(@service[:path], @object.content)
+      if response.status_code == 201
+        # http://localhost:1980/cspace-services/collectionobjects/7e5abd18-5aec-4b7f-a10c
+        csid = response.headers["Location"].split("/")[-1]
+        uri  = "#{@service[:path]}/#{csid}"
+        @object.update_attributes!( csid: csid, uri:  uri )
+        transferred = true
+      end
+    rescue Exception
+      # eat the failure to log it
     end
     transferred
   end

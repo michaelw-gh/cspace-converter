@@ -19,9 +19,11 @@ class TransferJob < ActiveJob::Base
     objects.each do |object|
       service = RemoteActionService.new(object)
       if force_delete or service.remote_already_exists?
-        service.send action_method if action_method == :remote_delete
+        deleted = service.send(action_method) if action_method == :remote_delete
+        logger.error "Failed to delete #{object.inspect}" unless deleted
       else
-        service.send action_method if action_method == :remote_transfer
+        transferred = service.send(action_method) if action_method == :remote_transfer
+        logger.error "Failed to transfer #{object.inspect}" unless transferred
       end
     end
   end
