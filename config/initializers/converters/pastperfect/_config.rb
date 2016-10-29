@@ -52,7 +52,10 @@ module CollectionSpace
                 "title" => "objectid",
               },
             },
-            "Authorities" => {},
+            "Authorities" => {
+              "Location" => ["location", "permloc"],
+              "Person" => ["artist", "recby", "recfrom"],
+            },
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",
@@ -81,7 +84,10 @@ module CollectionSpace
                 "title" => "objectid",
               },
             },
-            "Authorities" => {},
+            "Authorities" => {
+              "Location" => ["location", "permloc"],
+              "Person" => ["artist", "recby", "recfrom"],
+            },
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",
@@ -111,7 +117,8 @@ module CollectionSpace
               },
             },
             "Authorities" => {
-              "Person" => ["artist"],
+              "Location" => ["location", "permloc"],
+              "Person" => ["artist", "recby", "recfrom"],
             },
             "Relationships" => [
               {
@@ -146,7 +153,10 @@ module CollectionSpace
                 "title" => "objectid",
               },
             },
-            "Authorities" => {},
+            "Authorities" => {
+              "Location" => ["location", "permloc"],
+              "Person" => ["artist", "recby", "recfrom"],
+            },
             "Relationships" => [
               {
                 "procedure1_type"  => "Acquisition",

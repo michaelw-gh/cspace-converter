@@ -7,7 +7,8 @@ module CollectionSpace
       authority  = authority.downcase
       # not all authorities use the full name in the term type i.e. orgTermGroupList
       term_types = {
-        "organization" => "org"
+        "location" => "loc",
+        "organization" => "org",
       }
       term_types.fetch(authority, authority)
     end

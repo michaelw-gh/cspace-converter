@@ -21,6 +21,9 @@ module CollectionSpace
           "LoanOut" => {
             path: "loansout", schema: "loansout"
           },
+          "Location" => {
+            path: "locationauthorities/urn:cspace:name(location)/items", schema: "locations"
+          },
           "Media" => {
             path: "media", schema: "media"
           },
@@ -52,7 +55,7 @@ module CollectionSpace
       end
 
       def self.validate_authority!(authority)
-        unless [ "Concept", "Material", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
+        unless [ "Concept", "Location", "Material", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
           raise "Invalid authority #{authority}"
         end
       end
@@ -166,6 +169,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'loansout', 'loanout', common
+        end
+
+      end
+
+      class Location < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'locations', 'location', common
         end
 
       end
