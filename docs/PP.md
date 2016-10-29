@@ -9,11 +9,16 @@
 ./import.sh pp_objects1 PastPerfect objects PPSdata_objects
 ./import.sh pp_photos1 PastPerfect photos PPSdata_photos
 
-./bin/rake remote:action:transfer[Acquisition,pp_accession1]
-./bin/rake remote:action:transfer[CollectionObject,pp_archives1]
-./bin/rake remote:action:transfer[CollectionObject,pp_library1]
-./bin/rake remote:action:transfer[CollectionObject,pp_objects1]
-./bin/rake remote:action:transfer[CollectionObject,pp_photos1]
+# procedures
+./bin/rake remote:action:transfer[Acquisition,all]
+./bin/rake remote:action:transfer[CollectionObject,all]
+./bin/rake remote:action:transfer[Media,all]
+./bin/rake remote:action:transfer[Movement,all]
+./bin/rake remote:action:transfer[ValuationControl,all]
+
+# authorities
+./bin/rake remote:action:transfer[Location,all]
+./bin/rake remote:action:transfer[Person,all]
 
 # after other transfers
 ./bin/rake relationships:generate[pp_accession1]
