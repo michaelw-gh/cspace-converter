@@ -22,10 +22,18 @@ module CollectionSpace
 
               CSXML.add xml, 'recordStatus', 'new'
 
+              collection = attributes["collection"]
+              CSXML.add xml, 'collection', CSXML::Helpers.get_vocab_urn('bmcollection', collection) if collection
+
+              CSXML.add_repeat xml, 'briefDescriptions', [{ "briefDescription" => scrub_fields([attributes["descrip_"]]) }]
+              CSXML.add xml, 'distinguishingFeatures', scrub_fields([attributes["notes_"]])
+
               if attributes.fetch("recfrom", nil)
                 owners = split_mvf attributes, 'recfrom'
                 CSXML::Helpers.add_persons xml, 'owner', owners, :add_repeat
               end
+
+              CSXML.add xml, 'assocEventName', attributes["event"]
             end
 
             xml.send(
@@ -35,6 +43,8 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
+              CSXML.add xml, 'conditionStatus', CSXML::Helpers.get_vocab_urn('conditionstatus', 'Exhibitable/Needs no work')
+              CSXML.add xml, 'approvedForWeb', "false"
             end
 
             xml.send(
@@ -44,6 +54,7 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
+              CSXML.add xml, 'materialTechniqueDescription', attributes["medium"]
               CSXML.add xml, 'catalogLevel', CSXML::Helpers.get_vocab_urn('cataloglevel', ' item ', true)
             end
 
