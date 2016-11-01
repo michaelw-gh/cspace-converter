@@ -20,6 +20,7 @@ module CollectionSpace
       option.downcase.
         gsub(/[()]/, '').
         gsub(' - ', '_').
+        gsub('/', '_').
         gsub('-', '_').
         gsub(' ', '_')
     end
