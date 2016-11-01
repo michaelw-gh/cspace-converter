@@ -9,7 +9,7 @@ module CollectionSpace
           run(wrapper: "document") do |xml|
             xml.send(
               "ns2:collectionobjects_common",
-              "xmlns:ns2" => "http://collectionspace.org/services/collectionobjects",
+              "xmlns:ns2" => "http://collectionspace.org/services/collectionobject",
               "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
             ) do
               # applying namespace breaks import
@@ -35,7 +35,6 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
-              #
             end
 
             xml.send(
@@ -45,7 +44,15 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
-              #
+            end
+
+            xml.send(
+              "ns2:collectionobjects_variablemedia",
+              "xmlns:ns2" => "http://collectionspace.org/services/collectionobject/domain/collectionobject",
+              "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+            ) do
+              # applying namespace breaks import
+              xml.parent.namespace = nil
             end
           end
         end
