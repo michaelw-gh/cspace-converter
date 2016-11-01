@@ -15,7 +15,8 @@ module CollectionSpace
 
     # given a vocab option value convert to id form, for example:
     # "Growing on a rock Bonsai style (Seki-joju)" => "growing_on_a_rock_bonsai_style_seki_joju"
-    def self.for_option(option)
+    def self.for_option(option, strip = false)
+      option = option.strip if strip
       option.downcase.
         gsub(/[()]/, '').
         gsub(' - ', '_').
@@ -154,12 +155,12 @@ module CollectionSpace
       )
     end
 
-    def self.get_vocab_urn(vocabulary, value)
+    def self.get_vocab_urn(vocabulary, value, strip = false)
       CSURN.generate(
         Rails.application.config.domain,
         "vocabularies",
         vocabulary.downcase,
-        CollectionSpace::Identifiers.for_option(value),
+        CollectionSpace::Identifiers.for_option(value, strip),
         value
       )
     end

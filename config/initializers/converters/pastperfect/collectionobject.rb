@@ -44,6 +44,7 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
+              CSXML.add xml, 'catalogLevel', CSXML::Helpers.get_vocab_urn('cataloglevel', ' item ', true)
             end
 
             xml.send(
