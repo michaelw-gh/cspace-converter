@@ -8,8 +8,8 @@ module CollectionSpace
         def convert
           run do |xml|
             CSXML.add xml, 'acquisitionReferenceNumber', attributes["accessno"]
-            CSXML.add xml, 'acquisitionNote', scrub_fields([ attributes["notes_"] ])
-            CSXML.add xml, 'acquisitionReason', scrub_fields([ attributes["descrip_"] ])
+            CSXML.add xml, 'acquisitionNote', scrub_fields([ attributes["notes_"], attributes["descrip_"] ])
+            # CSXML.add xml, 'acquisitionReason', scrub_fields([ attributes["descrip_"] ])
             CSXML.add xml, 'acquisitionProvisos', attributes["restrict_"]
             CSXML.add xml, 'creditLine', attributes["credit"]
 

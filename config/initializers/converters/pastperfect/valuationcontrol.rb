@@ -23,7 +23,8 @@ module CollectionSpace
 
               CSXML.add xml, 'valueNote', attributes["appnotes"]
 
-              value_date = DateTime.parse(attributes["valuedate"]) rescue nil
+              # value_date = DateTime.parse(attributes["valuedate"]) rescue nil
+              value_date = DateTime.parse(attributes["recdate"]) rescue nil
               CSXML.add xml, 'valueDate', value_date if value_date
             end
 
