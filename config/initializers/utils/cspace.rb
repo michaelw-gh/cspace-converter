@@ -64,10 +64,12 @@ module CollectionSpace
       }
     end
 
-    def self.add_list(xml, key, elements = [])
+    # key_suffix handles the case that the list child element is not the key without "List"
+    # for example: key=objectName, list=objectNameList, key_suffix=Group, child=objectNameGroup
+    def self.add_list(xml, key, elements = [], key_suffix = '')
       xml.send("#{key}List".to_sym) {
         elements.each do |element|
-          xml.send("#{key}".to_sym) {
+          xml.send("#{key}#{key_suffix}".to_sym) {
             element.each { |k, v| xml.send(k.to_sym, v) }
           }
         end
@@ -103,6 +105,14 @@ module CollectionSpace
       # conservators: [ "conservators" ... ] vs. acquisitionSources: [ "acquisitionSource" ... ]
       field_wrapper = method == :add_repeat ? "#{field}s".gsub(/ss$/, "s") : field
       CSXML.send(method, xml, field_wrapper, values)
+    end
+
+    def self.add_concept(xml, field, value)
+      add_authority xml, field, 'conceptauthorities', 'concept', value
+    end
+
+    def self.add_concepts(xml, field, values = [], method = :add_group_list)
+      add_authorities xml, field, 'conceptauthorities', 'concept', values, method
     end
 
     def self.add_location(xml, field, value)
