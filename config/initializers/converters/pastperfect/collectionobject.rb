@@ -20,13 +20,44 @@ module CollectionSpace
                 "title" => attributes["title"],
               }]
 
+              # otherNumberList - NM
+              # editionNumber - NM
+              # copyNumber - NM
+              # numberOfObjects (1?)
+
               CSXML.add xml, 'recordStatus', 'new'
+
+              # responsibleDepartments
 
               collection = attributes["collection"]
               CSXML.add xml, 'collection', CSXML::Helpers.get_vocab_urn('bmcollection', collection) if collection
 
               CSXML.add_repeat xml, 'briefDescriptions', [{ "briefDescription" => scrub_fields([attributes["descrip_"]]) }]
               CSXML.add xml, 'distinguishingFeatures', scrub_fields([attributes["notes_"]])
+              # physicalDescription
+              # comments
+
+              # objectNameList
+              objname = attributes["objname"]
+              gparent = attributes["gparent"]
+              gparent = gparent.gsub(/^\d+: /, '') if gparent
+              parent  = attributes["parent"]
+
+              objname_group = {}
+              objname_group = objname_group.merge({
+                "objectName" => CSXML::Helpers.get_authority_urn('conceptauthorities', 'objectname', objname),
+              }) if objname
+
+              objname_group = objname_group.merge({
+                "objectNameSystem" => CSXML::Helpers.get_authority_urn('conceptauthorities', 'category', gparent),
+              }) if gparent
+
+              objname_group = objname_group.merge({
+                "objectNameType" => CSXML::Helpers.get_authority_urn('conceptauthorities', 'subcategory', parent),
+              }) if parent
+
+              CSXML.add_list xml, 'objectName', [ objname_group ], 'Group' unless objname_group.empty?
+              # objectHistoryNote
 
               if attributes.fetch("recfrom", nil)
                 owners = split_mvf attributes, 'recfrom'
@@ -34,6 +65,26 @@ module CollectionSpace
               end
 
               CSXML.add xml, 'assocEventName', attributes["event"]
+              # assocEventNote - distinct field from name?
+
+              # assocDateGroupList
+              # assocPlaceGroupList
+              # assocPersonGroupList (x 2)
+              # assocOrganizationGroupList
+
+              # objectProductionDateGroupList
+              # objectProductionPlaceGroupList
+              # objectProductionPersonGroupList
+              # objectProductionOrganizationGroupList
+
+              # ownershipExchangeMethod
+              # ownershipExchangePriceValue
+              # ownershipPlace
+              # ownershipCategory
+
+              # materialGroupList
+              # textualInscriptionGroupList
+              # measuredPartGroupList
             end
 
             xml.send(
@@ -56,6 +107,7 @@ module CollectionSpace
               xml.parent.namespace = nil
               CSXML.add xml, 'materialTechniqueDescription', attributes["medium"]
               CSXML.add xml, 'catalogLevel', CSXML::Helpers.get_vocab_urn('cataloglevel', ' item ', true)
+              # creatorDescription
             end
 
             xml.send(
