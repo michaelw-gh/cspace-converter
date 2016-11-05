@@ -9,6 +9,7 @@ class CollectionSpaceObject
 
   field :category,         type: String # Authority, Procedure
   field :type,             type: String
+  field :subtype,          type: String # used for Authorities
   field :identifier_field, type: String
   field :identifier,       type: String
   field :title,            type: String

@@ -14,11 +14,17 @@ class DataObject
   field :converter_profile, type: String
 
   # "Person" => ["recby", "recfrom"]
+  # "Concept" => [ ["objname", "objectname"] ]
   def add_authorities
     authorities = self.profile.fetch("Authorities", {})
     authorities_added = Set.new
     authorities.each do |authority, fields|
       fields.each do |field|
+        authority_subtype = authority.downcase
+        # if value pair first is the field and second is the specific authority (sub)type
+        if field.respond_to? :each
+          field, authority_subtype = field
+        end
         term_display_name = self.read_attribute(field)
         next unless term_display_name
         # attempt to split field in case it is multi-valued
@@ -29,7 +35,7 @@ class DataObject
             # and not fail CollectionSpaceObject validation for unique_identifier
             next if CollectionSpaceObject.has_authority?(identifier)
             # prevent creation of duplicate authorities between fields in object data
-            add_authority authority, name unless authorities_added.include? name
+            add_authority authority, authority_subtype, name unless authorities_added.include? name
             authorities_added << name
           rescue Exception => ex
             logger.error "#{ex.message}\n#{ex.backtrace}"
@@ -156,13 +162,14 @@ class DataObject
 
   private
 
-  def add_authority(authority, name)
+  def add_authority(authority, authority_subtype, name)
     identifier = CSIDF.short_identifier(name)
 
     data = {}
     # check for existence or update
     data[:category]         = "Authority"
     data[:type]             = authority
+    data[:subtype]          = authority_subtype
     data[:identifier_field] = 'shortIdentifier'
     data[:identifier]       = identifier
     data[:title]            = name
@@ -175,6 +182,7 @@ class DataObject
     # check for existence or update
     data[:category]         = "Procedure"
     data[:type]             = procedure
+    data[:subtype]          = ''
     data[:identifier_field] = attributes["identifier_field"]
     data[:identifier]       = self.read_attribute( attributes["identifier"] )
     data[:title]            = self.read_attribute( attributes["title"] )
@@ -213,6 +221,7 @@ class DataObject
     data = {}
     data[:category]         = "Relationship"
     data[:type]             = "Relationship"
+    data[:subtype]             = ""
     # this will allow remote actions to happen (but not prevent duplicates?)
     data[:identifier_field] = 'csid'
     data[:identifier]       = "#{from_csid}_#{to_csid}"

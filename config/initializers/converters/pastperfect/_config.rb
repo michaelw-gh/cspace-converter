@@ -53,6 +53,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
+              "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
               "Person" => ["artist", "recby", "recfrom"],
             },
@@ -85,6 +86,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
+              "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
               "Person" => ["artist", "recby", "recfrom"],
             },
@@ -117,6 +119,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
+              "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
               "Person" => ["artist", "recby", "recfrom"],
             },
@@ -154,6 +157,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
+              "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
               "Person" => ["artist", "recby", "recfrom"],
             },

@@ -40,7 +40,8 @@ module CollectionSpace
               # objectNameList
               objname = attributes["objname"]
               gparent = attributes["gparent"]
-              gparent = gparent.gsub(/^\d+: /, '') if gparent
+              # cleanup will deviate from generated authority, so do it later
+              # gparent = gparent.gsub(/^\d+: /, '') if gparent
               parent  = attributes["parent"]
 
               objname_group = {}

@@ -3,14 +3,17 @@ module CollectionSpace
     module Default
 
       # used for remote actions
-      # the authority is hard coded, so may want to make that configurable in future
-      def self.service(type)
+      # subtype is defined for authority records to target a specific authority (sub)type
+      def self.service(type, subtype)
         {
           "Acquisition" => {
             path: "acquisitions", schema: "acquisitions"
           },
           "CollectionObject" => {
             path: "collectionobjects", schema: "collectionobjects"
+          },
+          "Concept" => {
+            path: "conceptauthorities/urn:cspace:name(#{subtype})/items", schema: "concepts"
           },
           "ConditionCheck" => {
             path: "conditionchecks", schema: "conditionchecks"
@@ -22,7 +25,7 @@ module CollectionSpace
             path: "loansout", schema: "loansout"
           },
           "Location" => {
-            path: "locationauthorities/urn:cspace:name(location)/items", schema: "locations"
+            path: "locationauthorities/urn:cspace:name(#{subtype})/items", schema: "locations"
           },
           "Media" => {
             path: "media", schema: "media"
@@ -34,19 +37,19 @@ module CollectionSpace
             path: "objectexit", schema: "objectexit"
           },
           "Organization" => {
-            path: "orgauthorities/urn:cspace:name(organization)/items", schema: "organizations"
+            path: "orgauthorities/urn:cspace:name(#{subtype})/items", schema: "organizations"
           },
           "Person" => {
-            path: "personauthorities/urn:cspace:name(person)/items", schema: "persons"
+            path: "personauthorities/urn:cspace:name(#{subtype})/items", schema: "persons"
           },
           "Place" => {
-            path: "placeauthorities/urn:cspace:name(place)/items", schema: "places"
+            path: "placeauthorities/urn:cspace:name(#{subtype})/items", schema: "places"
           },
           "Relationship" => {
             path: "relations", schema: "relations"
           },
           "Taxon" => {
-            path: "taxonomyauthority/urn:cspace:name(taxon)/items", schema: "taxon"
+            path: "taxonomyauthority/urn:cspace:name(#{subtype})/items", schema: "taxon"
           },
           "ValuationControl" => {
             path: "valuationcontrols", schema: "valuationcontrols"
@@ -142,6 +145,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'collectionobjects', 'collectionobject', common
+        end
+
+      end
+
+      class Concept < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'concepts', 'concept', common
         end
 
       end
