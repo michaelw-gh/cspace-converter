@@ -31,6 +31,9 @@ module CspaceConverter
 
     config.active_job.queue_adapter = :delayed_job
     config.csv_mvf_delimiter        = ";" # used to split authority fields (procedures handled in module)
+    config.csv_parser_options       = { downcase_header: true }
+    # for parser_options see: https://github.com/tilo/smarter_csv#documentation
+    # config.csv_parser_options       = { keep_original_headers: true }
     config.domain                   = ENV.fetch('CSPACE_CONVERTER_DOMAIN', 'core.collectionspace.org')
     config.mongoid.logger           = Logger.new($stdout)
     config.mongoid.logger.level     = Logger::WARN

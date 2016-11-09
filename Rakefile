@@ -23,8 +23,7 @@ namespace :db do
       SmarterCSV.process(filename, {
           chunk_size: 100,
           convert_values_to_numeric: false,
-          keep_original_headers: true,
-        }) do |chunk|
+        }.merge(Rails.application.config.csv_parser_options)) do |chunk|
         puts "Processing #{batch} #{counter}"
         ImportJob.perform_later(filename, batch, converter, profile, chunk)
         # run the job immediately when using rake
