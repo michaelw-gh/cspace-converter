@@ -21,21 +21,33 @@ module CollectionSpace
               }]
 
               # otherNumberList - NM
+              previous_number = attributes["otherno"] ? attributes["otherno"] : attributes["oldno"]
+              CSXML.add_list xml, 'otherNumber', [{
+                "numberType" => CSXML::Helpers.get_vocab_urn('bmnumbertype', 'Previous'),
+                "numberValue" => previous_number,
+              }] if previous_number
+
               # editionNumber - NM
+              edition = attributes["edition"] ? attributes["edition"] : attributes["origcopy"]
+              CSXML.add xml, 'editionNumber', edition if edition
+
               # copyNumber - NM
-              # numberOfObjects (1?)
+              copy_number = attributes["frameno"] ? attributes["frameno"] : attributes["negno"]
+              CSXML.add xml, "copyNumber" if copy_number
+
+              # numberOfObjects (1?) n/a
 
               CSXML.add xml, 'recordStatus', 'new'
 
-              # responsibleDepartments
+              # responsibleDepartments n/a
 
               collection = attributes["collection"]
               CSXML.add xml, 'collection', CSXML::Helpers.get_vocab_urn('bmcollection', collection) if collection
 
               CSXML.add_repeat xml, 'briefDescriptions', [{ "briefDescription" => scrub_fields([attributes["descrip_"]]) }]
               CSXML.add xml, 'distinguishingFeatures', scrub_fields([attributes["notes_"]])
-              # physicalDescription
-              # comments
+              CSXML.add xml, 'physicalDescription', attributes["physchar"]
+              CSXML.add xml, 'comments', scrub_fields([attributes["pubnotes_"]])
 
               # objectNameList
               objname = attributes["objname"]
@@ -58,7 +70,9 @@ module CollectionSpace
               }) if parent
 
               CSXML.add_list xml, 'objectName', [ objname_group ], 'Group' unless objname_group.empty?
+
               # objectHistoryNote
+              CSXML.add xml, 'objectHistoryNote', scrub_fields([attributes["custodial"], attributes["provenanc_"]])
 
               if attributes.fetch("recfrom", nil)
                 owners = split_mvf attributes, 'recfrom'
