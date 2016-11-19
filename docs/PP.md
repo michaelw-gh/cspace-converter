@@ -25,8 +25,11 @@ Process:
 ./bin/rake remote:action:transfer[ValuationControl,all]
 
 # authorities
+./bin/rake remote:action:transfer[Concept,all]
 ./bin/rake remote:action:transfer[Location,all]
+./bin/rake remote:action:transfer[Organization,all]
 ./bin/rake remote:action:transfer[Person,all]
+./bin/rake remote:action:transfer[Place,all]
 
 # after other transfers
 ./bin/rake relationships:generate[pp_accession1]

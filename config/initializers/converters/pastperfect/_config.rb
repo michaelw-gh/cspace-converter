@@ -55,7 +55,9 @@ module CollectionSpace
             "Authorities" => {
               "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
-              "Person" => ["artist", "recby", "recfrom"],
+              "Organization" => ["publisher"],
+              "Person" => ["artist", "artist2", "artist3", "author", "collector", "found", "owned", "phtgrapher", "recby", "recfrom", "used"],
+              "Place" => [],
             },
             "Relationships" => [
               {
@@ -88,7 +90,9 @@ module CollectionSpace
             "Authorities" => {
               "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
-              "Person" => ["artist", "recby", "recfrom"],
+              "Organization" => ["publisher"],
+              "Person" => ["artist", "artist2", "artist3", "author", "collector", "found", "owned", "phtgrapher", "recby", "recfrom", "used"],
+              "Place" => [],
             },
             "Relationships" => [
               {
@@ -121,7 +125,9 @@ module CollectionSpace
             "Authorities" => {
               "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
-              "Person" => ["artist", "recby", "recfrom"],
+              "Organization" => ["publisher"],
+              "Person" => ["artist", "artist2", "artist3", "author", "collector", "found", "owned", "phtgrapher", "recby", "recfrom", "used"],
+              "Place" => [],
             },
             "Relationships" => [
               {
@@ -159,7 +165,9 @@ module CollectionSpace
             "Authorities" => {
               "Concept" => [["gparent", "category"], ["objname", "objectname"], ["parent", "subcategory"]],
               "Location" => ["location", "permloc"],
-              "Person" => ["artist", "recby", "recfrom"],
+              "Organization" => ["publisher"],
+              "Person" => ["artist", "artist2", "artist3", "author", "collector", "found", "owned", "phtgrapher", "recby", "recfrom", "used"],
+              "Place" => [],
             },
             "Relationships" => [
               {

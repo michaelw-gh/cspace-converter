@@ -33,7 +33,7 @@ module CollectionSpace
 
               # copyNumber - NM
               copy_number = attributes["frameno"] ? attributes["frameno"] : attributes["negno"]
-              CSXML.add xml, "copyNumber" if copy_number
+              CSXML.add xml, "copyNumber", copy_number if copy_number
 
               # numberOfObjects (1?) n/a
 
@@ -44,7 +44,9 @@ module CollectionSpace
               collection = attributes["collection"]
               CSXML.add xml, 'collection', CSXML::Helpers.get_vocab_urn('bmcollection', collection) if collection
 
-              CSXML.add_repeat xml, 'briefDescriptions', [{ "briefDescription" => scrub_fields([attributes["descrip_"]]) }]
+              CSXML.add_repeat xml, 'briefDescriptions', [{
+                "briefDescription" => scrub_fields([attributes["descrip_"], attributes["subjects_"]])
+              }]
               CSXML.add xml, 'distinguishingFeatures', scrub_fields([attributes["notes_"]])
               CSXML.add xml, 'physicalDescription', attributes["physchar"]
               CSXML.add xml, 'comments', scrub_fields([attributes["pubnotes_"]])
@@ -80,26 +82,101 @@ module CollectionSpace
               end
 
               CSXML.add xml, 'assocEventName', attributes["event"]
-              # assocEventNote - distinct field from name?
 
-              # assocDateGroupList
-              # assocPlaceGroupList
-              # assocPersonGroupList (x 2)
-              # assocOrganizationGroupList
+              # assocPlaceGroupList: place; origin
+              assoc_place = []
+              assoc_place << {
+                "assocPlaceNote" => "Place", "assocPlace" => attributes["place"]
+              } if attributes["place"]
+              assoc_place << {
+                "assocPlaceNote" => "Origin", "assocPlace" => attributes["origin"]
+              } if attributes["origin"]
+              CSXML.add_group_list xml, 'assocPlace', assoc_place
 
-              # objectProductionDateGroupList
-              # objectProductionPlaceGroupList
-              # objectProductionPersonGroupList
-              # objectProductionOrganizationGroupList
+              # assocPersonGroupList (x 2): collector; owned; used; found
+              assoc_person = []
+              assoc_person << {
+                "assocPersonNote" => "Collector",
+                "assocPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["collector"]),
+              } if attributes["collector"]
+              assoc_person << {
+                "assocPersonNote" => "Owned",
+                "assocPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["owned"]),
+              } if attributes["owned"]
+              assoc_person << {
+                "assocPersonNote" => "Used",
+                "assocPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["used"]),
+              } if attributes["used"]
+              assoc_person << {
+                "assocPersonNote" => "Found",
+                "assocPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["found"]),
+              } if attributes["found"]
+              CSXML.add_group_list xml, 'assocPerson', assoc_person
 
-              # ownershipExchangeMethod
-              # ownershipExchangePriceValue
-              # ownershipPlace
-              # ownershipCategory
+              # assocOrganizationGroupList: studio
+              CSXML.add_group_list xml, 'assocOrganization', [{
+                "assocOrganization" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["studio"]),
+                "assocOrganizationNote" => "Studio",
+              }] if attributes["studio"]
 
-              # materialGroupList
-              # textualInscriptionGroupList
-              # measuredPartGroupList
+              # objectProductionDateGroupList: earlydate; made; date; pubdate
+              display_date = attributes["made"] ? attributes["made"] : attributes["pubdate"]
+              CSXML.add_group_list xml, "objectProductionDate", [{
+                "dateDisplayDate" => display_date,
+                "dateEarliestSingleYear" => attributes["earlydate"],
+              }]
+
+              # objectProductionPlaceGroupList: pubplace
+              CSXML.add_group_list xml, 'objectProductionPlace', [{
+                "objectProductionPlaceRole" => "Pub Place",
+                "objectProductionPlace" => attributes["pubplace"]
+              }] if attributes["pubplace"]
+
+              # objectProductionPersonGroupList: artist; author; phtgrapher
+              object_prod_person = []
+              ["artist", "artist2", "artist3"].each do |artist|
+                object_prod_person << {
+                  "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes[artist]),
+                  "objectProductionPersonRole" => "artist",
+                } if attributes[artist]
+              end
+              object_prod_person << {
+                "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["author"]),
+                "objectProductionPersonRole" => "author",
+              } if attributes["author"]
+              object_prod_person << {
+                "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["phtgrapher"]),
+                "objectProductionPersonRole" => "photographer",
+              } if attributes["phtgrapher"]
+              CSXML.add_group_list xml, 'objectProductionPerson', object_prod_person
+
+
+              # objectProductionOrganizationGroupList: publisher
+              CSXML.add_group_list xml, 'objectProductionOrganization', [{
+                "objectProductionOrganization" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["publisher"]),
+                "objectProductionOrganizationRole" => "Publisher",
+              }] if attributes["publisher"]
+
+              # ownershipExchangeMethod: recas
+              CSXML.add xml, 'ownershipExchangeMethod', attributes["recas"]
+              # ownershipExchangePriceValue: price
+              CSXML.add xml, 'ownershipExchangePriceValue', attributes["price"]
+
+              # materialGroupList: material; medium
+              CSXML.add_group_list xml, 'materialGroup', [{
+                "material" => attributes["material"],
+                "materialName" => attributes["medium"],
+              }]
+
+              # textualInscriptionGroupList: signedname
+              CSXML.add_group_list xml, 'textualInscription', [{
+                "inscriptionContent" => attributes["signedname"]
+              }]
+
+              # measuredPartGroupList: overall
+              CSXML.add_group_list xml, 'measuredPart', [{
+                "measuredPart" => "overall",
+              }]
             end
 
             xml.send(
@@ -120,9 +197,10 @@ module CollectionSpace
             ) do
               # applying namespace breaks import
               xml.parent.namespace = nil
-              CSXML.add xml, 'materialTechniqueDescription', attributes["medium"]
+              CSXML.add xml, 'materialTechniqueDescription', attributes["process"]
               CSXML.add xml, 'catalogLevel', CSXML::Helpers.get_vocab_urn('cataloglevel', ' item ', true)
-              # creatorDescription
+              # creatorDescription: copyright
+              CSXML.add xml, 'creatorDescription', attributes["copyright"]
             end
 
             xml.send(
