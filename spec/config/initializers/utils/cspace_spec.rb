@@ -28,6 +28,10 @@ describe "CollectionSpace" do
       expect(CollectionSpace::Identifiers.for_option(' item ', true)).to eq 'item'
     end
 
+    it "can convert vocabulary display values to id form with quotes" do
+      expect(CollectionSpace::Identifiers.for_option("maker's mark")).to eq 'makers_mark'
+    end
+
   end
 
 end

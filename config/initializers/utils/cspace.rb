@@ -18,7 +18,7 @@ module CollectionSpace
     def self.for_option(option, strip = false)
       option = option.strip if strip
       option.downcase.
-        gsub(/[()]/, '').
+        gsub(/[()'"]/, '').
         gsub(' - ', '_').
         gsub('/', '_').
         gsub('-', '_').
