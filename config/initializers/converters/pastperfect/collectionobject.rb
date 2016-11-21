@@ -169,14 +169,25 @@ module CollectionSpace
               }]
 
               # textualInscriptionGroupList: signedname
+              signed_name = attributes["signedname"]
               CSXML.add_group_list xml, 'textualInscription', [{
-                "inscriptionContent" => attributes["signedname"]
-              }]
+                "inscriptionContent" => signed_name,
+                "inscriptionContentType" => CSXML::Helpers.get_vocab_urn('inscriptioncontenttype', 'signature'),
+                "inscriptionContentPosition" => CSXML::Helpers.get_vocab_urn('inscriptioncontentposition', attributes.fetch("signloc", "back")),
+              }] if signed_name
 
               # measuredPartGroupList: overall
-              CSXML.add_group_list xml, 'measuredPart', [{
-                "measuredPart" => "overall",
-              }]
+              measured_part = {
+                "measuredPart" => "overall"
+              }
+              # depthin, heightin, widthin
+              framed        = attributes["framed"] && attributes["framed"] == "yes" ? true : false
+              measured_part = measured_part.merge({ "dimensionSummary" => "framed" }) if framed
+              height        = { "dimension" => "height", "value" => attributes.fetch("heightin", "0"), "measurementUnit" => "inches" }
+              width         = { "dimension" => "width", "value" => attributes.fetch("widthin", "0"), "measurementUnit" => "inches" }
+              depth         = { "dimension" => "depth", "value" => attributes.fetch("depthin", "0"), "measurementUnit" => "inches" }
+              dimensions    = [ height, width, depth ]
+              CSXML.add_group_list xml, 'measuredPart', [ measured_part ], 'dimension', dimensions
             end
 
             xml.send(
