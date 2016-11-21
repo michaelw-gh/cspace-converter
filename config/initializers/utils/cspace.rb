@@ -61,9 +61,9 @@ module CollectionSpace
             element.each { |k, v| xml.send(k.to_sym, v) }
             if sub_key
               xml.send("#{sub_key}SubGroupList".to_sym) {
-                elements.each do |element|
+                sub_elements.each do |sub_element|
                   xml.send("#{sub_key}SubGroup".to_sym) {
-                    sub_elements.each { |k, v| xml.send(k.to_sym, v) }
+                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
                   }
                 end
               }
