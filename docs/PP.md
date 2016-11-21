@@ -44,11 +44,17 @@ Process:
 To undo:
 
 ```
-./bin/rake remote:action:delete[Acquisition,pp_accession1]
-./bin/rake remote:action:delete[CollectionObject,pp_archives1]
-./bin/rake remote:action:delete[CollectionObject,pp_library1]
-./bin/rake remote:action:delete[CollectionObject,pp_objects1]
-./bin/rake remote:action:delete[CollectionObject,pp_photos1]
+./bin/rake remote:action:delete[Acquisition,all]
+./bin/rake remote:action:delete[CollectionObject,all]
+./bin/rake remote:action:delete[Media,all]
+./bin/rake remote:action:delete[Movement,all]
+./bin/rake remote:action:delete[ValuationControl,all]
+
+./bin/rake remote:action:delete[Concept,all]
+./bin/rake remote:action:delete[Location,all]
+./bin/rake remote:action:delete[Organization,all]
+./bin/rake remote:action:delete[Person,all]
+./bin/rake remote:action:delete[Place,all]
 
 ./bin/rake remote:action:delete[Relationship,all]
 ```
