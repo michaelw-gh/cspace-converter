@@ -54,11 +54,20 @@ module CollectionSpace
       }
     end
 
-    def self.add_group_list(xml, key, elements = [])
+    def self.add_group_list(xml, key, elements = [], sub_key = false, sub_elements = [])
       xml.send("#{key}GroupList".to_sym) {
         elements.each do |element|
           xml.send("#{key}Group".to_sym) {
             element.each { |k, v| xml.send(k.to_sym, v) }
+            if sub_key
+              xml.send("#{sub_key}SubGroupList".to_sym) {
+                elements.each do |element|
+                  xml.send("#{sub_key}SubGroup".to_sym) {
+                    sub_elements.each { |k, v| xml.send(k.to_sym, v) }
+                  }
+                end
+              }
+            end
           }
         end
       }
