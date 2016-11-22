@@ -22,3 +22,6 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore personal scripts
+my_*.sh
