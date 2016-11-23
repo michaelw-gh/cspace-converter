@@ -59,4 +59,50 @@ To undo:
 ./bin/rake remote:action:delete[Relationship,all]
 ```
 
+## Checks
+
+Counting that all records in the converter were transferred to cspace is essential.
+
+```
+./bin/rake console
+
+# get counts by type from converter
+CollectionSpaceObject.where(category: 'Procedure', type: 'CollectionObject').count
+CollectionSpaceObject.where(category: 'Procedure', type: 'Media').count
+CollectionSpaceObject.where(category: 'Procedure', type: 'Acquisition').count
+CollectionSpaceObject.where(category: 'Procedure', type: 'ValuationControl').count
+CollectionSpaceObject.where(category: 'Procedure', type: 'Movement').count
+CollectionSpaceObject.where(category: 'Authority', type: 'Concept').count
+CollectionSpaceObject.where(category: 'Authority', type: 'Location').count
+CollectionSpaceObject.where(category: 'Authority', type: 'Organization').count
+CollectionSpaceObject.where(category: 'Authority', type: 'Person').count
+CollectionSpaceObject.where(category: 'Relationship', type: 'Relationship').count
+
+# using csible get counts from cspace, the totals should match
+rake cs:get:path[collectionobjects] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path[media] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path[acquisitions] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path[valuationcontrols] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path[movements] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["conceptauthorities/urn:cspace:name(category)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["conceptauthorities/urn:cspace:name(objectname)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["conceptauthorities/urn:cspace:name(subcategory)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["locauthorities/urn:cspace:name(location)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["orgauthorities/urn:cspace:name(organization)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path["personauthorities/urn:cspace:name(person)/items"] | jq '.["abstract_common_list"]["totalItems"]'
+rake cs:get:path[relations] | jq '.["relations_common_list"]["totalItems"]'
+```
+
+TODO: add rake task to get counts and compare.
+
+## Debug
+
+Finding records that did not transfer:
+
+```
+./bin/rake console
+CollectionSpaceObject.where(csid: nil).count
+# => 0 # =)
+```
+
 ---
