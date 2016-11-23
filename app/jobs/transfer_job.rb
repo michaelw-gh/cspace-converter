@@ -6,7 +6,8 @@ class TransferJob < ActiveJob::Base
     raise "Invalid remote action #{action}!" unless action_method
 
     # cannot lookup relationships so force delete if there is a csid for the object
-    force_delete = (import_type == "Relationship" and action_method == :remote_delete) ? true : false
+    is_relationship = import_type == "Relationship" ? true : false
+    force_delete    = (is_relationship and action_method == :remote_delete) ? true : false
 
     objects = CollectionSpaceObject.includes(:data_object)
       .where(type: import_type)
@@ -14,16 +15,41 @@ class TransferJob < ActiveJob::Base
       (import_batch.nil? or object.data_object.import_batch == import_batch) ? object : nil;
     }
 
-    # TODO: add logging
-
     objects.each do |object|
       service = RemoteActionService.new(object)
-      if force_delete or service.remote_already_exists?
-        deleted = service.send(action_method) if action_method == :remote_delete
-        logger.error "Failed to delete #{object.inspect}" unless deleted
+
+      if not is_relationship and not (object.csid and object.uri)
+        # ping cspace to see if this object exists remotely
+        # this will update local object csid and uri if found
+        service.remote_already_exists?
+      end
+      has_csid_and_uri = (object.csid and object.uri) ? true : false
+
+      already_exists = is_relationship ? false : has_csid_and_uri
+      if force_delete or already_exists
+        # if we already exist and are transferring we don't need to do anything (we don't do updates)
+
+        if action_method == :remote_delete
+          # relationships can't be confirmed via already exists so make sure there is a csid & uri
+          unless has_csid_and_uri
+            logger.info "Cannot delete without existing csid and uri for object #{object.inspect}"
+            next
+          end
+          deleted = service.send(action_method)
+          logger.error "Failed to delete #{object.inspect}" unless deleted
+        end
       else
-        transferred = service.send(action_method) if action_method == :remote_transfer
-        logger.error "Failed to transfer #{object.inspect}" unless transferred
+        # if we don't exist and are deleting we don't do anything =)
+
+        if action_method == :remote_transfer
+          # skip if there is a csid & uri (relationships cannot be confirmed, others should have been found)
+          if has_csid_and_uri
+            logger.info "Cannot transfer with existing csid and uri for object #{object.inspect}"
+            next
+          end
+          transferred = service.send(action_method)
+          logger.error "Failed to transfer #{object.inspect}" unless transferred
+        end
       end
     end
   end
