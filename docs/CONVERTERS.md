@@ -94,6 +94,10 @@ defining:
 - identifier: the field in the source data used for identifier_field
 - title: the field in the source data used for the local title
 
+Note: the CSV processor downcases all characters and replaces spaces
+with "_". So a field like "ID Number" should be referred to
+as "id_number" within the application.
+
 Example:
 
 ```ruby
