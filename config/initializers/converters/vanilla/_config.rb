@@ -19,7 +19,7 @@ module CollectionSpace
               },
             },
             "Authorities" => {
-              "Person" => ["Content Person"],
+              "Person" => ["content_person"],
             },
             "Relationships" => [], # nothing to see here!
           }
