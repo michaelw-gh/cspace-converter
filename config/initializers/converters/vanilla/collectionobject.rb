@@ -7,29 +7,29 @@ module CollectionSpace
 
         def convert
           run do |xml|
-						# objectNumber
+            # objectNumber
             CSXML.add xml, 'objectNumber', attributes["id_number"]
 
-						# numberOfObjects
+            # numberOfObjects
             CSXML.add xml, 'numberOfObjects', attributes["number_of_objects"]
 
             #Title group list, need to check for language to avoid downcasing empty strings
             if attributes["title_translation"]
               CSXML.add_group_list xml, 'title', [{
-							"title" => attributes["title"],
-							"titleLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_language"]),
-							}], 'titleTranslation', [{
-								"titleTranslation" => attributes["title_translation"],
-								"titleTranslationLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_translation_language"])
+              "title" => attributes["title"],
+              "titleLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_language"]),
+              }], 'titleTranslation', [{
+                "titleTranslation" => attributes["title_translation"],
+                "titleTranslationLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_translation_language"])
               }]
             elsif attributes["title_language"]
                CSXML.add_group_list xml, 'title', [{
-							"title" => attributes["title"],
-							"titleLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_language"]),
+              "title" => attributes["title"],
+              "titleLanguage" => CSXML::Helpers.get_vocab_urn('languages', attributes["title_language"]),
               }]
             else
-							CSXML.add_group_list xml, 'title', [{
-							"title" => attributes["title"],
+              CSXML.add_group_list xml, 'title', [{
+              "title" => attributes["title"],
               }]
             end
 
@@ -42,7 +42,7 @@ module CollectionSpace
               "briefDescription" => scrub_fields([attributes["brief_description"]])
             }]
 
-						# responsibleDepartments
+            # responsibleDepartments
             CSXML.add_repeat xml, 'responsibleDepartments', [{
               "responsibleDepartment" => attributes["responsible_department"]
             }] if attributes["responsible_department"]
@@ -55,85 +55,85 @@ module CollectionSpace
 
             CSXML.add xml, 'comments', scrub_fields([attributes["comments"]])
 
-						# measuredPartGroupList
-						overall_data = {
-							"measuredPart" => attributes["dimension_part"],
-							"dimensionSummary" => attributes["dimension_summary"],
-						}
-						dimensions = []
-						dims = split_mvf attributes, 'dimension'
-						values = split_mvf attributes, 'value'
-						unit = attributes["unit"]
-						dims.each_with_index do |dim, index|
-							dimensions << { "dimension" => dim, "value" => values[index], "measurementUnit" => unit }
-						end
-						CSXML.add_group_list xml, 'measuredPart', [ overall_data ], 'dimension', dimensions
+            # measuredPartGroupList
+            overall_data = {
+              "measuredPart" => attributes["dimension_part"],
+              "dimensionSummary" => attributes["dimension_summary"],
+            }
+            dimensions = []
+            dims = split_mvf attributes, 'dimension'
+            values = split_mvf attributes, 'value'
+            unit = attributes["unit"]
+            dims.each_with_index do |dim, index|
+              dimensions << { "dimension" => dim, "value" => values[index], "measurementUnit" => unit }
+            end
+            CSXML.add_group_list xml, 'measuredPart', [ overall_data ], 'dimension', dimensions
 
-						# contentPersons
-						if attributes.fetch("content_person", nil)
-							contentpersons = split_mvf attributes, 'content_person'
+            # contentPersons
+            if attributes.fetch("content_person", nil)
+              contentpersons = split_mvf attributes, 'content_person'
               CSXML::Helpers.add_persons xml, 'contentPerson', contentpersons, :add_repeat
             end
 
-						# copyNumber
+            # copyNumber
             CSXML.add xml, 'copyNumber', attributes["copy_number"]
 
-						# editionNumber
+            # editionNumber
             CSXML.add xml, 'editionNumber', attributes["edition_number"]
 
-						# form
+            # form
             CSXML.add_repeat xml, 'forms', [{
               "form" => attributes["form"]
             }]
 
-						# textualInscriptionGroupList
-						CSXML.add_group_list xml, 'textualInscription', [{
-							inscriptionContentInscriber => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["inscriber"]),
-							inscriptionContentMethod => attributes["method"],
-						}] if attributes["inscriber"]
+            # textualInscriptionGroupList
+            CSXML.add_group_list xml, 'textualInscription', [{
+              inscriptionContentInscriber => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["inscriber"]),
+              inscriptionContentMethod => attributes["method"],
+            }] if attributes["inscriber"]
 
-						# phase
+            # phase
             CSXML.add xml, 'phase', attributes["phase"]
 
-						# sex
+            # sex
             CSXML.add xml, 'sex', attributes["sex"]
 
-						# style
+            # style
             CSXML.add_repeat xml, 'styles', [{
               "style" => attributes["style"]
             }]
 
-						# technicalAttributeGroupList
-						CSXML.add_group_list xml, 'technicalAttribute', [{
-							"technicalAttribute" => attributes["tech_attribute"],
-						}] if attributes["tech_attributes"]
+            # technicalAttributeGroupList
+            CSXML.add_group_list xml, 'technicalAttribute', [{
+              "technicalAttribute" => attributes["tech_attribute"],
+            }] if attributes["tech_attributes"]
 
-						# objectComponentGroupList
-						CSXML.add_group_list xml, "objectComponent", [{
-							"objectComponentName" => attributes["object_component_name"]
-						}]
+            # objectComponentGroupList
+            CSXML.add_group_list xml, "objectComponent", [{
+              "objectComponentName" => attributes["object_component_name"]
+            }]
 
-						# objectProductionDateGroupList
-						CSXML.add_group_list xml, "objectProductionDate", [{
-							"dateDisplayDate" => attributes["production_date"]
-						}]
+            # objectProductionDateGroupList
+            CSXML.add_group_list xml, "objectProductionDate", [{
+              "dateDisplayDate" => attributes["production_date"]
+            }]
 
-						# objectProductionOrganizationGroupList
-						CSXML.add_group_list xml, 'objectProductionOrganization', [{
-							"objectProductionOrganization" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["production_org"]),
-							"objectProductionOrganizationRole" => attributes["organization_role"],
-						}] if attributes["production_org"]
+            # objectProductionOrganizationGroupList
+            CSXML.add_group_list xml, 'objectProductionOrganization', [{
+              "objectProductionOrganization" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["production_org"]),
+              "objectProductionOrganizationRole" => attributes["organization_role"],
+            }] if attributes["production_org"]
 
             # objectProductionPeopleGroupList
             CSXML.add_group_list xml, 'objectProductionPeople', [{
               "objectProductionPeople" => attributes["production_people"]
             }] if attributes["production_people"]
 
-						# objectProductionPersonGroupList
-						CSXML.add_group_list xml, 'objectProductionPerson', [{
-							"objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["production_person"]),
-							"objectProductionPersonRole" => attributes["person_role"],
-						}] if attributes["production_person"]
+            # objectProductionPersonGroupList
+            CSXML.add_group_list xml, 'objectProductionPerson', [{
+              "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["production_person"]),
+              "objectProductionPersonRole" => attributes["person_role"],
+            }] if attributes["production_person"]
 
             # objectProductionPlaceGroupList
             CSXML.add_group_list xml, 'objectProductionPlace', [{
@@ -142,11 +142,11 @@ module CollectionSpace
 
             # materialGroupList
             mgs = []
-						materials = split_mvf attributes, 'material'
-						materials.each do |m|
-							mgs << { "material" => m }
-						end
-						CSXML.add_group_list xml, 'material', mgs
+            materials = split_mvf attributes, 'material'
+            materials.each do |m|
+              mgs << { "material" => m }
+            end
+            CSXML.add_group_list xml, 'material', mgs
 
             # techniqueGroupList
             tgs = []
@@ -156,12 +156,12 @@ module CollectionSpace
             end
             CSXML.add_group_list xml, 'technique', tgs
 
-						# objectStatusList
-						CSXML.add_list xml, 'objectStatus', [{
-							"objectStatus" => attributes["object_status"]
-						}] if attributes["object_status"]
+            # objectStatusList
+            CSXML.add_list xml, 'objectStatus', [{
+              "objectStatus" => attributes["object_status"]
+            }] if attributes["object_status"]
 
-						# fieldColEventNames
+            # fieldColEventNames
             CSXML.add_repeat xml, 'fieldColEventNames', [{
               "fieldColEventName" => attributes["field_collection_event_name"]
             }]
