@@ -19,7 +19,8 @@ module CollectionSpace
               },
             },
             "Authorities" => {
-              "Person" => ["content_person"],
+              "Person" => ["content_person", "inscriber", "production_person"],
+              "Organization" => ["production_org"],
             },
             "Relationships" => [], # nothing to see here!
           }
