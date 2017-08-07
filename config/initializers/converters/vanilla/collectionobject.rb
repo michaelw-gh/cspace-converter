@@ -53,7 +53,9 @@ module CollectionSpace
 
             CSXML.add xml, 'recordStatus', attributes["record_status"]
 
-            CSXML.add xml, 'comments', scrub_fields([attributes["comments"]])
+            CSXML.add_repeat xml, 'comments', [{
+              "comment_" => scrub_fields([attributes["comments"]])
+            }]
 
             # measuredPartGroupList
             overall_data = {
