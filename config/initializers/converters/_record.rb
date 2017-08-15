@@ -21,6 +21,15 @@ module CollectionSpace
           "Conservation" => {
             path: "conservation", schema: "conservation"
           },
+          "Exhibition" => {
+            path: "exhibitions", schema: "exhibitions"
+          },
+          "Intake" => {
+            path: "intakes", schema: "intakes"
+          },
+          "LoanIn" => {
+            path: "loansin", schema: "loansin"
+          },
           "LoanOut" => {
             path: "loansout", schema: "loansout"
           },
@@ -172,6 +181,33 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'conservation', 'conservation', common
+        end
+
+      end
+
+      class Exhibition < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'exhibitions', 'exhibition', common
+        end
+
+      end
+
+      class Intake < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'intakes', 'intake', common
+        end
+
+      end
+
+      class LoanIn < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'loansin', 'loanin', common
         end
 
       end
