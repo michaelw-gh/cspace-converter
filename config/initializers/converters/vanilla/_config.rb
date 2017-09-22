@@ -11,6 +11,8 @@ module CollectionSpace
           "Media",
           "Intake",
           "Acquisition",
+          "Group",
+          "ValuationControl"
         ]
       end
 
@@ -80,6 +82,50 @@ module CollectionSpace
                 "data1_field" => "relationship_6",
                 "procedure2_type" => "Exhibition",
                 "data2_field" => "exhibition_number",
+              },
+            ],
+          },
+          "group" => {
+            "Procedures" => {
+              "Group" => {
+                "identifier_field" => "title",
+                "identifier" => "title",
+                "title" => "title",
+              },
+            },
+            "Authorities" => {
+              "Person" => ["owner"],
+            },
+            "Relationships" => [
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_1",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_2",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_3",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_4",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_5",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
               },
             ],
           },
@@ -250,7 +296,26 @@ module CollectionSpace
               },
             ],
           },
-
+          "valuationcontrol" => {
+             "Procedures" => {
+               "ValuationControl" => {
+                 "identifier_field" => "valuationcontrolRefNumber",
+                 "identifier" => "valuation_control_reference_number",
+                 "title" => "valuation_control_reference_number",
+               },
+             },
+             "Authorities" => {
+              "Person" => ["source"],
+            },
+            "Relationships" => [
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_1",
+                "procedure2_type" => "ValuationControl",
+                "data2_field" => "valuation_control_reference_number",
+              },
+            ],
+          },
         }
       end
 
