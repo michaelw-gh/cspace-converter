@@ -92,7 +92,7 @@ module CollectionSpace
                },
              },
              "Authorities" => {
-               "Person" => ["lenders_authorizer", "borrowers_authorizer"],
+               "Person" => ["lender's_authorizer", "borrower's_authorizer"],
                "Organization" => ["lender"],
              },
              "Relationships" => [
@@ -125,7 +125,7 @@ module CollectionSpace
                },
              },
              "Authorities" => {
-               "Person" => ["lenders_authorizer", "borrowers_authorizer"],
+               "Person" => ["lender's_authorizer", "borrower's_authorizer"],
                "Organization" => ["borrower"],
              },
              "Relationships" => [
