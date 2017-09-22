@@ -12,7 +12,8 @@ module CollectionSpace
           "Intake",
           "Acquisition",
           "Group",
-          "ValuationControl"
+          "ValuationControl",
+          "Movement",
         ]
       end
 
@@ -211,6 +212,44 @@ module CollectionSpace
                  "data1_field" => "relationship",
                  "procedure2_type" => "Media",
                  "data2_field" => "identification_number",
+               },
+             ],
+           },
+           "movement" => {
+             "Procedures" => {
+               "Movement" => {
+                 "identifier_field" => "movementReferenceNumber",
+                 "identifier" => "inventory_reference_number",
+                 "title" => "inventory_reference_number",
+               },
+             },
+             "Authorities" => {
+               "Person" => ["movement_contact"],
+             },
+             "Relationships" => [
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_1",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_2",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_3",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "LoanOut",
+                  "data1_field" => "relationship_4",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
                },
              ],
            },
