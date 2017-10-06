@@ -7,6 +7,7 @@
 # Ignore dotfiles (making an exception for the default .env configuration)
 /.*
 !/.env
+*.swp
 
 # Ignore bundler config.
 /.bundle

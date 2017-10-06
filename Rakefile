@@ -6,6 +6,21 @@ require File.expand_path('../config/application', __FILE__)
 Rails.application.load_tasks
 
 namespace :db do
+  namespace :export do
+    # rake db:export:xml
+    task :xml => :environment do |t|
+      # mongoid batches by default
+      base = ['db', 'data', 'export']
+      CollectionSpaceObject.all.each do |obj|
+        path = Rails.root.join(File.join(base + [obj.category, obj.type, obj.subtype].compact))
+        FileUtils.mkdir_p File.join(path)
+        file_path = path + "#{obj.identifier}.xml"
+        puts "Exporting: #{file_path}"
+        File.open(file_path, 'w') {|f| f.write(obj.content) }
+      end
+    end
+  end
+
   namespace :import do
     # rake db:import:data[ppsobjectsdata1,PastPerfect,ppsobjectsdata,db/data/ppsobjectsdata.csv]
     task :data, [:batch, :converter, :profile, :filename] => :environment do |t, args|
