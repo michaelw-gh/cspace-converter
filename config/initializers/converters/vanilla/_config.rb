@@ -14,6 +14,7 @@ module CollectionSpace
           "Group",
           "ValuationControl",
           "Movement",
+          "ConditionCheck",
         ]
       end
 
@@ -36,6 +37,32 @@ module CollectionSpace
               },
             ],
           },
+          "conditioncheck" => {
+            "Procedures" => {
+              "ConditionCheck" => {
+                "identifier_field" => "conditionCheckRefNumber",
+                "identifier" => "condition_check_reference_number",
+                "title" => "condition_check_reference_number",
+               },
+             },
+             "Authorities" => {
+               "Person" => ["condition_checker"],
+             },
+             "Relationships" => [
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_1",
+                  "procedure2_type" => "ConditionCheck",
+                  "data2_field" => "condition_check_reference_number",
+               },
+               {
+                  "procedure1_type" => "Movement",
+                  "data1_field" => "relationship_2",
+                  "procedure2_type" => "ConditionCheck",
+                  "data2_field" => "condition_check_reference_number",
+               },
+             ],
+           },
           "exhibition" => {
             "Procedures" => {
               "Exhibition" => {
