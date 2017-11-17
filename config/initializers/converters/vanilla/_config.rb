@@ -15,6 +15,7 @@ module CollectionSpace
           "ValuationControl",
           "Movement",
           "ConditionCheck",
+          "ObjectExit",
         ]
       end
 
@@ -321,6 +322,26 @@ module CollectionSpace
                  "data1_field" => "relationship_5",
                  "procedure2_type" => "Intake",
                  "data2_field" => "intake_entry_number",
+               },
+             ],
+           },
+           "objectexit" => {
+             "Procedures" => {
+               "ObjectExit" => {
+                 "identifier_field" => "exitNumber",
+                 "identifier" => "exit_number",
+                 "title" => "exit_number",
+               },
+             },
+             "Authorities" => {
+              "Organization" => ["current_owner"],
+             },
+             "Relationships" => [
+               {
+                 "procedure1_type" => "CollectionObject",
+                 "data1_field" => "relationship_1",
+                 "procedure2_type" => "ObjectExit",
+                 "data2_field" => "exit_number",
                },
              ],
            },
