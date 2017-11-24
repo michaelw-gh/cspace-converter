@@ -7,7 +7,9 @@
 # Ignore dotfiles (making an exception for the default .env configuration)
 /.*
 !/.env
+!/.ruby-version
 *.swp
+.DS_Store
 
 # Ignore bundler config.
 /.bundle
@@ -18,7 +20,8 @@
 /.env.*
 
 # Ignore data
-/db/data/
+/db/data/*
+!/db/data/Sample*.csv
 
 # Ignore all logfiles and tempfiles.
 /log/*

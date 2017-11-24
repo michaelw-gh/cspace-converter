@@ -25,7 +25,7 @@ db/data/
 
 ```
 # for local development / conversions
-docker run -p 27017:27017 --name mongo -d mongo:3.2
+docker run --name mongo.db -d -p 27017:27017 mongo:3.2
 ```
 
 You should be able to access MongDB on `http://localhost:27017`.
@@ -72,6 +72,12 @@ For example:
 
 For these commands to actually work you will need the data files in `db/data`.
 
+To use sample data:
+
+```
+./import.sh cataloging Vanilla cataloging SampleCatalogingData
+```
+
 **Using the console**
 
 ```
@@ -90,6 +96,19 @@ To fire jobs created using the ui:
 
 ```
 ./bin/rake jobs:work
+```
+
+## Test environment
+
+```
+docker-compose build
+docker-compose up
+
+# to run commands
+docker exec -it converter ./bin/rails c
+docker exec -it converter \
+  ./import.sh cataloging Vanilla cataloging SampleCatalogingData
+docker exec -it converter ./bin/rake db:nuke
 ```
 
 ## License
