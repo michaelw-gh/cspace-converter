@@ -1,19 +1,17 @@
-cspace-converter
-===
+# cspace-converter
 
 Migrate data to CollectionSpace from CSV.
 
-Getting Started
----
+## Getting Started
 
-Ruby (2.1.x) & Rails are required. The database backend is MongoDB (3.2) and by default should be running on `localhost:27017`.
+Ruby (2.1.x) & Rails are required. The database backend is MongoDB (3.2) and by
+default should be running on `localhost:27017`.
 
 ```
 bundle install
 ```
 
-Setup
----
+## Setup
 
 Create the data directory and add the data files.
 
@@ -27,14 +25,17 @@ db/data/
 
 ```
 # for local development / conversions
-docker run --net=host --name mongo -d mongo:3.2
+docker run -p 27017:27017 --name mongo -d mongo:3.2
 ```
 
 You should be able to access MongDB on `http://localhost:27017`.
 
 **Set the environment**
 
-There is a default `.env` file that provides example configuration. Override it by creating a `.env.local` file with custom settings. To use `lyrasis/collectionspace:latest`:
+There is a default `.env` file that provides example configuration. Override it
+by creating a `.env.local` file with custom settings.
+
+To use `lyrasis/collectionspace:latest`:
 
 ```
 # DEVELOPMENT .env
@@ -47,26 +48,7 @@ export DISABLE_SPRING=1
 
 **Run CollectionSpace**
 
-This will use `lyrasis/collectionspace:latest`:
-
-```
-# postgres
-docker run --name postgres -d \
-  --net=host \
-  -e POSTGRES_PASSWORD=654321 \
-  -e DB_CSADMIN_PASSWORD=123456 \
-  lyrasis/collectionspace:db
-
-# PT.1: create temporary `create_db` container to setup database
-docker run --name cspace -it --rm \
-  --net=host \
-  lyrasis/collectionspace /create_db.sh
-
-# PT.2: run again for collectionspace (omitting `/create_db.sh` and run in background)
-docker run --name cspace -d \
-  --net=host \
-  lyrasis/collectionspace
-```
+For local testing: [docker-collectionspace](https://github.com/lyrasis/docker-collectionspace).
 
 **Initial data import**
 
@@ -110,8 +92,7 @@ To fire jobs created using the ui:
 ./bin/rake jobs:work
 ```
 
-License
----
+## License
 
 The project is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
