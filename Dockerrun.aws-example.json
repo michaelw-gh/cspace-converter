@@ -1,0 +1,52 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "mongo.db",
+      "image": "mongo:3.2",
+      "essential": true,
+      "memory": 256
+    },
+    {
+      "name": "converter",
+      "image": "lyrasis/collectionspace:converter",
+      "environment": [
+        {
+          "name": "CSPACE_CONVERTER_DB_HOST",
+          "value": "mongo.db"
+        },
+        {
+          "name": "CSPACE_CONVERTER_BASE_URI",
+          "value": "INSERT_YOUR_VALUE_HERE"
+        },
+        {
+          "name": "CSPACE_CONVERTER_DOMAIN",
+          "value": "INSERT_YOUR_VALUE_HERE"
+        },
+        {
+          "name": "CSPACE_CONVERTER_USERNAME",
+          "value": "INSERT_YOUR_VALUE_HERE"
+        },
+        {
+          "name": "CSPACE_CONVERTER_PASSWORD",
+          "value": "INSERT_YOUR_VALUE_HERE"
+        },
+        {
+          "name": "DISABLE_SPRING",
+          "value": "1"
+        }
+      ],
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 3000
+        }
+      ],
+      "links": [
+        "mongo.db"
+      ]
+    }
+  ]
+}

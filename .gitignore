@@ -30,3 +30,5 @@
 
 # Ignore personal scripts
 my_*.sh
+
+Dockerrun.aws.json

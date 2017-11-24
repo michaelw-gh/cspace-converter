@@ -111,6 +111,31 @@ docker exec -it converter \
 docker exec -it converter ./bin/rake db:nuke
 ```
 
+## Deploy
+
+The converter can be easily deployed to [Amazon Elastic Beanstalk](https://aws.amazon.com/documentation/elastic-beanstalk/)
+(account required).
+
+```
+cp Dockerrun.aws-example.json Dockerrun.aws.json
+```
+
+Replace the `INSERT_YOUR_VALUE_HERE` values as needed. Note: for a production
+environment the `username` and `password` should be for a temporary account used
+only to perform the migration tasks. Delete this user from CollectionSpace when
+the migration has been completed.
+
+Follow the AWS documentation for deployment details:
+
+- [Getting started](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/GettingStarted.html)
+
+Summary:
+
+- Create new application and give it a name
+- Choose Web application
+- Choose Multi-container docker
+- Upload your custom Dockerrun-aws.json (under application version)
+
 ## License
 
 The project is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
