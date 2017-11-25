@@ -25,7 +25,7 @@ db/data/
 
 ```
 # for local development / conversions
-docker run --name mongo.db -d -p 27017:27017 mongo:3.2
+docker run --name mongo -d -p 27017:27017 mongo:3.2
 ```
 
 You should be able to access MongDB on `http://localhost:27017`.
@@ -131,10 +131,14 @@ Follow the AWS documentation for deployment details:
 
 Summary:
 
-- Create new application and give it a name
+- Create a new application and give it a name
 - Choose Web application
-- Choose Multi-container docker
+- Choose Multi-container docker, single instance
 - Upload your custom Dockerrun-aws.json (under application version)
+- Choose a domain name (can be customized further later)
+- Skip RDS and VPC (the mongo db is isolated to a docker local network)
+- Select `t2.small` for instance type (everything else optional)
+- Launch
 
 ## License
 

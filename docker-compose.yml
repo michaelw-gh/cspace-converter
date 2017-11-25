@@ -9,8 +9,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - mongo.db
+      - mongo
     environment:
-      CSPACE_CONVERTER_DB_HOST: mongo.db
-  mongo.db:
+      CSPACE_CONVERTER_DB_HOST: mongo
+  mongo:
     image: mongo:3.2

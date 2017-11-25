@@ -2,10 +2,10 @@
   "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
-      "name": "mongo.db",
+      "name": "mongo",
       "image": "mongo:3.2",
       "essential": true,
-      "memory": 256
+      "memory": 768
     },
     {
       "name": "converter",
@@ -13,7 +13,7 @@
       "environment": [
         {
           "name": "CSPACE_CONVERTER_DB_HOST",
-          "value": "mongo.db"
+          "value": "mongo"
         },
         {
           "name": "CSPACE_CONVERTER_BASE_URI",
@@ -37,7 +37,7 @@
         }
       ],
       "essential": true,
-      "memory": 256,
+      "memory": 1024,
       "portMappings": [
         {
           "hostPort": 80,
@@ -45,7 +45,7 @@
         }
       ],
       "links": [
-        "mongo.db"
+        "mongo"
       ]
     }
   ]
