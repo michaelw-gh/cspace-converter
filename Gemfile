@@ -7,6 +7,8 @@ gem 'delayed_job_mongoid'
 gem 'smarter_csv'
 gem "collectionspace-client"
 gem 'dbf'
+gem 'whenever'
+gem 'rake'
 
 # Use SCSS for stylesheets
 gem 'bootstrap', '~> 4.0.0.alpha3'
