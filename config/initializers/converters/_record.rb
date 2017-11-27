@@ -24,6 +24,9 @@ module CollectionSpace
           "Exhibition" => {
             path: "exhibitions", schema: "exhibitions"
           },
+          "Group" => {
+            path: "groups", schema: "groups"
+          },
           "Intake" => {
             path: "intakes", schema: "intakes"
           },
@@ -190,6 +193,15 @@ module CollectionSpace
         def run(wrapper: "common")
           common = wrapper == "common" ? true : false
           super 'exhibitions', 'exhibition', common
+        end
+
+      end
+
+      class Group < Record
+
+        def run(wrapper: "common")
+          common = wrapper == "common" ? true : false
+          super 'groups', 'group', common
         end
 
       end

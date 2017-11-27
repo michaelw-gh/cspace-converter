@@ -11,6 +11,11 @@ module CollectionSpace
           "Media",
           "Intake",
           "Acquisition",
+          "Group",
+          "ValuationControl",
+          "Movement",
+          "ConditionCheck",
+          "ObjectExit",
         ]
       end
 
@@ -33,6 +38,32 @@ module CollectionSpace
               },
             ],
           },
+          "conditioncheck" => {
+            "Procedures" => {
+              "ConditionCheck" => {
+                "identifier_field" => "conditionCheckRefNumber",
+                "identifier" => "condition_check_reference_number",
+                "title" => "condition_check_reference_number",
+               },
+             },
+             "Authorities" => {
+               "Person" => ["condition_checker"],
+             },
+             "Relationships" => [
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_1",
+                  "procedure2_type" => "ConditionCheck",
+                  "data2_field" => "condition_check_reference_number",
+               },
+               {
+                  "procedure1_type" => "Movement",
+                  "data1_field" => "relationship_2",
+                  "procedure2_type" => "ConditionCheck",
+                  "data2_field" => "condition_check_reference_number",
+               },
+             ],
+           },
           "exhibition" => {
             "Procedures" => {
               "Exhibition" => {
@@ -83,6 +114,50 @@ module CollectionSpace
               },
             ],
           },
+          "group" => {
+            "Procedures" => {
+              "Group" => {
+                "identifier_field" => "title",
+                "identifier" => "title",
+                "title" => "title",
+              },
+            },
+            "Authorities" => {
+              "Person" => ["owner"],
+            },
+            "Relationships" => [
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_1",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_2",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_3",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_4",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_5",
+                "procedure2_type" => "Group",
+                "data2_field" => "title",
+              },
+            ],
+          },
           "loanin" => {
             "Procedures" => {
               "LoanIn" => {
@@ -92,7 +167,7 @@ module CollectionSpace
                },
              },
              "Authorities" => {
-               "Person" => ["lenders_authorizer", "borrowers_authorizer"],
+               "Person" => ["lender's_authorizer", "borrower's_authorizer"],
                "Organization" => ["lender"],
              },
              "Relationships" => [
@@ -125,7 +200,7 @@ module CollectionSpace
                },
              },
              "Authorities" => {
-               "Person" => ["lenders_authorizer", "borrowers_authorizer"],
+               "Person" => ["lender's_authorizer", "borrower's_authorizer"],
                "Organization" => ["borrower"],
              },
              "Relationships" => [
@@ -165,6 +240,44 @@ module CollectionSpace
                  "data1_field" => "relationship",
                  "procedure2_type" => "Media",
                  "data2_field" => "identification_number",
+               },
+             ],
+           },
+           "movement" => {
+             "Procedures" => {
+               "Movement" => {
+                 "identifier_field" => "movementReferenceNumber",
+                 "identifier" => "inventory_reference_number",
+                 "title" => "inventory_reference_number",
+               },
+             },
+             "Authorities" => {
+               "Person" => ["movement_contact"],
+             },
+             "Relationships" => [
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_1",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_2",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "CollectionObject",
+                  "data1_field" => "relationship_3",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
+               },
+               {
+                  "procedure1_type" => "LoanOut",
+                  "data1_field" => "relationship_4",
+                  "procedure2_type" => "Movement",
+                  "data2_field" => "inventory_reference_number",
                },
              ],
            },
@@ -212,6 +325,26 @@ module CollectionSpace
                },
              ],
            },
+           "objectexit" => {
+             "Procedures" => {
+               "ObjectExit" => {
+                 "identifier_field" => "exitNumber",
+                 "identifier" => "exit_number",
+                 "title" => "exit_number",
+               },
+             },
+             "Authorities" => {
+              "Organization" => ["current_owner"],
+             },
+             "Relationships" => [
+               {
+                 "procedure1_type" => "CollectionObject",
+                 "data1_field" => "relationship_1",
+                 "procedure2_type" => "ObjectExit",
+                 "data2_field" => "exit_number",
+               },
+             ],
+           },
            "acquisition" => {
              "Procedures" => {
                "Acquisition" => {
@@ -250,7 +383,26 @@ module CollectionSpace
               },
             ],
           },
-
+          "valuationcontrol" => {
+             "Procedures" => {
+               "ValuationControl" => {
+                 "identifier_field" => "valuationcontrolRefNumber",
+                 "identifier" => "valuation_control_reference_number",
+                 "title" => "valuation_control_reference_number",
+               },
+             },
+             "Authorities" => {
+              "Person" => ["source"],
+            },
+            "Relationships" => [
+              {
+                "procedure1_type" => "CollectionObject",
+                "data1_field" => "relationship_1",
+                "procedure2_type" => "ValuationControl",
+                "data2_field" => "valuation_control_reference_number",
+              },
+            ],
+          },
         }
       end
 

@@ -10,11 +10,11 @@ module CollectionSpace
             #loanInNumber
             CSXML.add xml, 'loanInNumber', attributes["loan_in_number"]
 
-            #lenderGroup
-            CSXML.add_group_list xml, 'lender' [{
+            #lenderGroupList
+            CSXML.add_group_list xml, 'lender', [{
               "lender" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["lender"]),
               "lendersAuthorizer" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["lender's_authorizer"]),
-            }] if attributes["lenders_authorizer"]
+            }] if attributes["lender's_authorizer"]
 
             #borrowersAuthorizer
             CSXML::Helpers.add_persons xml, 'borrowersAuthorizer', [attributes["borrower's_authorizer"]]
