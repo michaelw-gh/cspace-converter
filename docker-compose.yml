@@ -1,0 +1,16 @@
+version: '2'
+services:
+  converter:
+    build: .
+    image: lyrasis/collectionspace:converter
+    container_name: converter
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      CSPACE_CONVERTER_DB_HOST: mongo
+  mongo:
+    image: mongo:3.2

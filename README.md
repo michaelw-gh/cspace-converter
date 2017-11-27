@@ -25,7 +25,7 @@ db/data/
 
 ```
 # for local development / conversions
-docker run -p 27017:27017 --name mongo -d mongo:3.2
+docker run --name mongo -d -p 27017:27017 mongo:3.2
 ```
 
 You should be able to access MongDB on `http://localhost:27017`.
@@ -72,6 +72,12 @@ For example:
 
 For these commands to actually work you will need the data files in `db/data`.
 
+To use sample data:
+
+```
+./import.sh cataloging Vanilla cataloging SampleCatalogingData
+```
+
 **Using the console**
 
 ```
@@ -91,6 +97,48 @@ To fire jobs created using the ui:
 ```
 ./bin/rake jobs:work
 ```
+
+## Test environment
+
+```
+docker-compose build
+docker-compose up
+
+# to run commands
+docker exec -it converter ./bin/rails c
+docker exec -it converter \
+  ./import.sh cataloging Vanilla cataloging SampleCatalogingData
+docker exec -it converter ./bin/rake db:nuke
+```
+
+## Deploy
+
+The converter can be easily deployed to [Amazon Elastic Beanstalk](https://aws.amazon.com/documentation/elastic-beanstalk/)
+(account required).
+
+```
+cp Dockerrun.aws-example.json Dockerrun.aws.json
+```
+
+Replace the `INSERT_YOUR_VALUE_HERE` values as needed. Note: for a production
+environment the `username` and `password` should be for a temporary account used
+only to perform the migration tasks. Delete this user from CollectionSpace when
+the migration has been completed.
+
+Follow the AWS documentation for deployment details:
+
+- [Getting started](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/GettingStarted.html)
+
+Summary:
+
+- Create a new application and give it a name
+- Choose Web application
+- Choose Multi-container docker, single instance
+- Upload your custom Dockerrun-aws.json (under application version)
+- Choose a domain name (can be customized further later)
+- Skip RDS and VPC (the mongo db is isolated to a docker local network)
+- Select `t2.small` for instance type (everything else optional)
+- Launch
 
 ## License
 
