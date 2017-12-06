@@ -9,7 +9,7 @@
     },
     {
       "name": "converter",
-      "image": "lyrasis/collectionspace:converter",
+      "image": "lyrasis/cspace-converter",
       "environment": [
         {
           "name": "CSPACE_CONVERTER_DB_HOST",
