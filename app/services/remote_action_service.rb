@@ -40,6 +40,21 @@ class RemoteActionService
     transferred
   end
 
+  def remote_update
+    updated = false
+    if @object.uri
+      begin
+        response = $collectionspace_client.put(@object.uri, @object.content)
+        if response.status_code.to_s =~ /^2/
+          updated = true
+        end
+      rescue Exception
+        # eat the failure to log it
+      end
+    end
+    updated
+  end
+
   def remote_already_exists?
     exists      = false
     search_args = {

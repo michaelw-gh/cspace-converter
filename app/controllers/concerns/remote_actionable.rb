@@ -29,7 +29,12 @@ module RemoteActionable
   def transfer
     perform(params[:category]) do |service|
       if service.remote_already_exists?
-        flash[:warning] = "Record already exists"
+        if service.remote_update
+          # TOOO: check update supported via config
+          flash[:notice] = "Record updated"
+        else
+          flash[:warning] = "Record was not updated"
+        end
       else
         if service.remote_transfer
           flash[:notice] = "Record created"

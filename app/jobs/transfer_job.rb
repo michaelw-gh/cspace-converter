@@ -27,7 +27,11 @@ class TransferJob < ActiveJob::Base
 
       already_exists = is_relationship ? false : has_csid_and_uri
       if force_delete or already_exists
-        # if we already exist and are transferring we don't need to do anything (we don't do updates)
+        if action_method == :remote_transfer
+          # TODO: check we support updates via config
+          transferred = service.remote_update
+          logger.error "Failed to transfer #{object.inspect}" unless transferred
+        end
 
         if action_method == :remote_delete
           # relationships can't be confirmed via already exists so make sure there is a csid & uri
@@ -39,8 +43,6 @@ class TransferJob < ActiveJob::Base
           logger.error "Failed to delete #{object.inspect}" unless deleted
         end
       else
-        # if we don't exist and are deleting we don't do anything =)
-
         if action_method == :remote_transfer
           # skip if there is a csid & uri (relationships cannot be confirmed, others should have been found)
           if has_csid_and_uri
@@ -50,6 +52,8 @@ class TransferJob < ActiveJob::Base
           transferred = service.send(action_method)
           logger.error "Failed to transfer #{object.inspect}" unless transferred
         end
+
+        # if we don't exist and are deleting we don't do anything with :remote_delete =)
       end
     end
   end
