@@ -72,7 +72,7 @@ For example:
 
 For these commands to actually work you will need the data files in `db/data`.
 
-To use sample data:
+An example using the sample data:
 
 ```
 ./import.sh cataloging Vanilla cataloging SampleCatalogingData
@@ -86,11 +86,12 @@ p = DataObject.first
 puts p.to_procedure_xml("CollectionObject")
 ```
 
-**Running the development server**
+**Starting/Running the development server**
 
 ```
 ./bin/rails s
 ```
+Once started, visit http://localhost:3000 with a web browser.
 
 To fire jobs created using the ui:
 
