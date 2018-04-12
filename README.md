@@ -28,6 +28,12 @@ db/data/
 
 **Start the MongoDB Server**
 
+If installed locally, you can start the MongoDB server with this command:
+
+```
+mongod
+```
+
 ```
 # If you don't want to install and run Mongo DB directly, you can
 # use a Docker image to run MongoDB -see https://hub.docker.com/r/_/mongo/
