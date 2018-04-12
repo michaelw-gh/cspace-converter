@@ -1,6 +1,6 @@
 # cspace-converter
 
-Migrate data to CollectionSpace from CSV.
+Migrate data into CollectionSpace from CSV files.
 
 ## Getting Started
 
@@ -11,14 +11,14 @@ default should be running on `localhost:27017`.
 bundle install
 ```
 
-## Setup Data to be Imported
+## Setup CSV Data to be Imported
 
-Before the cspace-converter tool can import data into CollectionSpace, it must first
-"stage" the data from the CSV files into the Mongo DB.
+Before the *cspace-converter* tool can import CSV data into CollectionSpace, it first
+"stages" the data from the CSV files into a MongoDB database.
 
 **Setup CSV file(s)**
 
-Create the data directory and add the data files. For example:
+Create a data directory and add the CSV files. For example:
 
 ```
 db/data/
@@ -26,11 +26,12 @@ db/data/
 └── ppsobjectsdata.csv # Past Perfect objects data file
 ```
 
-**Start MongoDB**
+**Start the MongoDB Server**
 
 ```
 # If you don't want to install and run Mongo DB directly, you can
 # use a Docker image to run MongoDB -see https://hub.docker.com/r/_/mongo/
+
 docker run --name mongo -d -p 27017:27017 mongo:3.2
 ```
 
@@ -57,20 +58,18 @@ For example:
 ./import.sh pp_objects1 PastPerfect objects PPSdata_objects
 ```
 
-For these commands to actually work you will need the data (CSV) files in `db/data`. Here's the command using supplied sample CSV data:
+For these commands to actually work you will need the data (CSV) files in `db/data`. Here's the command using the supplied sample CSV file:
 
 ```
 ./import.sh cataloging Vanilla cataloging SampleCatalogingData
 ```
 
-## Import Staged Data (data in MongoDB) to CollectionSpace
+## Import Staged Data from MongoDB to CollectionSpace
 
 **Set the environment**
 
 There is a default `.env` file that provides example configuration. Override it
 by creating a `.env.local` file with custom settings.
-
-To use `lyrasis/collectionspace:latest`:
 
 ```
 # DEVELOPMENT .env
@@ -81,21 +80,21 @@ export CSPACE_CONVERTER_PASSWORD=Administrator
 export DISABLE_SPRING=1
 ```
 
-**Start CollectionSpace**
+**Start CollectionSpace Server**
 
 If you don't want to install and run CollectionSpace directly, you can
 use a Docker image to run CollectionSpace
 
 For local testing only: [docker-collectionspace](https://github.com/lyrasis/docker-collectionspace).
 
-**Starting/Running the development server**
+**Starting/Running the cspace-converter tool server**
 
 ```
 ./bin/rails s
 ```
 Once started, visit http://localhost:3000 with a web browser.
 
-To fire jobs created using the ui:
+To execute jobs created using the ui:
 
 ```
 ./bin/rake jobs:work
