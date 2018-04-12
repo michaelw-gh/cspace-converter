@@ -93,14 +93,14 @@ use a Docker image to run CollectionSpace
 
 For local testing only: [docker-collectionspace](https://github.com/lyrasis/docker-collectionspace).
 
-**Starting/Running the cspace-converter tool server**
+**Starting/Running the cspace-converter tool UI server**
 
 ```
 ./bin/rails s
 ```
 Once started, visit http://localhost:3000 with a web browser.
 
-To execute jobs created using the ui:
+Next, to execute "transfer" jobs you'll eventually create using the UI server, run this command:
 
 ```
 ./bin/rake jobs:work
