@@ -9,14 +9,16 @@ For earlier versions of Past Perfect (< 5) you may need to manually clean up lon
 Process:
 
 ```
+# erase all staged records from the Mongo db
 ./bin/rake db:nuke
 
+# stage cataloging records to Mongo db
 ./import.sh cataloging PublicArt cataloging 100_artworks
 
-# procedures
+# transfer/import cataloging records to CollectionSpace
 ./bin/rake remote:action:transfer[CollectionObject,all]
 
-# authorities
+# transfer/import authority records to CollectionSpace
 ./bin/rake remote:action:transfer[Concept,all]
 ./bin/rake remote:action:transfer[Organization,all]
 ./bin/rake remote:action:transfer[Person,all]
@@ -26,8 +28,10 @@ Process:
 To undo:
 
 ```
+# delete imported cataloging records from CollectionSpace
 ./bin/rake remote:action:delete[CollectionObject,all]
 
+# delete imported authority records from CollectionSpace
 ./bin/rake remote:action:delete[Concept,all]
 ./bin/rake remote:action:delete[Organization,all]
 ./bin/rake remote:action:delete[Person,all]
