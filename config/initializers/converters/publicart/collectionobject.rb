@@ -8,7 +8,7 @@ module CollectionSpace
         def convert
           run do |xml|
             # objectNumber
-            CSXML.add xml, 'objectNumber', attributes["objectumber"]
+            CSXML.add xml, 'objectNumber', attributes["objectnumber"]
 
             # numberOfObjects
             CSXML.add xml, 'numberOfObjects', attributes["number_of_objects"]

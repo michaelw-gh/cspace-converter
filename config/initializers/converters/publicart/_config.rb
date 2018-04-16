@@ -25,7 +25,7 @@ module CollectionSpace
             "Procedures" => {
               "CollectionObject" => {
                 "identifier_field" => "objectNumber",
-                "identifier" => "objectNumber",
+                "identifier" => "objectnumber",
                 "title" => "title",
               },
             },
