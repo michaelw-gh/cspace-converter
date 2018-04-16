@@ -34,12 +34,12 @@ module CollectionSpace
             end
 
             CSXML.add_list xml, 'objectName', [{
-              "objectName" => attributes["object_name"],
-            }], 'Group' if attributes["object_name"]
+              "objectName" => attributes["objectname"],
+            }], 'Group' if attributes["objectname"]
 
 
             CSXML.add_repeat xml, 'briefDescriptions', [{
-              "briefDescription" => scrub_fields([attributes["brief_description"]])
+              "briefDescription" => scrub_fields([attributes["briefdescription"]])
             }]
 
             # responsibleDepartments
@@ -117,7 +117,7 @@ module CollectionSpace
 
             # objectProductionDateGroupList
             CSXML.add_group_list xml, "objectProductionDate", [{
-              "dateDisplayDate" => attributes["production_date"]
+              "dateDisplayDate" => attributes["objectproductiondate"]
             }]
 
             # objectProductionOrganizationGroupList
@@ -133,14 +133,18 @@ module CollectionSpace
 
             # objectProductionPersonGroupList
             CSXML.add_group_list xml, 'objectProductionPerson', [{
-              "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["production_person"]),
+              "objectProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["objectproductionperson"]),
               "objectProductionPersonRole" => attributes["person_role"],
-            }] if attributes["production_person"]
+            }] if attributes["objectproductionperson"]
 
             # objectProductionPlaceGroupList
             CSXML.add_group_list xml, 'objectProductionPlace', [{
               "objectProductionPlace" => attributes["production_place"]
             }] if attributes["production_place"]
+
+            CSXML.add_repeat xml, 'owners', [{
+              "owner" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["owner"]),
+            }] if attributes["owner"]
 
             # materialGroupList
             mgs = []
