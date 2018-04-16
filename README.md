@@ -1,6 +1,6 @@
 # cspace-converter
 
-Migrate data to CollectionSpace from CSV.
+Migrate data into CollectionSpace from CSV files.
 
 ## Getting Started
 
@@ -11,9 +11,14 @@ default should be running on `localhost:27017`.
 bundle install
 ```
 
-## Setup
+## Setup CSV Data to be Imported
 
-Create the data directory and add the data files.
+Before the *cspace-converter* tool can import CSV data into CollectionSpace, it first
+"stages" the data from the CSV files into a MongoDB database.
+
+**Setup CSV file(s)**
+
+Create a data directory and add the CSV files. For example:
 
 ```
 db/data/
@@ -21,38 +26,27 @@ db/data/
 └── ppsobjectsdata.csv # Past Perfect objects data file
 ```
 
-**Run MongoDB**
+**Start the MongoDB Server**
+
+If installed locally, you can start the MongoDB server with this command:
 
 ```
-# for local development / conversions
+mongod
+```
+
+```
+# If you don't want to install and run Mongo DB directly, you can
+# use a Docker image to run MongoDB -see https://hub.docker.com/r/_/mongo/
+
 docker run --name mongo -d -p 27017:27017 mongo:3.2
 ```
 
-You should be able to access MongDB on `http://localhost:27017`.
+You should be able to access MongDB on `http://localhost:27017`.  To test the
+connection: https://docs.mongodb.com/v3.0/tutorial/getting-started-with-the-mongo-shell/
 
-**Set the environment**
+**Stage the data to MongoDB**
 
-There is a default `.env` file that provides example configuration. Override it
-by creating a `.env.local` file with custom settings.
-
-To use `lyrasis/collectionspace:latest`:
-
-```
-# DEVELOPMENT .env
-export CSPACE_CONVERTER_BASE_URI=http://localhost:8180/cspace-services
-export CSPACE_CONVERTER_DOMAIN=core.collectionspace.org
-export CSPACE_CONVERTER_USERNAME=admin@core.collectionspace.org
-export CSPACE_CONVERTER_PASSWORD=Administrator
-export DISABLE_SPRING=1
-```
-
-**Run CollectionSpace**
-
-For local testing: [docker-collectionspace](https://github.com/lyrasis/docker-collectionspace).
-
-**Initial data import**
-
-The general command is:
+The general format for the command is:
 
 ```
 ./import.sh [CS_CONV_BATCH] [CS_CONV_TYPE] [CS_CONV_PROFILE] [CS_CONV_FILE]
@@ -70,12 +64,46 @@ For example:
 ./import.sh pp_objects1 PastPerfect objects PPSdata_objects
 ```
 
-For these commands to actually work you will need the data files in `db/data`.
-
-To use sample data:
+For these commands to actually work you will need the data (CSV) files in `db/data`. Here's the command using the supplied sample CSV file:
 
 ```
 ./import.sh cataloging Vanilla cataloging SampleCatalogingData
+```
+
+## Import Staged Data from MongoDB to CollectionSpace
+
+**Set the environment**
+
+There is a default `.env` file that provides example configuration. Override it
+by creating a `.env.local` file with custom settings.
+
+```
+# DEVELOPMENT .env
+export CSPACE_CONVERTER_BASE_URI=http://localhost:8180/cspace-services
+export CSPACE_CONVERTER_DOMAIN=core.collectionspace.org
+export CSPACE_CONVERTER_USERNAME=admin@core.collectionspace.org
+export CSPACE_CONVERTER_PASSWORD=Administrator
+export DISABLE_SPRING=1
+```
+
+**Start CollectionSpace Server**
+
+If you don't want to install and run CollectionSpace directly, you can
+use a Docker image to run CollectionSpace
+
+For local testing only: [docker-collectionspace](https://github.com/lyrasis/docker-collectionspace).
+
+**Starting/Running the cspace-converter tool UI server**
+
+```
+./bin/rails s
+```
+Once started, visit http://localhost:3000 with a web browser.
+
+Next, to execute "transfer" jobs you'll eventually create using the UI server, run this command:
+
+```
+./bin/rake jobs:work
 ```
 
 **Using the console**
@@ -86,19 +114,7 @@ p = DataObject.first
 puts p.to_procedure_xml("CollectionObject")
 ```
 
-**Running the development server**
-
-```
-./bin/rails s
-```
-
-To fire jobs created using the ui:
-
-```
-./bin/rake jobs:work
-```
-
-## Test environment
+## (Optional) Test environment
 
 ```
 docker-compose build
@@ -111,7 +127,7 @@ docker exec -it converter \
 docker exec -it converter ./bin/rake db:nuke
 ```
 
-## Deploy
+## Deploying Converter to Amazon Elastic Beanstalk
 
 The converter can be easily deployed to [Amazon Elastic Beanstalk](https://aws.amazon.com/documentation/elastic-beanstalk/)
 (account required).
