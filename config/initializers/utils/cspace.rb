@@ -172,7 +172,7 @@ module CollectionSpace
         authority,
         CollectionSpace::Identifiers.short_identifier(value),
         value
-      )
+      ) if value
     end
 
     def self.get_vocab_urn(vocabulary, value, strip = false)
@@ -182,7 +182,7 @@ module CollectionSpace
         vocabulary.downcase,
         CollectionSpace::Identifiers.for_option(value, strip),
         value
-      )
+      ) if value
     end
 
   end
