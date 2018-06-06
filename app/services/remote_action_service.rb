@@ -26,7 +26,12 @@ class RemoteActionService
   def remote_transfer
     transferred = false
     begin
-      response = $collectionspace_client.post(@service[:path], @object.content)
+      # @object is a CollectionSpaceObject that belongs to a DataObject
+      # CollectionSpaceObject has a type (procedure) i.e. Media
+      # DataObject has a to_hash method to return its attributes
+      media_url = @object.data_object.to_hash.fetch('media_url', nil)
+      params    = media_url and @object.type == 'Media' ? { query: { 'MediaUrl' => media_url } } : {}
+      response = $collectionspace_client.post(@service[:path], @object.content, params)
       if response.status_code == 201
         # http://localhost:1980/cspace-services/collectionobjects/7e5abd18-5aec-4b7f-a10c
         csid = response.headers["Location"].split("/")[-1]
