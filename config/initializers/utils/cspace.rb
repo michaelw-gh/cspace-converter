@@ -1,5 +1,65 @@
 module CollectionSpace
 
+  module Terms
+    ::Terms = CollectionSpace::Terms
+
+    #
+    # Map keys for terms cache
+    #
+    AUTHORITIES_CACHE = 'authorities_cache'
+    VOCABULARIES = "vocabularies"
+    PERSONAUTHORITIES = "personauthorities"
+
+    #
+    # Populate vocabularies
+    #
+    languages = {"english" => "eng", "german" => "deu", "finish" => "fsh"}
+    prodpersonrole = { "artist" => "art", "engineer" => "eng"}
+    vocabularies = {"languages" => languages, "prodpersonrole" => prodpersonrole}
+
+    #
+    # Populate person authorities
+    #
+    person = { "john muir" => "john_muir", "luke skywalker" => "luke_skywalker"}
+    personauthorities = { "person" => person }
+
+    #
+    # Use Rails to cache the authorities/vocabularies and terms
+    #
+    Rails.cache.write(AUTHORITIES_CACHE, { VOCABULARIES => vocabularies, PERSONAUTHORITIES => personauthorities })
+
+    #
+    # Pubic accessors to cached vocabularies and terms
+    #
+    def self.get_vocabularies
+      Rails.cache.fetch(AUTHORITIES_CACHE)[VOCABULARIES]
+    end
+
+    def self.get_vocabulary(vocabulary_id)
+      get_vocabularies[vocabulary_id]
+    end
+
+    def self.lookup_vocabulary_term_id(vocabulary_id, display_name)
+      get_vocabulary(vocabulary_id)[display_name.downcase]
+    end
+
+    #
+    # Pubic accessors to cached person authorities and terms
+    #
+    def self.get_personauthorities
+      Rails.cache.fetch(AUTHORITIES_CACHE)[PERSONAUTHORITIES]
+    end
+
+    def self.get_person_authority(authority_id)
+      get_personauthorities[authority_id]
+    end
+
+    def self.lookup_person_term_id(authority_id, display_name)
+      get_person_authority(authority_id)[display_name.downcase]
+    end
+
+  end
+
   module Identifiers
     ::CSIDF = CollectionSpace::Identifiers
 
@@ -165,24 +225,71 @@ module CollectionSpace
       CSXML.add xml, field, get_vocab_urn(field, value)
     end
 
-    def self.get_authority_urn(authority_type, authority, value)
-      CSURN.generate(
-        Rails.application.config.domain,
-        authority_type,
-        authority,
-        CollectionSpace::Identifiers.short_identifier(value),
-        value
-      ) if value
+    def self.get_authority_urn(authority_type, authority_id, value)
+      if value
+        term_parts = get_term_parts value
+        CSURN.generate(
+          Rails.application.config.domain,
+          term_parts[:authority_type] != nil ? term_parts[:authority_type] : authority_type,
+          term_parts[:authority_id] != nil ? term_parts[:authority_id] : authority_id,
+          term_parts[:term_id] != nil ? term_parts[:term_id] : CollectionSpace::Identifiers.short_identifier(
+              term_parts[:display_name]),
+          term_parts[:display_name]
+        )
+        end
     end
 
-    def self.get_vocab_urn(vocabulary, value, strip = false)
-      CSURN.generate(
-        Rails.application.config.domain,
-        "vocabularies",
-        vocabulary.downcase,
-        CollectionSpace::Identifiers.for_option(value, strip),
-        value
-      ) if value
+    def self.get_vocab_urn(vocabulary_id, value, strip = false)
+      if value
+        # try to breakup the term value into component parts
+        term_parts = get_term_parts value
+
+        display_name = term_parts[:display_name]
+        raise ArgumentError, 'Display name for vocabulary term is missing.' unless display_name != nil
+
+        vocabulary_id = term_parts[:vocabulary_id] != nil ? term_parts[:vocabulary_id] : vocabulary_id
+        raise ArgumentError, 'Vocabulary short ID is missing or empty.' unless vocabulary_id != nil
+
+        term_id = term_parts[:term_id]
+        if term_id == nil
+          term_id = Terms::lookup_vocabulary_term_id vocabulary_id, display_name
+        end
+        #term_id = CollectionSpace::Identifiers.for_option(term_parts[:display_name], strip)
+        raise ArgumentError, 'Vocabulary term does not exist.' unless term_id != nil
+
+        CSURN.generate(
+          Rails.application.config.domain,
+          "vocabularies",
+          vocabulary_id,
+          term_id,
+          display_name
+        )
+        end
+    end
+
+    #
+    # Split a term value into parts -if any.
+    #   <authority_type>::<authority_id>::<term_id>::<display_name>
+    #   Ex #1: personauthorities::person::john_muir::John Muir
+    #   Ex #2: john_muir::John Muir
+    #   Ex #3: John Muir
+    #
+    def split_term(field_value)
+      values = []
+      values << field_value
+                    .to_s
+                    .split("::")
+                    .map(&:strip)
+      values.flatten.compact
+    end
+
+    #
+    # Add split a term value into parts and add to a map
+    #
+    def get_term_parts(field_value)
+      parts = split_term field_value
+      parts_map = { :display_name => parts.pop, :term_id => parts.pop, :authority_id => parts.pop,
+                    :authority_type => parts.pop }
     end
 
   end
