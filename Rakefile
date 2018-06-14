@@ -23,11 +23,12 @@ namespace :db do
 
   namespace :import do
     # rake db:import:data[ppsobjectsdata1,PastPerfect,ppsobjectsdata,db/data/ppsobjectsdata.csv]
-    task :data, [:batch, :converter, :profile, :filename] => :environment do |t, args|
+    task :data, [:batch, :converter, :profile, :filename, :use_auth_cache_file] => :environment do |t, args|
       batch     = args[:batch]
       converter = args[:converter]
       profile   = args[:profile]
       filename  = args[:filename]
+      use_previous_auth_cache = args[:use_auth_cache_file]
       counter   = 1
 
       raise "Invalid file #{filename}" unless File.file? filename
@@ -40,7 +41,7 @@ namespace :db do
           convert_values_to_numeric: false,
         }.merge(Rails.application.config.csv_parser_options)) do |chunk|
         puts "Processing #{batch} #{counter}"
-        ImportJob.perform_later(filename, batch, converter, profile, chunk)
+        ImportJob.perform_later(filename, batch, converter, profile, chunk, use_previous_auth_cache)
         # run the job immediately when using rake
         Delayed::Worker.new.run(Delayed::Job.last)
         counter += 1

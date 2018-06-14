@@ -2,6 +2,7 @@ module CollectionSpace
   module Converter
     module Vanilla
 
+
       def self.registered_procedures
         [
           "CollectionObject",

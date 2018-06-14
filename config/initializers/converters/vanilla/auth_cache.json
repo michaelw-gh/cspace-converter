@@ -1,0 +1,24 @@
+{
+    "vocabularies": {
+        "languages": {
+            "english": "eng",
+            "german": "deu",
+            "finish": "fsh",
+            "danish": "dkk"
+        },
+        "prodpersonrole": {
+            "artist": "art",
+            "engineer": "eng"
+        }
+    },
+    "personauthorities": {
+        "person": {
+            "john muir": "john_muir",
+            "luke skywalker": "luke_skywalker"
+        },
+        "person_shared": {
+            "john f kennedy": "jfk",
+            "ronald reagan": "ronald_reagan"
+        }
+    }
+}

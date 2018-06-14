@@ -7,6 +7,7 @@ module CollectionSpace
 
         def convert
           run(wrapper: "document") do |xml|
+
             xml.send(
                 "ns2:collectionobjects_common",
                 "xmlns:ns2" => "http://collectionspace.org/services/collectionobject",

@@ -126,10 +126,11 @@ class DataObject
     "#{self.default_converter_class.to_s}::Relationship".constantize
   end
 
-  def set_attributes(attributes = {})
+  def set_attributes(attributes = {}, row_number = nil)
     attributes.each do |attribute, value|
       self.write_attribute attribute, value
     end
+    self.write_attribute "row_number", row_number
   end
 
   def to_auth_xml(authority, term_display_name)
