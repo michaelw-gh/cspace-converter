@@ -1,5 +1,7 @@
 # cspace-converter
 
+[![Build Status](https://travis-ci.com/lyrasis/cspace-converter.svg?branch=master)](https://travis-ci.com/lyrasis/cspace-converter)
+
 Migrate data into CollectionSpace from CSV files.
 
 ## Getting Started
