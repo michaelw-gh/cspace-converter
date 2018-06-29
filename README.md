@@ -1,6 +1,6 @@
 # cspace-converter
 
-[![Build Status](https://travis-ci.com/lyrasis/cspace-converter.svg?branch=master)](https://travis-ci.com/lyrasis/cspace-converter)
+[![Build Status](https://travis-ci.com/lyrasis/cspace-converter.svg?branch=master)](https://travis-ci.com/lyrasis/cspace-converter) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 Migrate data into CollectionSpace from CSV files.
 
