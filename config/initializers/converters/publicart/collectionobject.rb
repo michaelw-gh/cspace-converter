@@ -27,11 +27,30 @@ module CollectionSpace
 
               CSXML.add xml, 'recordStatus', attributes["recordStatus"]
 
-              # Public Art - Work type
-              CSXML.add_list xml, 'objectName', [{
-                   "objectName" => attributes["objectname"],
-                   "objectNameNote" => attributes["objectNameNote"],
-              }], 'Group' if attributes["objectname"]
+              # dimensions = []
+              # dims = split_mvf attributes, 'dimension'
+              # values = split_mvf attributes, 'dimensionvalue'
+              # unit = attributes["dimensionmeasurementunit"]
+              # dims.each_with_index do |dim, index|
+              #   dimensions << { "dimension" => dim, "value" => values[index], "measurementUnit" => unit }
+              # end
+              # CSXML.add_group_list xml, 'measuredPart', [ overall_data ], 'dimension', dimensions
+
+              namegroups = []
+              objectnames = split_mvf attributes, 'objectname'
+              objectnamenotes = split_mvf attributes, 'objectnamenotes'
+              objectnames.each_with_index do |name, index|
+                namegroups << { "objectName" => name, "objectNameNote" => objectnamenotes[index] }
+              end
+              CSXML.add_nogroup_list xml, 'objectName', namegroups
+
+              # objectNameList
+              # mgs = []
+              # objectnames = split_mvf attributes, 'objectname'
+              # objectnames.each do |m|
+              #   mgs << { "objectName" => m }
+              # end
+              # CSXML.add_nogroup_list xml, 'objectName', mgs
 
               #Title group list, need to check for language to avoid downcasing empty strings
               if attributes["title_translation"]
@@ -52,7 +71,7 @@ module CollectionSpace
               else
                 CSXML.add_group_list xml, 'title', [{
                 "title" => attributes["title"],
-                "titleType" => attributes["titleType"],
+                "titleType" => attributes["titletype"],
                 }]
               end
 
@@ -67,8 +86,8 @@ module CollectionSpace
 
               # measuredPartGroupList
               overall_data = {
-                "measuredPart" => attributes["dimensionpart"],
-                "dimensionSummary" => attributes["dimensionsummary"],
+                  "measuredPart" => attributes["dimensionpart"],
+                  "dimensionSummary" => attributes["dimensionsummary"],
               }
               dimensions = []
               dims = split_mvf attributes, 'dimension'
@@ -135,9 +154,26 @@ module CollectionSpace
               # applying namespace breaks import
               xml.parent.namespace = nil
 
+              # Example XML payload
+              #
+              # Column 'objectProductionDate' should map to the <dateDisplayDate> element
+              # Column 'objectProductionDateType' should map to the <publicartProductionDateType> element
+              #
+              # <publicartProductionDateGroupList>
+              #     <publicartProductionDateGroup>
+              #         <publicartProductionDate>
+              #             <dateDisplayDate>7/4/1776</dateDisplayDate>
+              #         </publicartProductionDate>
+              #         <publicartProductionDateType>
+              #             urn:cspace:publicart.collectionspace.org:vocabularies:name(proddatetype):item:name(commission)'commission'
+              #         </publicartProductionDateType>
+              #     </publicartProductionDateGroup>
+              # </publicartProductionDateGroupList>
+              #
+
               # Collection
               CSXML.add_repeat xml, 'publicartCollections', [{
-                  "publicartCollection" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["collection"]),
+                  "publicartCollection" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization-paa', attributes["collection"]),
               }] if attributes["collection"]
 
               # Artwork creator

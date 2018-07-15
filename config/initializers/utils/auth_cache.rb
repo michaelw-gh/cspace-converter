@@ -1,14 +1,12 @@
 module CollectionSpace
-  module Converter
     module AuthCache
-      ::AuthCache = CollectionSpace::Converter::AuthCache
+      ::AuthCache = CollectionSpace::AuthCache
 
       #
       # Map key constants for terms cache
       #
       AUTHORITIES_CACHE = 'authorities_cache'
       VOCABULARIES = "vocabularies"
-      PERSONAUTHORITIES = "personauthorities"
 
       #
       # Pubic accessors to cached vocabularies and terms
@@ -21,30 +19,27 @@ module CollectionSpace
         get_vocabularies[vocabulary_id]
       end
 
-      def self.set_vocabulary(vocabulary_id, terms)
-        get_vocabularies[vocabulary_id] = terms
-      end
-
+      #
+      # Pubic accessor to cached vocabulary terms
+      #
       def self.lookup_vocabulary_term_id(vocabulary_id, display_name)
         get_vocabulary(vocabulary_id)[display_name.downcase]
       end
 
       #
-      # Pubic accessors to cached person authorities and terms
+      # Pubic accessor to cached authority terms
       #
-      def self.get_personauthorities
-        Rails.cache.fetch(AUTHORITIES_CACHE)[PERSONAUTHORITIES]
-      end
+      def self.lookup_authority_term_id(authority_type, authority_id, display_name)
+        term_id = nil
+        begin
+          term_id = Rails.cache.fetch(AUTHORITIES_CACHE)[authority_type][authority_id][display_name.downcase]
+        rescue Exception => ex
+          puts "Term #{authority_type}:#{authority_id}:#{display_name.downcase} is not in the authority cache."
+        end
 
-      def self.get_person_authority(authority_id)
-        get_personauthorities[authority_id]
-      end
-
-      def self.lookup_person_term_id(authority_id, display_name)
-        get_person_authority(authority_id)[display_name.downcase]
+        return term_id
       end
 
     end
 
-  end
 end
