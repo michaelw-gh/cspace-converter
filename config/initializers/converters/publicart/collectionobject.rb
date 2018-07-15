@@ -27,15 +27,7 @@ module CollectionSpace
 
               CSXML.add xml, 'recordStatus', attributes["recordStatus"]
 
-              # dimensions = []
-              # dims = split_mvf attributes, 'dimension'
-              # values = split_mvf attributes, 'dimensionvalue'
-              # unit = attributes["dimensionmeasurementunit"]
-              # dims.each_with_index do |dim, index|
-              #   dimensions << { "dimension" => dim, "value" => values[index], "measurementUnit" => unit }
-              # end
-              # CSXML.add_group_list xml, 'measuredPart', [ overall_data ], 'dimension', dimensions
-
+              # objectNameList
               namegroups = []
               objectnames = split_mvf attributes, 'objectname'
               objectnamenotes = split_mvf attributes, 'objectnamenotes'
@@ -44,15 +36,7 @@ module CollectionSpace
               end
               CSXML.add_nogroup_list xml, 'objectName', namegroups
 
-              # objectNameList
-              # mgs = []
-              # objectnames = split_mvf attributes, 'objectname'
-              # objectnames.each do |m|
-              #   mgs << { "objectName" => m }
-              # end
-              # CSXML.add_nogroup_list xml, 'objectName', mgs
-
-              #Title group list, need to check for language to avoid downcasing empty strings
+              # Title group list, need to check for language to avoid downcasing empty strings
               if attributes["title_translation"]
                 CSXML.add_group_list xml, 'title', [{
                 "title" => attributes["title"],
@@ -120,9 +104,13 @@ module CollectionSpace
                 "objectProductionPlace" => attributes["production_place"]
               }] if attributes["production_place"]
 
-              CSXML.add_repeat xml, 'owners', [{
-                "owner" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["owner"]),
-              }] if attributes["owner"]
+              # owners
+              owner_urns = []
+              owners = split_mvf attributes, 'owner'
+              owners.each do |owner|
+                owner_urns << { "owner" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', owner) }
+              end
+              CSXML.add_repeat(xml, 'owners', owner_urns) if attributes["owner"]
 
               # techniqueGroupList
               tgs = []
@@ -176,12 +164,19 @@ module CollectionSpace
                   "publicartCollection" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization-paa', attributes["collection"]),
               }] if attributes["collection"]
 
-              # Artwork creator
-              CSXML.add_group_list xml, 'publicartProductionPerson', [{
-                  "publicartProductionPersonType" => attributes["objectproductionpersontype"],
-                  "publicartProductionPersonRole" => CSXML::Helpers.get_vocab_urn('prodpersonrole', attributes["objectproductionpersonrole"]),
-                  "publicartProductionPerson" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', attributes["objectproductionperson"]),
-              }] if attributes["objectproductionperson"]
+              # publicartProductionPersonGroupList
+              prodpersongroups = []
+              prodpersons = split_mvf attributes, 'objectproductionperson'
+              role_urns = []
+              roles = split_mvf attributes, 'objectproductionpersonrole'
+              roles.each do |role, index|
+                role_urns << CSXML::Helpers.get_vocab_urn('prodpersonrole', role)
+              end
+              types = split_mvf attributes, 'objectproductionpersontype'
+              prodpersons.each_with_index do |name, index|
+                prodpersongroups << { "publicartProductionPerson" => name, "publicartProductionPersonRole" => role_urns[index], "publicartProductionPersonType" => types[index] }
+              end
+              CSXML.add_group_list xml, 'publicartProductionPerson', prodpersongroups
             end
           end
         end
