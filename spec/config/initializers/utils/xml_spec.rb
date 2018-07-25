@@ -52,9 +52,9 @@ describe "CollectionSpace" do
         '/objectProductionDateGroupList/objectProductionDateGroup[position()=2]/scalarValuesComputed').text).to eq('false')
 
       expect(doc(xml).xpath(
-        '/objectProductionDateGroupList/objectProductionDateGroup[position()=1]/dateEarliestScalarValue').text).to eq("1971-01-01 00:00:00 -0800")
+        '/objectProductionDateGroupList/objectProductionDateGroup[position()=1]/dateEarliestScalarValue').text).to eq("1971-01-01 00:00:00 +0000")
       expect(doc(xml).xpath(
-        '/objectProductionDateGroupList/objectProductionDateGroup[position()=1]/dateLatestScalarValue').text).to eq("1972-01-01 00:00:00 -0800")
+        '/objectProductionDateGroupList/objectProductionDateGroup[position()=1]/dateLatestScalarValue').text).to eq("1972-01-01 00:00:00 +0000")
     end
 
   end
