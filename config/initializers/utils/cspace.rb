@@ -116,25 +116,6 @@ module CollectionSpace
       }
     end
 
-    def self.add_nogroup_list(xml, key, elements = [], sub_key = false, sub_elements = [])
-      xml.send("#{key}List".to_sym) {
-        elements.each do |element|
-          xml.send("#{key}Group".to_sym) {
-            element.each {|k, v| xml.send(k.to_sym, v)}
-            if sub_key
-              xml.send("#{sub_key}SubGroupList".to_sym) {
-                sub_elements.each do |sub_element|
-                  xml.send("#{sub_key}SubGroup".to_sym) {
-                    sub_element.each {|k, v| xml.send(k.to_sym, v)}
-                  }
-                end
-              }
-            end
-          }
-        end
-      }
-    end
-
     # key_suffix handles the case that the list child element is not the key without "List"
     # for example: key=objectName, list=objectNameList, key_suffix=Group, child=objectNameGroup
     def self.add_list(xml, key, elements = [], key_suffix = '')

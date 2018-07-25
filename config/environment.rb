@@ -7,4 +7,3 @@ Rails.logger.level = Logger::WARN # at any time
 
 # Initialize the Rails application.
 Rails.application.initialize!
-

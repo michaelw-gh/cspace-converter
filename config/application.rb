@@ -38,9 +38,5 @@ module CspaceConverter
     config.domain                   = ENV.fetch('CSPACE_CONVERTER_DOMAIN', 'core.collectionspace.org')
     config.mongoid.logger           = Logger.new($stdout)
     config.mongoid.logger.level     = Logger::WARN
-    #
-    # A cache of authority/vocab terms populated with values from target CollectionSpace instance
-    #
-
   end
 end
