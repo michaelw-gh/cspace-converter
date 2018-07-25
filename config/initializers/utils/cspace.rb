@@ -88,8 +88,7 @@ module CollectionSpace
     ::CSXML = CollectionSpace::XML
 
     def self.add(xml, key, value)
-      whatami = xml.send(key.to_sym, value)
-      whatami
+      xml.send(key.to_sym, value)
     end
 
     def self.add_group(xml, key, elements = {})
