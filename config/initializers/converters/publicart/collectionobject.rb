@@ -3,6 +3,8 @@ module CollectionSpace
     module PublicArt
       include Default
 
+      COMMON_ERA_URN = "urn:cspace:publicart.collectionspace.org:vocabularies:name(dateera):item:name(ce)'CE'"
+
       class PublicArtCollectionObject < CollectionObject
 
         def convert
@@ -158,6 +160,25 @@ module CollectionSpace
               #     </publicartProductionDateGroup>
               # </publicartProductionDateGroupList>
               #
+              proddategroups = []
+              proddates = split_mvf attributes, 'objectproductiondate'
+              proddatetypes = split_mvf attributes, 'objectproductiondatetype'
+              proddates.each_with_index do |date, index|
+                proddategroups << { "publicartProductionDate" => date, "publicartProductionDateType" => proddatetypes[index] }
+              end
+
+              xml.send("publicartProductionDateGroupList".to_sym) {
+                proddategroups.each do |element|
+                  xml.send("publicartProductionDateGroup".to_sym) {
+                    xml.send("publicartProductionDate".to_sym) {
+                      xml.send("dateEarliestSingleYear".to_sym, element["publicartProductionDate"])
+                      xml.send("dateDisplayDate".to_sym, element["publicartProductionDate"])
+                      xml.send("dateEarliestSingleEra".to_sym, COMMON_ERA_URN)
+                    }
+                    xml.send("publicartProductionDateType".to_sym, element["publicartProductionDateType"])
+                  }
+                end
+              }
 
               # Collection
               CSXML.add_repeat xml, 'publicartCollections', [{
