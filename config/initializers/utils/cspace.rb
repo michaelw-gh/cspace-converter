@@ -1,5 +1,48 @@
 module CollectionSpace
 
+  StructuredDate = Struct.new(
+      :date_string,
+      :display_date,
+      :earliest_day,
+      :earliest_month,
+      :earliest_year,
+      :earliest_scalar,
+      :latest_day,
+      :latest_month,
+      :latest_year,
+      :latest_scalar
+  )
+
+  module DateParser
+    ::CSDTP = CollectionSpace::DateParser
+
+    # start simple, build up
+    def self.parse(date_string)
+      date_string = date_string.strip
+      date_string = "#{date_string}-01-01" if date_string =~ /^\d{4}$/
+      # TODO exceptions
+      parsed_earliest_date = Date.parse(date_string)
+      parsed_latest_date   = Date.parse((parsed_earliest_date + 365).to_s)
+
+      d = CollectionSpace::StructuredDate.new
+      d.date_string  = date_string
+      d.display_date = date_string
+
+      d.earliest_day    = parsed_earliest_date.day
+      d.earliest_month  = parsed_earliest_date.month
+      d.earliest_year   = parsed_earliest_date.year
+      d.earliest_scalar = parsed_earliest_date.to_time.to_s
+
+      d.latest_day    = parsed_latest_date.day
+      d.latest_month  = parsed_latest_date.day
+      d.latest_year   = parsed_latest_date.day
+      d.latest_scalar = parsed_latest_date.to_time.to_s
+
+      d
+    end
+
+  end
+  
   module Identifiers
     ::CSIDF = CollectionSpace::Identifiers
 
