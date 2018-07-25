@@ -97,9 +97,11 @@ module CollectionSpace
       }
     end
 
+    # TODO: higher level method to introspect types and build xml
+    # TODO: refactor, sub_elements as array of hashes to reconcile uses of sub_key
     def self.add_group_list(xml, key, elements = [], sub_key = false, sub_elements = [])
       xml.send("#{key}GroupList".to_sym) {
-        elements.each do |element|
+        elements.each_with_index do |element, index|
           xml.send("#{key}Group".to_sym) {
             element.each { |k, v| xml.send(k.to_sym, v) }
             if sub_key
@@ -110,6 +112,17 @@ module CollectionSpace
                   }
                 end
               }
+            elsif sub_elements
+              next unless sub_elements[index]
+              sub_elements[index].each do |type, sub_element|
+                if sub_element.respond_to? :each
+                  xml.send(type.to_sym) {
+                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
+                  }
+                else
+                  xml.send(type, sub_element)
+                end
+              end
             end
           }
         end
