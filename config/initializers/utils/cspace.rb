@@ -106,7 +106,7 @@ module CollectionSpace
               xml.send("#{sub_key}SubGroupList".to_sym) {
                 sub_elements.each do |sub_element|
                   xml.send("#{sub_key}SubGroup".to_sym) {
-                    sub_element.each {|k, v| xml.send(k.to_sym, v)}
+                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
                   }
                 end
               }
@@ -122,7 +122,7 @@ module CollectionSpace
       xml.send("#{key}List".to_sym) {
         elements.each do |element|
           xml.send("#{key}#{key_suffix}".to_sym) {
-            element.each {|k, v| xml.send(k.to_sym, v)}
+            element.each { |k, v| xml.send(k.to_sym, v) }
           }
         end
       }
@@ -131,7 +131,7 @@ module CollectionSpace
     def self.add_repeat(xml, key, elements = [])
       xml.send(key.to_sym) {
         elements.each do |element|
-          element.each {|k, v| xml.send(k.to_sym, v)}
+          element.each { |k, v| xml.send(k.to_sym, v) }
         end
       }
     end
