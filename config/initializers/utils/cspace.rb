@@ -91,17 +91,24 @@ module CollectionSpace
       xml.send(key.to_sym, value)
     end
 
+    # add data from ruby hash containing array of elements (see spec)
+    def self.add_data(xml, data = [])
+      ::CSXML.process_array(xml, data['label'], data['elements'])
+      end
+
     def self.add_group(xml, key, elements = {})
       xml.send("#{key}Group".to_sym) {
-        elements.each {|k, v| xml.send(k.to_sym, v)}
+        elements.each { |k, v| xml.send(k.to_sym, v) }
       }
     end
 
+    # TODO: higher level method to introspect types and build xml
+    # TODO: refactor, sub_elements as array of hashes to reconcile uses of sub_key
     def self.add_group_list(xml, key, elements = [], sub_key = false, sub_elements = [])
       xml.send("#{key}GroupList".to_sym) {
-        elements.each do |element|
+        elements.each_with_index do |element, index|
           xml.send("#{key}Group".to_sym) {
-            element.each {|k, v| xml.send(k.to_sym, v)}
+            element.each { |k, v| xml.send(k.to_sym, v) }
             if sub_key
               xml.send("#{sub_key}SubGroupList".to_sym) {
                 sub_elements.each do |sub_element|
@@ -110,6 +117,17 @@ module CollectionSpace
                   }
                 end
               }
+            elsif sub_elements
+              next unless sub_elements[index]
+              sub_elements[index].each do |type, sub_element|
+                if sub_element.respond_to? :each
+                  xml.send(type.to_sym) {
+                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
+                  }
+                else
+                  xml.send(type, sub_element)
+                end
+              end
             end
           }
         end
@@ -138,6 +156,20 @@ module CollectionSpace
 
     def self.add_string(xml, string)
       xml << string
+    end
+
+    def self.process_array(xml, label, array)
+      array.each do |hash|
+        xml.send(label) do
+          hash.each do |key, value|
+            if value.is_a?(Array)
+              ::CSXML.process_array(xml, key, value)
+            else
+              xml.send(key, value)
+            end
+          end
+        end
+      end
     end
 
     module Helpers
