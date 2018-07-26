@@ -36,7 +36,7 @@ module CollectionSpace
               objectnames.each_with_index do |name, index|
                 namegroups << { "objectName" => name, "objectNameNote" => objectnamenotes[index] }
               end
-              CSXML.add_nogroup_list xml, 'objectName', namegroups
+              CSXML.add_group_list xml, 'objectName', namegroups, include_group_prefix:false
 
               # Title group list, need to check for language to avoid downcasing empty strings
               if attributes["title_translation"]
@@ -175,7 +175,7 @@ module CollectionSpace
                       xml.send("dateDisplayDate".to_sym, element["publicartProductionDate"])
                       xml.send("dateEarliestSingleEra".to_sym, COMMON_ERA_URN)
                     }
-                    xml.send("publicartProductionDateType".to_sym, element["publicartProductionDateType"])
+                    xml.send("publicartProductionDateType".to_sym, CSXML::Helpers.get_vocab_urn('proddatetype', element["publicartProductionDateType"]))
                   }
                 end
               }
