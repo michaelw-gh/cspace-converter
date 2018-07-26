@@ -91,6 +91,11 @@ module CollectionSpace
       xml.send(key.to_sym, value)
     end
 
+    # add data from ruby hash containing array of elements (see spec)
+    def self.add_data(xml, data = [])
+      ::CSXML.process_array(xml, data['label'], data['elements'])
+    end
+
     def self.add_group(xml, key, elements = {})
       xml.send("#{key}Group".to_sym) {
         elements.each { |k, v| xml.send(k.to_sym, v) }
@@ -151,6 +156,20 @@ module CollectionSpace
 
     def self.add_string(xml, string)
       xml << string
+    end
+
+    def self.process_array(xml, label, array)
+      array.each do |hash|
+        xml.send(label) do
+          hash.each do |key, value|
+            if value.is_a?(Array)
+              ::CSXML.process_array(xml, key, value)
+            else
+              xml.send(key, value)
+            end
+          end
+        end
+      end
     end
 
   module Helpers

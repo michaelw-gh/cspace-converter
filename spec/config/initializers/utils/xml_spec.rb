@@ -114,6 +114,54 @@ describe "CollectionSpace" do
         '/publicartProductionDateGroupList/publicartProductionDateGroup[position()=2]/publicartProductionDateType').text).to eq('Purchase')
     end
 
+    # <publicartProductionDateGroupList>
+    #   <publicartProductionDateGroup>
+    #     <publicartProductionDate>
+    #       <scalarValuesComputed>true</scalarValuesComputed>
+    #     </publicartProductionDate>
+    #     <publicartProductionDateType>Commission</publicartProductionDateType>
+    #   </publicartProductionDateGroup>
+    #   <publicartProductionDateGroup>
+    #     <publicartProductionDate>
+    #       <scalarValuesComputed>false</scalarValuesComputed>
+    #     </publicartProductionDate>
+    #     <publicartProductionDateType>Purchase</publicartProductionDateType>
+    #   </publicartProductionDateGroup>
+    # </publicartProductionDateGroupList>
+    it "can 'add data' correctly" do
+      data = {
+        "label" => "publicartProductionDateGroupList",
+        "elements" => [
+          {
+            "publicartProductionDateGroup" => [
+              {
+                "publicartProductionDate" => [
+                  {
+                    "scalarValuesComputed" => true,
+                  },
+                ],
+                "publicartProductionDateType" => "Commission",
+              },
+              {
+                "publicartProductionDate" => [
+                  {
+                    "scalarValuesComputed" => false,
+                  }
+                ],
+                "publicartProductionDateType" => "Purchase",
+              },
+            ],
+          },
+        ]
+      }
+      CollectionSpace::XML.add_data(xml, data)
+      expect(doc(xml).xpath(
+        '/publicartProductionDateGroupList/publicartProductionDateGroup[position()=1]/publicartProductionDate/scalarValuesComputed').text).to eq('true')
+
+      expect(doc(xml).xpath(
+        '/publicartProductionDateGroupList/publicartProductionDateGroup[position()=2]/publicartProductionDate/scalarValuesComputed').text).to eq('false')
+    end
+
   end
 
 end
