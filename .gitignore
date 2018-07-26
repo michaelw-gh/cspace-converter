@@ -8,6 +8,7 @@
 /.*
 !/.env
 !/.ruby-version
+!/.travis.yml
 *.swp
 .DS_Store
 

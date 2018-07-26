@@ -240,7 +240,6 @@ module CollectionSpace
         CSXML.add xml, field, get_vocab_urn(field, value)
       end
 
-
       #
       # Split a term value into parts -if any.
       #   <authority_type>::<authority_id>::<term_id>::<display_name>
