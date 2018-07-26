@@ -170,11 +170,31 @@ module CollectionSpace
               xml.send("publicartProductionDateGroupList".to_sym) {
                 proddategroups.each do |element|
                   xml.send("publicartProductionDateGroup".to_sym) {
-                    xml.send("publicartProductionDate".to_sym) {
-                      xml.send("dateEarliestSingleYear".to_sym, element["publicartProductionDate"])
-                      xml.send("dateDisplayDate".to_sym, element["publicartProductionDate"])
-                      xml.send("dateEarliestSingleEra".to_sym, COMMON_ERA_URN)
-                    }
+                    if !element["publicartProductionDate"].blank?
+                      structured_date = CSDTP::parse element["publicartProductionDate"] if element["publicartProductionDate"]
+                      if !structured_date.blank?
+                        xml.send("publicartProductionDate".to_sym) {
+                          xml.send("scalarValuesComputed".to_sym, "true")
+                          xml.send("dateDisplayDate".to_sym, structured_date.display_date)
+
+                          xml.send("dateEarliestSingleDay".to_sym, structured_date.earliest_day)
+                          xml.send("dateEarliestSingleMonth".to_sym, structured_date.earliest_month)
+                          xml.send("dateEarliestSingleYear".to_sym, structured_date.earliest_year)
+                          xml.send("dateEarliestScalarValue".to_sym, structured_date.earliest_scalar)
+                          xml.send("dateEarliestSingleEra".to_sym, COMMON_ERA_URN)
+
+                          xml.send("dateLatestDay".to_sym, structured_date.latest_day)
+                          xml.send("dateLatestMonth".to_sym, structured_date.latest_month)
+                          xml.send("dateLatestYear".to_sym, structured_date.latest_year)
+                          xml.send("dateLatestScalarValue".to_sym, structured_date.latest_scalar)
+                          xml.send("dateLatestEra".to_sym, COMMON_ERA_URN)
+                        }
+                      else
+                        xml.send("publicartProductionDate".to_sym) {
+                          xml.send("dateDisplayDate".to_sym, element["publicartProductionDate"])
+                        }
+                      end
+                    end
                     xml.send("publicartProductionDateType".to_sym, CSXML::Helpers.get_vocab_urn('proddatetype', element["publicartProductionDateType"]))
                   }
                 end
