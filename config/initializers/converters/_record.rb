@@ -70,7 +70,7 @@ module CollectionSpace
       end
 
       def self.validate_authority!(authority)
-        unless [ "Concept", "Location", "Material", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
+        unless [ "Concept", "Location", "Material", "Materials", "Person", "Place", "Organization", "Taxon", "Work" ].include? authority
           raise "Invalid authority #{authority}"
         end
       end

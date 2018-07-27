@@ -22,31 +22,51 @@ namespace :db do
   end
 
   namespace :import do
-    # rake db:import:data[ppsobjectsdata1,PastPerfect,ppsobjectsdata,db/data/ppsobjectsdata.csv]
-    task :data, [:batch, :converter, :profile, :filename, :use_auth_cache_file] => :environment do |t, args|
-      batch     = args[:batch]
-      converter = args[:converter]
-      profile   = args[:profile]
-      filename  = args[:filename]
-      use_previous_auth_cache = args[:use_auth_cache_file]
-      counter   = 1
-
-      raise "Invalid file #{filename}" unless File.file? filename
-
-      puts "Project #{converter}; Batch #{batch}; Profile #{profile}"
-
+    def process(job_class, config)
+      counter = 1
       # process in chunks of 100 rows
-      SmarterCSV.process(filename, {
+      SmarterCSV.process(config[:filename], {
           chunk_size: 100,
           convert_values_to_numeric: false,
         }.merge(Rails.application.config.csv_parser_options)) do |chunk|
-        puts "Processing #{batch} #{counter}"
-        ImportJob.perform_later(filename, batch, converter, profile, chunk, use_previous_auth_cache)
+        puts "Processing #{config[:batch]} #{counter}"
+        job_class.perform_later(config, chunk)
         # run the job immediately when using rake
         Delayed::Worker.new.run(Delayed::Job.last)
         counter += 1
       end
+    end
 
+    # rake db:import:data[db/data/SampleCatalogingData.csv,cataloging1,Vanilla,cataloging]
+    task :data, [:filename, :batch, :module, :profile, :use_auth_cache_file] => :environment do |t, args|
+      config = {
+        filename:  args[:filename],
+        batch:     args[:batch],
+        module:    args[:module],
+        profile:   args[:profile],
+        use_previous_auth_cache: args[:use_auth_cache_file] ||= false,
+      }
+      raise "Invalid file #{config[:filename]}" unless File.file? config[:filename]
+      puts "Project #{config[:module]}; Batch #{config[:batch]}; Profile #{config[:profile]}"
+      process ImportProcedureJob, config
+      puts "Data import complete!"
+    end
+
+    # rake db:import:authorities[db/data/SamplePerson.csv,person1,Vanilla,name,Person]
+    # rake db:import:authorities[db/data/SampleMaterials.csv,materials1,Vanilla,materials,Materials]
+    task :authorities, [:filename, :batch, :module, :id_field, :type, :subtype, :use_auth_cache_file] => :environment do |t, args|
+      config = {
+        filename:   args[:filename],
+        batch:      args[:batch],
+        module:     args[:module],
+        id_field:   args[:id_field],
+        type:       args[:type],
+        subtype:    args[:subtype] ||= args[:type].downcase,
+        use_previous_auth_cache: args[:use_auth_cache_file] ||= false,
+      }
+      raise "Invalid file #{config[:filename]}" unless File.file? config[:filename]
+      puts "Project #{config[:module]}; Batch #{config[:batch]}"
+      process ImportAuthorityJob, config
       puts "Data import complete!"
     end
   end

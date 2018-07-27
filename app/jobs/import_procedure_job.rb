@@ -1,13 +1,21 @@
 require 'json'
 
-class ImportJob < ActiveJob::Base
+# TODO: rename ImportProcedureJob
+class ImportProcedureJob < ActiveJob::Base
   queue_as :default
 
-  def perform(import_file, import_batch, converter_type, converter_profile, rows = [], use_previous_auth_cache)
+  def perform(config, rows = [])
+    import_file       = config[:filename]
+    import_batch      = config[:batch]
+    converter_module  = config[:module]
+    converter_profile = config[:profile]
+    use_previous_auth_cache = config[:use_previous_auth_cache]
+
     data_object_attributes = {
+      import_type:       'Procedure',
       import_file:       import_file,
       import_batch:      import_batch,
-      converter_type:    converter_type,
+      converter_module:  converter_module,
       converter_profile: converter_profile,
       use_auth_cache_file: use_previous_auth_cache
     }
@@ -16,7 +24,7 @@ class ImportJob < ActiveJob::Base
     # Fetch the authority and vocabulary terms for the cspace profile type
     #
     begin
-      file = File.join(Rails.root, 'config', 'initializers', 'converters', converter_type, 'auth_cache.json')
+      file = File.join(Rails.root, 'config', 'initializers', 'converters', converter_module, 'auth_cache.json')
       authorities_cache = JSON.parse(File.read(file))
       #
       # Use Rails to cache the authorities/vocabularies and terms 
