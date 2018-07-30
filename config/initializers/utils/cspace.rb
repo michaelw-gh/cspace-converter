@@ -1,3 +1,5 @@
+require 'active_support/core_ext/date_time'
+
 module CollectionSpace
 
   StructuredDate = Struct.new(
@@ -21,8 +23,9 @@ module CollectionSpace
       date_string = date_string.strip
       date_string = "#{date_string}-01-01" if date_string =~ /^\d{4}$/
       # TODO exceptions
-      parsed_earliest_date = Date.parse(date_string)
-      parsed_latest_date   = Date.parse((parsed_earliest_date + 365).to_s)
+      parsed_earliest_date = DateTime.parse(date_string)
+      daysInYear = parsed_earliest_date.year % 4 == 0 ? 366 : 365
+      parsed_latest_date   = DateTime.parse((parsed_earliest_date + daysInYear).to_s)
 
       d = CollectionSpace::StructuredDate.new
       d.date_string  = date_string
@@ -31,12 +34,12 @@ module CollectionSpace
       d.earliest_day    = parsed_earliest_date.day
       d.earliest_month  = parsed_earliest_date.month
       d.earliest_year   = parsed_earliest_date.year
-      d.earliest_scalar = parsed_earliest_date.to_time.to_s
+      d.earliest_scalar = parsed_earliest_date.iso8601(3).sub('+00:00', "Z")
 
       d.latest_day    = parsed_latest_date.day
-      d.latest_month  = parsed_latest_date.day
-      d.latest_year   = parsed_latest_date.day
-      d.latest_scalar = parsed_latest_date.to_time.to_s
+      d.latest_month  = parsed_latest_date.month
+      d.latest_year   = parsed_latest_date.year
+      d.latest_scalar = parsed_latest_date.iso8601(3).sub('+00:00', "Z")
 
       d
     end
