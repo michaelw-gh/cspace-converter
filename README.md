@@ -66,6 +66,9 @@ For example:
 ./import.sh PPSdata_accession.csv pp_accession1 PastPerfect accessions
 ./import.sh PPSdata_objects.csv pp_objects1 PastPerfect objects
 
+# NOTE: for media csv blob_uri field will attempt to create the image
+./import.sh SampleMediaUrl.csv media1 Vanilla media
+
 # authority
 bundle exec rake db:import:authorities[db/data/SamplePerson.csv,person1,Vanilla,Person]
 ```
@@ -85,6 +88,7 @@ by creating a `.env.local` file with custom settings.
 
 ```bash
 # DEVELOPMENT .env
+export CSPACE_CONVERTER_DB_HOST=127.0.0.1
 export CSPACE_CONVERTER_BASE_URI=http://localhost:8180/cspace-services
 export CSPACE_CONVERTER_DOMAIN=core.collectionspace.org
 export CSPACE_CONVERTER_USERNAME=admin@core.collectionspace.org
