@@ -19,6 +19,17 @@ module CollectionSpace
         get_vocabularies[vocabulary_id]
       end
 
+      def self.setup(converter_module)
+        begin
+          file = File.join(Rails.root, 'config', 'initializers', 'converters', converter_module, 'auth_cache.json')
+          authorities_cache = JSON.parse(File.read(file))
+          # Use Rails to cache the authorities/vocabularies and terms 
+          Rails.cache.write(AuthCache::AUTHORITIES_CACHE, authorities_cache)
+        rescue Errno::ENOENT => e
+          Rails.logger.warn "No authority cache file found at #{file}"
+        end
+      end
+
       #
       # Pubic accessor to cached vocabulary terms
       #
