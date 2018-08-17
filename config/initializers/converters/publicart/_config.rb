@@ -30,8 +30,8 @@ module CollectionSpace
               },
             },
             "Authorities" => {
-              "Person" => ["content_person", "inscriber", "objectproductionperson", "owner"],
-              "Organization" => ["production_org"],
+              "Person" => ["content_person", "inscriber", "objectproductionperson", "owners_person"],
+              "Organization" => ["production_org", "owners_org"],
               "Concept" => [["material", "material_ca"]],
             },
             "Relationships" => [

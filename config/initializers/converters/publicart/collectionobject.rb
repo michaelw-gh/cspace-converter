@@ -106,13 +106,17 @@ module CollectionSpace
                 "objectProductionPlace" => attributes["production_place"]
               }] if attributes["production_place"]
 
-              # owners
-              owner_urns = []
-              owners = split_mvf attributes, 'owner'
+              # owners (two CSV columns, owners_person and owners_org)
+              owners_urns = []
+              owners = split_mvf attributes, 'owners_person'
               owners.each do |owner|
-                owner_urns << { "owner" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', owner) }
+                owners_urns << { "owner" => CSXML::Helpers.get_authority_urn('personauthorities', 'person', owner) }
               end
-              CSXML.add_repeat(xml, 'owners', owner_urns) if attributes["owner"]
+              owners = split_mvf attributes, 'owners_org'
+              owners.each do |owner|
+                owners_urns << { "owner" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', owner) }
+              end
+              CSXML.add_repeat(xml, 'owners', owners_urns) if owners_urns.empty? == false
 
               # techniqueGroupList
               tgs = []
@@ -202,7 +206,7 @@ module CollectionSpace
 
               # Collection
               CSXML.add_repeat xml, 'publicartCollections', [{
-                  "publicartCollection" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization-paa', attributes["collection"]),
+                  "publicartCollection" => CSXML::Helpers.get_authority_urn('orgauthorities', 'organization', attributes["collection"]),
               }] if attributes["collection"]
 
               # publicartProductionPersonGroupList

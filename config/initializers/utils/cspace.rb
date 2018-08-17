@@ -25,27 +25,27 @@ module CollectionSpace
       # TODO exceptions
       parsed_earliest_date = DateTime.parse(date_string)
       daysInYear = parsed_earliest_date.year % 4 == 0 ? 366 : 365
-      parsed_latest_date   = DateTime.parse((parsed_earliest_date + daysInYear).to_s)
+      parsed_latest_date = DateTime.parse((parsed_earliest_date + daysInYear).to_s)
 
       d = CollectionSpace::StructuredDate.new
-      d.date_string  = date_string
+      d.date_string = date_string
       d.display_date = date_string
 
-      d.earliest_day    = parsed_earliest_date.day
-      d.earliest_month  = parsed_earliest_date.month
-      d.earliest_year   = parsed_earliest_date.year
+      d.earliest_day = parsed_earliest_date.day
+      d.earliest_month = parsed_earliest_date.month
+      d.earliest_year = parsed_earliest_date.year
       d.earliest_scalar = parsed_earliest_date.iso8601(3).sub('+00:00', "Z")
 
-      d.latest_day    = parsed_latest_date.day
-      d.latest_month  = parsed_latest_date.month
-      d.latest_year   = parsed_latest_date.year
+      d.latest_day = parsed_latest_date.day
+      d.latest_month = parsed_latest_date.month
+      d.latest_year = parsed_latest_date.year
       d.latest_scalar = parsed_latest_date.iso8601(3).sub('+00:00', "Z")
 
       d
     end
 
   end
-  
+
   module Identifiers
     ::CSIDF = CollectionSpace::Identifiers
 
@@ -97,11 +97,11 @@ module CollectionSpace
     # add data from ruby hash containing array of elements (see spec)
     def self.add_data(xml, data = [])
       ::CSXML.process_array(xml, data['label'], data['elements'])
-      end
+    end
 
     def self.add_group(xml, key, elements = {})
       xml.send("#{key}Group".to_sym) {
-        elements.each { |k, v| xml.send(k.to_sym, v) }
+        elements.each {|k, v| xml.send(k.to_sym, v)}
       }
     end
 
@@ -116,12 +116,12 @@ module CollectionSpace
       xml.send("#{key}#{group_prefix}".to_sym) {
         elements.each_with_index do |element, index|
           xml.send("#{key}Group".to_sym) {
-            element.each { |k, v| xml.send(k.to_sym, v) }
+            element.each {|k, v| xml.send(k.to_sym, v)}
             if sub_key
               xml.send("#{sub_key}SubGroupList".to_sym) {
                 sub_elements.each do |sub_element|
                   xml.send("#{sub_key}SubGroup".to_sym) {
-                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
+                    sub_element.each {|k, v| xml.send(k.to_sym, v)}
                   }
                 end
               }
@@ -130,7 +130,7 @@ module CollectionSpace
               sub_elements[index].each do |type, sub_element|
                 if sub_element.respond_to? :each
                   xml.send(type.to_sym) {
-                    sub_element.each { |k, v| xml.send(k.to_sym, v) }
+                    sub_element.each {|k, v| xml.send(k.to_sym, v)}
                   }
                 else
                   xml.send(type, sub_element)
@@ -148,7 +148,7 @@ module CollectionSpace
       xml.send("#{key}List".to_sym) {
         elements.each do |element|
           xml.send("#{key}#{key_suffix}".to_sym) {
-            element.each { |k, v| xml.send(k.to_sym, v) }
+            element.each {|k, v| xml.send(k.to_sym, v)}
           }
         end
       }
@@ -157,7 +157,7 @@ module CollectionSpace
     def self.add_repeat(xml, key, elements = [])
       xml.send(key.to_sym) {
         elements.each do |element|
-          element.each { |k, v| xml.send(k.to_sym, v) }
+          element.each {|k, v| xml.send(k.to_sym, v)}
         end
       }
     end
@@ -276,7 +276,7 @@ module CollectionSpace
       #
       # Get (or create) a URN for an authority term value
       #
-      def self.get_authority_urn(authority_type, authority_id, value)
+      def self.get_authority_urn(authority_type, authority_id, value, fail_on_missing = false)
         if value
           term_parts = get_term_parts value
 
@@ -296,7 +296,11 @@ module CollectionSpace
           # we need to create one.
           #
           if term_id == nil
-            term_id = CollectionSpace::Identifiers.short_identifier(display_name)
+            if fail_on_missing == false
+              term_id = CollectionSpace::Identifiers.short_identifier(display_name)
+            else
+              raise ArgumentError, sprintf("The %s term with display name '%s' needs to, but does not, exist.", authority_type, display_name)
+            end
           end
 
           CSURN.generate(
@@ -312,7 +316,7 @@ module CollectionSpace
       #
       # Get the URN for a vocabulary term value
       #
-      def self.get_vocab_urn(vocabulary_id, value, row_number = "unknown", strip = false)
+      def self.get_vocab_urn(vocabulary_id, value, row_number = "unknown")
         if value
           # try to breakup the term value into component parts
           term_parts = get_term_parts value

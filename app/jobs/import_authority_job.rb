@@ -48,16 +48,29 @@ class ImportAuthorityJob < ActiveJob::Base
       object.save!
 
       # TODO: support for explicit identifiers
-      identifier = CSIDF.short_identifier(object.read_attribute(identifier_field))
-      unless CollectionSpaceObject.has_authority?(identifier)
-        # CREATE NEW CSPACE OBJECT
-        object.add_authority(authority_type, authority_subtype, object.read_attribute(identifier_field))
-        object.save! # we have a stub
+      service = CollectionSpace::Converter::Default.service authority_type, authority_subtype
+      service_id = service[:id]
+      term_display_name = object.read_attribute(identifier_field)
+      term_id = object.read_attribute("shortidentifier")
+      if term_id == nil
+        term_id = AuthCache::lookup_authority_term_id service_id, authority_subtype, term_display_name
       end
-      cspace_object = CollectionSpaceObject.where(category: 'Authority', identifier: identifier).first
-      # TODO: update parent of cspace object if different (i.e. was stub record)
-      cspace_object.content = object.to_auth_xml(authority_type)
-      cspace_object.save!
+
+      identifier = term_id
+      if identifier == nil
+        identifier = CSIDF.short_identifier(object.read_attribute(identifier_field))
+      end
+
+      if CollectionSpaceObject.has_authority?(identifier)
+        cspace_object = CollectionSpaceObject.where(category: 'Authority', identifier: identifier).first
+        cspace_object.content = object.to_auth_xml(authority_type, term_display_name, identifier)
+        cspace_object.save!
+      else
+        # CREATE NEW CSPACE OBJECT
+        object.add_authority(authority_type, authority_subtype, object.read_attribute(identifier_field), identifier)
+        object.save!
+      end
+
     end
   end
 end

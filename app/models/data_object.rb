@@ -32,7 +32,13 @@ class DataObject
         # attempt to split field in case it is multi-valued
         term_display_name.split(self.delimiter).map(&:strip).each do |name|
           begin
+            service = CollectionSpace::Converter::Default.service authority, authority_subtype
+            service_id = service[:id]
+            identifier = AuthCache::lookup_authority_term_id service_id, authority_subtype, name
+            next if identifier != nil
+
             identifier = CSIDF.short_identifier(name)
+
             # pre-filter authorities as we only want to create the first occurrence
             # and not fail CollectionSpaceObject validation for unique_identifier
             next if CollectionSpaceObject.has_authority?(identifier)
@@ -142,17 +148,18 @@ class DataObject
     self.write_attribute "row_number", row_number
   end
 
-  def to_auth_xml(authority, term_display_name = nil)
+  def to_auth_xml(authority, term_display_name = nil, term_short_id = nil)
     self.default_converter_class.validate_authority!(authority)
     if self.type == 'Procedure'
       raise "No termDisplayName for procedure authority (#{authority})" unless term_display_name
       converter = self.authority_class(authority).new({
-        "shortIdentifier" => CSIDF.short_identifier(term_display_name),
+        "shortIdentifier" => term_short_id != nil ? term_short_id : CSIDF.short_identifier(term_display_name),
         "termDisplayName" => term_display_name,
         "termType"        => "#{CSIDF.authority_term_type(authority)}Term",
       })
     elsif self.type == 'Authority'
       converter = self.full_authority_class(authority).new(self.to_hash)
+      converter.term_short_id=(term_short_id)
     else
       raise "Unrecognized type for data object: #{self.type}"
     end
@@ -181,8 +188,11 @@ class DataObject
     self.read_attribute(:import_type)
   end
 
-  def add_authority(authority, authority_subtype, name)
-    identifier = CSIDF.short_identifier(name)
+  def add_authority(authority, authority_subtype, name, term_id = nil)
+    identifier = term_id
+    if identifier == nil
+      identifier = CSIDF.short_identifier(name)
+    end
 
     data = {}
     # check for existence or update
@@ -192,7 +202,7 @@ class DataObject
     data[:identifier_field] = 'shortIdentifier'
     data[:identifier]       = identifier
     data[:title]            = name
-    data[:content]          = self.to_auth_xml(authority, name)
+    data[:content]          = self.to_auth_xml(authority, name, identifier)
     self.collection_space_objects.build data
   end
 

@@ -53,7 +53,7 @@ namespace :db do
     end
 
     # rake db:import:authorities[db/data/SamplePerson.csv,person1,Vanilla,name,Person]
-    # rake db:import:authorities[db/data/SampleMaterials.csv,materials1,Vanilla,materials,Materials]
+    # rake db:import:authorities[db/data/SampleMaterial.csv,materials1,Vanilla,materials,Concept,materials_ca]
     task :authorities, [:filename, :batch, :module, :id_field, :type, :subtype, :use_auth_cache_file] => :environment do |t, args|
       config = {
         filename:   args[:filename],
