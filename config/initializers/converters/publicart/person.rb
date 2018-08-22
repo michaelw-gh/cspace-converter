@@ -46,6 +46,22 @@ module CollectionSpace
               CSXML.add_repeat(xml, 'organizations', organization_urns) if attributes["organization"]
             end
 
+            xml.send(
+                "ns2:contacts_common",
+                "xmlns:ns2" => "http://collectionspace.org/services/contact",
+                "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+            ) do
+              # applying namespace breaks import
+              xml.parent.namespace = nil
+
+              # webaddress
+              CSXML.add_group_list xml, 'webAddress',
+                                   [{
+                                        "webAddress" => attributes["webaddress"],
+                                        "webAddressType" => attributes["webaddresstype"],
+                                    }]
+            end
+
           end
         end
 
