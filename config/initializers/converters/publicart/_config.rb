@@ -229,8 +229,8 @@ module CollectionSpace
              "Procedures" => {
                "Media" => {
                  "identifier_field" => "identificationNumber",
-                 "identifier" => "identification_number",
-                 "title" => "identification_number",
+                 "identifier" => "identificationnumber",
+                 "title" => "identificationnumber",
                },
              },
              "Authorities" => {
@@ -240,7 +240,7 @@ module CollectionSpace
                  "procedure1_type" => "CollectionObject",
                  "data1_field" => "relationship",
                  "procedure2_type" => "Media",
-                 "data2_field" => "identification_number",
+                 "data2_field" => "identificationnumber",
                },
              ],
            },
