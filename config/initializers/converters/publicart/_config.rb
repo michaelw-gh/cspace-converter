@@ -248,8 +248,8 @@ module CollectionSpace
              "Procedures" => {
                "Movement" => {
                  "identifier_field" => "movementReferenceNumber",
-                 "identifier" => "inventory_reference_number",
-                 "title" => "inventory_reference_number",
+                 "identifier" => "movementreferencenumber",
+                 "title" => "movementreferencenumber",
                },
              },
              "Authorities" => {
@@ -258,27 +258,9 @@ module CollectionSpace
              "Relationships" => [
                {
                   "procedure1_type" => "CollectionObject",
-                  "data1_field" => "relationship_1",
+                  "data1_field" => "relationship",
                   "procedure2_type" => "Movement",
-                  "data2_field" => "inventory_reference_number",
-               },
-               {
-                  "procedure1_type" => "CollectionObject",
-                  "data1_field" => "relationship_2",
-                  "procedure2_type" => "Movement",
-                  "data2_field" => "inventory_reference_number",
-               },
-               {
-                  "procedure1_type" => "CollectionObject",
-                  "data1_field" => "relationship_3",
-                  "procedure2_type" => "Movement",
-                  "data2_field" => "inventory_reference_number",
-               },
-               {
-                  "procedure1_type" => "LoanOut",
-                  "data1_field" => "relationship_4",
-                  "procedure2_type" => "Movement",
-                  "data2_field" => "inventory_reference_number",
+                  "data2_field" => "movementreferencenumber",
                },
              ],
            },
