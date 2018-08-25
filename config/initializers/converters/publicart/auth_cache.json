@@ -725,6 +725,7 @@
         "culver city public art program": "culvercity_publicartprogram",
         "d.c.arts": "dcarts",
         "dc commission on the arts and humanities' dc creates! public art program": "dccommissionontheartsandhumanities_dccreatespublicartprogram",
+        "doca": "doca",
         "dtc meridian": "dtcmeridian",
         "dakota county technical college": "dakotacountytechnicalcollege",
         "dallas area rapid transit (dart) station art & design program": "dallasarearapidtransit_dartstationartdesignprogram",
@@ -750,7 +751,6 @@
         "discoteca demolition project": "discoteca_demolitionproject",
         "division of cultural affairs - florida department of state": "divisionofculturalaffairs_floridadepartmentofstate",
         "doane university": "doaneuniversity",
-        "doca": "doca",
         "dogfish head craft brewery": "dogfishheadcraftbrewery",
         "dollar bank three rivers arts festival": "dollarbank_threeriversartsfestival",
         "don lathrop, new vista partners": "donlathropnewvistapartners",
@@ -1103,7 +1103,7 @@
         "new city library": "newcity_library",
         "new detroit, inc.": "newdetroitinc",
         "new haven public art": "newhaven_publicart",
-        "new mexico farm & ranch heritage museum": "newmexico_farmranchheritagemuseum",
+        "new mexico farm& ranch heritage museum": "newmexico_farmranchheritagemuseum",
         "new mexico wilderness alliance": "newmexico_wildernessalliance",
         "new roads school": "newroadsschool",
         "new venture's center": "newventurescenter",
@@ -1609,6 +1609,13 @@
         "william mathews": "william_mathews",
         "yuan xiao-cen": "yuan_xiao_cen",
         "yvonne muinde": "yvonne_muinde"
+    }},
+    "placeauthorities": {"place": {
+        "19th st. and welton st.": "19thst_andweltonst_",
+        "colorado convention center, lobby": "coloradoconventioncenter_lobby",
+        "denver international airport": "denverinternationalairport",
+        "hyatt regency denver at colorado convention center": "hyattregencydenveratcoloradoconventioncenter",
+        "richard t. castro human services building, outside front entrance": "richardt_castrohumanservicesbuilding_outsidefrontentrance"
     }},
     "vocabularies": {
         "acquisitionmethod": {

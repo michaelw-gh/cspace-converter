@@ -23,7 +23,14 @@ module CollectionSpace
 
               CSXML.add_group_list xml, 'addr',
                                    [{
+                                        "addressPlace1" => attributes["addressplace1"],
+                                        "addressPlace2" => attributes["addressplace2"],
+                                        "addressCountry" => attributes["addresscountry"],
+                                        "addressMunicipality" => attributes["addressmunicipality"],
+                                        "addressStateOrProvince" => attributes["addressstateorprovince"],
                                         "addressPostCode" => attributes["addresspostcode"],
+                                        "addressType" => CSXML::Helpers.get_vocab_urn('addresstype', attributes["addresstype"])
+
                                     }]
 
               CSXML.add_group_list xml, 'placeTerm',
@@ -34,6 +41,7 @@ module CollectionSpace
               CSXML.add_group_list xml, 'placeGeoRef',
                                    [{
                                         "decimalLatitude" => attributes["decimallatitude"],
+                                        "decimalLongitude" => attributes["decimallongitude"],
                                     }]
             end
 
