@@ -30,7 +30,7 @@ class TransferJob < ActiveJob::Base
         if action_method == :remote_transfer
           # TODO: check we support updates via config
           transferred = service.remote_update
-          logger.error "Failed to transfer #{object.inspect}" unless transferred
+          logger.error "Failed to transfer update #{object.inspect}" unless transferred
         end
 
         if action_method == :remote_delete
