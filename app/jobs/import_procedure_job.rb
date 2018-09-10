@@ -19,18 +19,22 @@ class ImportProcedureJob < ActiveJob::Base
     # row_count is used to reference the current row in logging and error messages
     row_count = 1
     rows.each do |data|
-      row_count = row_count + 1
+      begin
+        row_count = row_count + 1
 
-      object = DataObject.new.from_json JSON.generate(data)
-      object.set_attributes data_object_attributes,row_count
-      # validate object immediately after initial attributes set
-      object.save!
+        object = DataObject.new.from_json JSON.generate(data)
+        object.set_attributes data_object_attributes,row_count
+        # validate object immediately after initial attributes set
+        object.save!
 
-      object.add_procedures
-      object.save!
+        object.add_procedures
+        object.save!
 
-      object.add_authorities
-      object.save!
+        object.add_authorities
+        object.save!
+      rescue
+        logger.error "Record not staged in Mongo DB. Exception message:#{$!}"
+      end
     end
   end
 end

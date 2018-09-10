@@ -33,8 +33,8 @@ module CollectionSpace
              "Procedures" => {
                "Media" => {
                  "identifier_field" => "identificationNumber",
-                 "identifier" => "media_id",
-                 "title" => "media_id",
+                 "identifier" => "star_system_id",
+                 "title" => "star_system_id",
                },
              },
              "Authorities" => {
@@ -44,7 +44,7 @@ module CollectionSpace
                  "procedure1_type" => "CollectionObject",
                  "data1_field" => "object_number_catalog",
                  "procedure2_type" => "Media",
-                 "data2_field" => "media_id",
+                 "data2_field" => "star_system_id",
                },
              ],
            },
