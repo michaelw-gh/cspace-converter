@@ -24,7 +24,7 @@ module CollectionSpace
       date_string = "#{date_string}-01-01" if date_string =~ /^\d{4}$/
       # TODO exceptions
       parsed_earliest_date = DateTime.parse(date_string)
-      daysInYear = parsed_earliest_date.year % 4 == 0 ? 366 : 365
+      daysInYear = parsed_earliest_date.year % 4 == 0 ? 365 : 364
       parsed_latest_date = DateTime.parse((parsed_earliest_date + daysInYear).to_s)
 
       d = CollectionSpace::StructuredDate.new
@@ -39,8 +39,12 @@ module CollectionSpace
       d.latest_day = parsed_latest_date.day
       d.latest_month = parsed_latest_date.month
       d.latest_year = parsed_latest_date.year
+
+      # We want the latest scalar date to extend to midnight of the last day of the year
+      parsed_latest_date = DateTime.parse((parsed_earliest_date + daysInYear + 1).to_s)
       d.latest_scalar = parsed_latest_date.iso8601(3).sub('+00:00', "Z")
 
+      # Return the date
       d
     end
 
